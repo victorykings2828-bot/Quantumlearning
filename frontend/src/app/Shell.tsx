@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { TutorLauncher } from '@/features/tutor/TutorLauncher';
+import { useTutor } from '@/features/tutor/TutorContext';
 import { useSession } from './session';
 
 const NAV = [
@@ -13,9 +14,10 @@ const NAV = [
 export function Shell() {
   const [menuOpen, setMenuOpen] = useState(false);
   const session = useSession();
+  const tutor = useTutor();
 
   return (
-    <div className="shell">
+    <div className="shell" data-tutor-open={tutor.open}>
       <a className="skip-link" href="#main">
         Skip to main content
       </a>

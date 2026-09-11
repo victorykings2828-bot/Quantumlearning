@@ -577,6 +577,17 @@ textarea {
   box-shadow: 0 2px 8px rgba(32, 37, 42, 0.18);
 }
 
+/* On a wide screen the drawer takes its own column so the experiment stays
+   visible beside the answer that explains it. */
+@media (min-width: 1100px) {
+  .shell[data-tutor-open='true'] .page,
+  .shell[data-tutor-open='true'] .site-header__inner,
+  .shell[data-tutor-open='true'] .site-footer__inner {
+    margin-right: 430px;
+    max-width: calc(var(--content-max) - 430px);
+  }
+}
+
 .tutor-drawer {
   position: fixed;
   right: 0;

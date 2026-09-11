@@ -134,9 +134,14 @@ Corrections from `docs/UI-SPECIFICATION.md` that are implemented:
 ## G. Summary of statuses
 
 - **Implemented**: everything in the required demo scope.
-- **Tested locally**: 220 backend tests, 18 frontend unit tests, 32 browser
+- **Tested locally**: 221 backend tests, 18 frontend unit tests, 32 browser
   tests against the real API and PostgreSQL, lint, format, typecheck, build,
   migrations, content validation and the contract export. All pass.
-- **Tested in CI**: nothing yet. The workflow is installed but has not run.
+- **Tested in CI**: the workflow ran and failed at the backend test step
+  because `uv sync --frozen` does not install an optional extra, so `pytest`
+  was absent. The test tools are now a uv dependency group and the whole
+  backend sequence was verified from a clean environment under uv 0.12.12, the
+  version the workflow pins. The corrected workflow has not yet completed a
+  run.
 - **Verified with the live NVIDIA API**: nothing. No credential was supplied.
 - **Deployed**: nothing.

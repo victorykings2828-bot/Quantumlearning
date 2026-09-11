@@ -36,7 +36,10 @@ def build_answer(question: str, passages: list[Passage]) -> tuple[str, list[str]
         "",
     ]
     for passage in passages[:2]:
+        # The blank line matters: without it the heading and the passage body
+        # become one Markdown block and the whole answer renders as a heading.
         lines.append(f"### {passage.title}: {passage.heading}")
+        lines.append("")
         lines.append(passage.text.strip())
         lines.append("")
     lines.append(

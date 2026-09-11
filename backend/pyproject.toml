@@ -17,7 +17,7 @@ dependencies = [
     "python-dotenv>=1.0,<2.0",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "pytest>=8.3,<9.0",
     "pytest-cov>=6.0,<8.0",

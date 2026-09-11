@@ -297,3 +297,18 @@ def test_run_facts_come_from_the_engine_not_from_prose(db):
     stored = db.get(Run, run.id)
     assert stored.result["counts"] == engine_result.counts
     assert db.query(Workspace).count() >= 1
+
+
+def test_authored_help_separates_its_heading_from_the_passage_body(db):
+    """Without a blank line the whole card renders as one heading."""
+    from app.tutoring import authored, knowledge
+
+    passages = knowledge.retrieve("why did the minus disappear", topic_ids=None, limit=2)
+    assert passages
+    body, cited = authored.build_answer("why did the minus disappear", passages)
+    assert cited
+    for line_number, line in enumerate(body.splitlines()):
+        if line.startswith("### "):
+            assert body.splitlines()[line_number + 1] == "", (
+                "a heading must be followed by a blank line"
+            )

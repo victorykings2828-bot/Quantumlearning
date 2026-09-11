@@ -9,7 +9,7 @@ status is inferred from a file existing.
 | Component | Declared for the project | Used for local verification | Note |
 |---|---|---|---|
 | Python | 3.12 | 3.12.11 (installed by uv) | matches |
-| uv | 0.8.17+ | 0.8.17 | the build guide proposed 0.12.12; the pinned CI version is 0.12.12 and was not exercised here |
+| uv | 0.8.17+ | 0.8.17 for development, **and 0.12.12 verified** | the lockfile, `uv lock --check`, `uv sync --frozen` and the full test run were all confirmed under 0.12.12, the version the workflow pins |
 | Node | 24 (CI) | 22.22.2 | local development only; CI installs 24 |
 | PostgreSQL | 17 (compose and CI) | **16.13** | Docker Hub blob downloads are blocked by this environment's network policy, so `postgres:17` could not be pulled. Compose and CI both declare 17; the local runs used the distribution's 16. |
 | Qiskit | pinned range | 2.5.2 | resolved by the lockfile |
@@ -37,7 +37,7 @@ Backend (`cd backend`):
 | `uv run --frozen ruff check .` | pass |
 | `uv run --frozen ruff format --check .` | pass |
 | `uv run --frozen alembic upgrade head` | pass, against a live PostgreSQL |
-| `uv run --frozen pytest` | **220 passed** |
+| `uv run --frozen pytest` | **221 passed** |
 | `uv run --frozen python -m app.tools.validate_content` | pass |
 | `uv run --frozen python export_contracts.py --check` | pass |
 | `uv run --frozen python -m app.tools.tutor_smoke` | exits 2, "no live call was attempted": no key configured |
@@ -100,6 +100,19 @@ capability refusal; keyboard-only laboratory use; phone-width layout.
    flushed with `keepalive` when the page is hidden.
 10. **Single-asterisk emphasis rendered literally.** Authored italics showed
     their asterisks; the Markdown renderer now supports them.
+11. **CI could not run the backend tests.** The test tools sat in an optional
+    extra, which `uv sync --frozen` does not install, so `pytest` was missing
+    on the runner. They are now a uv dependency group, which a plain
+    `uv sync --frozen` installs. Verified from a clean environment with
+    uv 0.12.12, the version the workflow pins.
+12. **Authored help rendered as one giant heading.** A missing blank line made
+    the card's heading and its body a single Markdown block.
+13. **The tutor drawer covered the experiment it was explaining.** On a wide
+    screen it now takes its own column, and the floating launcher hides while
+    it is open instead of sitting on top of a result panel.
+14. **Closing the drawer with Escape lost focus.** The launcher was focused
+    while still hidden, which silently does nothing; focus is now restored
+    after the render that unhides it.
 
 ## Known limitations
 

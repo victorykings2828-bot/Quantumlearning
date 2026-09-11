@@ -31,9 +31,17 @@ export function TutorLauncher() {
 
   const close = useCallback(() => {
     tutor.setOpen(false);
-    // Focus returns to the control that opened the drawer.
-    launcherRef.current?.focus();
   }, [tutor]);
+
+  // Focus returns to the control that opened the drawer, but only after the
+  // render that unhides it: focusing a hidden element silently does nothing.
+  const wasOpen = useRef(false);
+  useEffect(() => {
+    if (wasOpen.current && !tutor.open) {
+      launcherRef.current?.focus();
+    }
+    wasOpen.current = tutor.open;
+  }, [tutor.open]);
 
   useEffect(() => {
     if (!tutor.open) return;
@@ -99,10 +107,13 @@ export function TutorLauncher() {
 
   return (
     <>
+      {/* Hidden while the drawer is open so it cannot cover a result panel.
+          It stays in the tree so focus can return to it on close. */}
       <button
         type="button"
         ref={launcherRef}
         className="tutor-launcher"
+        hidden={tutor.open}
         onClick={() => tutor.setOpen(true)}
         aria-expanded={tutor.open}
         aria-controls="tutor-drawer"
