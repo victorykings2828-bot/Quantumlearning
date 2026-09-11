@@ -1,0 +1,72 @@
+# Local demo stack: database, a one-shot migration, the API, and the web server
+# with its /api reverse proxy. One origin, http://localhost:8080.
+#
+#   docker compose up --build
+#
+# The NVIDIA key is read from backend/.env, which is git-ignored. It is never
+# passed as a build argument and never reaches an image layer.
+
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: quantum
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-quantum_local_only}
+      POSTGRES_DB: quantum
+    volumes:
+      - quantum-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U quantum -d quantum']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  migrate:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile.backend
+    command: ['alembic', 'upgrade', 'head']
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      DATABASE_URL: postgresql+psycopg://quantum:${POSTGRES_PASSWORD:-quantum_local_only}@db:5432/quantum
+      SESSION_SECRET: ${SESSION_SECRET:-local-compose-secret-change-me}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: 'no'
+
+  api:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile.backend
+    env_file:
+      - path: ./backend/.env
+        required: false
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      DATABASE_URL: postgresql+psycopg://quantum:${POSTGRES_PASSWORD:-quantum_local_only}@db:5432/quantum
+      SESSION_SECRET: ${SESSION_SECRET:-local-compose-secret-change-me}
+      PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:-http://localhost:8080}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      TUTOR_PROVIDER: ${TUTOR_PROVIDER:-authored}
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile.web
+    ports:
+      - '${WEB_PORT:-8080}:8080'
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  quantum-db:

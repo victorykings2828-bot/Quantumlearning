@@ -10,6 +10,7 @@ import uuid
 from typing import Any
 
 from sqlalchemy import func, select
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.orm import Session
 
 from app.config import get_settings
@@ -42,11 +43,22 @@ def get_or_create_workspace(
             Workspace.kind == kind,
         )
     )
-    if workspace is None:
-        workspace = Workspace(principal_id=owner, topic_id=topic_id, kind=kind)
-        session.add(workspace)
-        session.flush()
-    return workspace
+    if workspace is not None:
+        return workspace
+    # Same race as topic progress: insert, ignore a conflict, then re-select.
+    session.execute(
+        pg_insert(Workspace)
+        .values(id=uuid.uuid4(), principal_id=owner, topic_id=topic_id, kind=kind)
+        .on_conflict_do_nothing(constraint="uq_workspace_owner_topic")
+    )
+    session.flush()
+    return session.scalar(
+        select(Workspace).where(
+            Workspace.principal_id == owner,
+            Workspace.topic_id == topic_id,
+            Workspace.kind == kind,
+        )
+    )
 
 
 def load_workspace(session: Session, principal_id: str, workspace_id: str) -> Workspace:

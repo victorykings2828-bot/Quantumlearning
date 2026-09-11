@@ -11,7 +11,9 @@ from __future__ import annotations
 import uuid
 from typing import Any
 
-from sqlalchemy import select
+from sqlalchemy import case, cast, select, update
+from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.orm import Session
 
 from app.curriculum import access, loader
@@ -41,26 +43,52 @@ def get_topic_progress(session: Session, principal_id: str, topic_id: str) -> To
             TopicProgress.principal_id == owner, TopicProgress.topic_id == topic_id
         )
     )
-    if row is None:
-        row = TopicProgress(
+    if row is not None:
+        return row
+
+    # Concurrent requests for the same topic race here. An upsert that does
+    # nothing on conflict leaves the winning row in place, and the re-select
+    # returns it, so neither request fails.
+    session.execute(
+        pg_insert(TopicProgress)
+        .values(
+            id=uuid.uuid4(),
             principal_id=owner,
             topic_id=topic_id,
             content_version=loader.load_chapter("chapter-1").get("version", 1),
+            status="not_started",
             completed_steps={},
         )
-        session.add(row)
-        session.flush()
-    return row
+        .on_conflict_do_nothing(constraint="uq_topic_progress_owner")
+    )
+    session.flush()
+    return session.scalar(
+        select(TopicProgress).where(
+            TopicProgress.principal_id == owner, TopicProgress.topic_id == topic_id
+        )
+    )
 
 
 def mark_step(session: Session, principal_id: str, topic_id: str, step_id: str) -> TopicProgress:
+    """Record one completed step.
+
+    The merge happens inside the database, so two steps ticked at the same
+    time cannot overwrite each other through a read-modify-write race.
+    """
     row = get_topic_progress(session, principal_id, topic_id)
-    steps = dict(row.completed_steps or {})
-    steps[step_id] = True
-    row.completed_steps = steps
-    if row.status == "not_started":
-        row.status = "in_progress"
+    session.execute(
+        update(TopicProgress)
+        .where(TopicProgress.id == row.id)
+        .values(
+            completed_steps=TopicProgress.completed_steps.op("||")(cast({step_id: True}, JSONB)),
+            status=case(
+                (TopicProgress.status == "not_started", "in_progress"),
+                else_=TopicProgress.status,
+            ),
+        )
+    )
     session.flush()
+    session.refresh(row)
     return row
 
 

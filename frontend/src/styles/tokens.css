@@ -1,0 +1,174 @@
+/*
+ * Design tokens derived from docs/ui-reference/editor-solved_1.png and
+ * docs/UI-SPECIFICATION.md: warm cream page, near-white bordered panels, serif
+ * display headings, navy controls, brick-red accents, muted blue plot fills.
+ */
+
+:root {
+  /* Surfaces */
+  --page: #efede4;
+  --panel: #fcfaf6;
+  --panel-sunken: #f5f2ea;
+  --border: #d8d1c1;
+  --border-strong: #c3baa5;
+
+  /* Text */
+  --text: #20252a;
+  --secondary: #576579;
+  --muted: #6f7b8a;
+
+  /* Accents */
+  --navy: #20364b;
+  --navy-hover: #2c465f;
+  --navy-contrast: #fbfaf7;
+  --red: #b7442e;
+  --red-soft: #f3e3de;
+
+  /* Data */
+  --blue-fill: #c7d8e8;
+  --blue-stroke: #4a7396;
+  --blue-mark: #2f5c85;
+  --red-mark: #b7442e;
+  --success-fill: #dce9e1;
+  --success-text: #28664b;
+  --success-border: #b9d3c4;
+  --hint-fill: #f2ece0;
+  --hint-border: #ddd2bb;
+  --warning-fill: #f7ecd9;
+  --warning-border: #e0cba4;
+  --warning-text: #7a5518;
+
+  /* Type */
+  --font-display:
+    'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia,
+    'Times New Roman', serif;
+  --font-body:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+
+  /* Spacing scale */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 48px;
+  --s8: 64px;
+
+  /* Shape */
+  --radius-panel: 8px;
+  --radius-control: 5px;
+  --shadow-panel: 0 1px 2px rgba(32, 37, 42, 0.04);
+
+  /* Layout */
+  --content-max: 1240px;
+  --header-height: 66px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2rem, 4.4vw, 3.1rem);
+  line-height: 1.12;
+}
+
+h2 {
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  line-height: 1.2;
+}
+
+h3 {
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+
+p {
+  margin: 0 0 var(--s4);
+}
+
+a {
+  color: var(--navy);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+code,
+kbd,
+samp {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--navy);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--navy);
+  color: var(--navy-contrast);
+  padding: var(--s3) var(--s4);
+}
+
+.skip-link:focus {
+  left: var(--s4);
+  top: var(--s2);
+}

@@ -403,3 +403,17 @@ def test_health_endpoints(client):
     assert ready.status_code == 200
     assert ready.json()["checks"]["database"] == "ok"
     assert "nvidia_api_key" not in ready.text.lower()
+
+
+def test_concurrent_first_touch_of_a_topic_does_not_fail(guest):
+    """Two requests can create the same topic-progress row at once."""
+    import concurrent.futures
+
+    def mark(step_id: str):
+        return guest.post("/api/v1/topics/1-1/steps", json={"step_id": step_id}).status_code
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+        statuses = list(pool.map(mark, ["s1", "s2", "s3", "s4"]))
+    assert all(status == 200 for status in statuses), statuses
+    body = guest.get("/api/v1/topics/1-1").json()
+    assert set(body["completed_steps"]) == {"s1", "s2", "s3", "s4"}
