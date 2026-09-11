@@ -83,6 +83,7 @@ export function AssessmentPage() {
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved'>('idle');
   const [pageError, setPageError] = useState<string | null>(null);
   const saveTimer = useRef<number | null>(null);
+  const pending = useRef<Record<string, unknown> | null>(null);
   const { setContext } = useTutor();
 
   useEffect(() => {
@@ -102,11 +103,15 @@ export function AssessmentPage() {
     (next: Record<string, unknown>) => {
       if (!attempt || attempt.status !== 'in_progress') return;
       if (saveTimer.current) window.clearTimeout(saveTimer.current);
+      pending.current = next;
       setSaveState('saving');
       saveTimer.current = window.setTimeout(() => {
         api
           .patch(`/assessments/attempts/${attempt.attempt_id}`, { answers: next })
-          .then(() => setSaveState('saved'))
+          .then(() => {
+            pending.current = null;
+            setSaveState('saved');
+          })
           .catch(() => setSaveState('idle'));
       }, 400);
     },
@@ -121,8 +126,34 @@ export function AssessmentPage() {
         event.returnValue = '';
       }
     };
+    // If the page is hidden while a save is still debounced, send it now with
+    // keepalive so a learner who navigates away does not lose that answer.
+    const flush = () => {
+      if (!pending.current) return;
+      const body = JSON.stringify({ answers: pending.current });
+      pending.current = null;
+      const csrf = document.cookie
+        .split('; ')
+        .find((row) => row.startsWith('qll_csrf='))
+        ?.slice('qll_csrf='.length);
+      void fetch(`/api/v1/assessments/attempts/${attempt.attempt_id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(csrf ? { 'x-qll-csrf': decodeURIComponent(csrf) } : {}),
+        },
+        credentials: 'same-origin',
+        keepalive: true,
+        body,
+      }).catch(() => undefined);
+    };
     window.addEventListener('beforeunload', guard);
-    return () => window.removeEventListener('beforeunload', guard);
+    window.addEventListener('pagehide', flush);
+    return () => {
+      window.removeEventListener('beforeunload', guard);
+      window.removeEventListener('pagehide', flush);
+      flush();
+    };
   }, [attempt, answers, result]);
 
   if (loading) return <Loading label="Loading the assessment." />;

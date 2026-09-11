@@ -1289,6 +1289,30 @@
         ]
       }
     },
+    "/api/v1/playground": {
+      "get": {
+        "description": "The open one/two-qubit playground. Not graded, no prerequisites.",
+        "operationId": "read_playground_api_v1_playground_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Read Playground Api V1 Playground Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Read Playground",
+        "tags": [
+          "content"
+        ]
+      }
+    },
     "/api/v1/previews": {
       "get": {
         "operationId": "read_previews_api_v1_previews_get",

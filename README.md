@@ -28,6 +28,9 @@ Values that come from a formula rather than a simulated circuit are labelled
 - **Course tutor** with allowlisted Markdown retrieval, an evaluated scope
   policy, an NVIDIA adapter, response validation against the server's own
   envelope, verified run facts, and authored help on every failure path.
+- **One and two qubit playground** at `/lab/playground`, inside the published
+  bounds, with each qubit's reduced state shown and an explanation of why
+  matching histograms are not evidence of entanglement.
 - **Guest sessions** with no sign-up: an opaque token in an HttpOnly cookie,
   only its hash stored, CSRF and origin checks on every mutation.
 

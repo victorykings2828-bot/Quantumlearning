@@ -275,5 +275,24 @@
       "demonstration": "Complete a reviewed project with explicit assumptions and limitations.",
       "coming_soon_note": "This chapter is not implemented yet. Its description is accurate; there is no hidden lesson behind it."
     }
-  ]
+  ],
+  "skill_labels": {
+    "basis.read_single_qubit": "Read a one-qubit state in basis notation",
+    "amplitude.born_rule": "Turn amplitudes into probabilities",
+    "state.normalization": "Check that a state is normalized",
+    "measurement.conditioned_state": "Know what a measurement leaves behind",
+    "sampling.shots_vs_remeasure": "Tell a fresh shot from a repeated measurement",
+    "sampling.probability_vs_frequency": "Tell an exact probability from an observed frequency",
+    "circuit.read_order": "Read operations in execution order",
+    "gate.x_predict": "Predict what X does",
+    "circuit.construct_goal": "Build a circuit that meets a stated goal",
+    "gate.h_predict": "Predict what H does",
+    "superposition.read": "Read a superposition, including its signs",
+    "state_vs_distribution.distinguish": "Tell a state apart from its distribution",
+    "gate.z_predict": "Predict what Z does",
+    "phase.relative": "Recognise a relative phase",
+    "phase.global_equivalence": "Recognise a global phase",
+    "interference.phase_to_probability": "Explain how a phase becomes a probability"
+  },
+  "skill_label_note": "Prerequisites are named skills, not chapter numbers. Any equivalent evidence for a skill satisfies it, including a diagnostic."
 }

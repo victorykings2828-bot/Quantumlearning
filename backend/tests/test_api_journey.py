@@ -417,3 +417,52 @@ def test_concurrent_first_touch_of_a_topic_does_not_fail(guest):
     assert all(status == 200 for status in statuses), statuses
     body = guest.get("/api/v1/topics/1-1").json()
     assert set(body["completed_steps"]) == {"s1", "s2", "s3", "s4"}
+
+
+def test_playground_is_open_and_states_its_bounds(guest):
+    body = guest.get("/api/v1/playground").json()
+    assert body["publication"] == "published"
+    assert body["qubits_options"] == [1, 2]
+    assert set(body["gate_palette"]) <= {"x", "h", "z", "cx", "cz", "measure_z"}
+    assert "not claims about hardware" in body["bounds_note"]
+    guidance = body["entanglement_guidance"]["body_markdown"].lower()
+    # The reference image's wording is wrong and must not be reproduced.
+    assert "no state of their own" not in guidance
+    assert "mixed" in guidance
+    assert (
+        "do **not** by themselves demonstrate entanglement"
+        in (body["entanglement_guidance"]["body_markdown"])
+    )
+
+
+def test_a_two_qubit_playground_run_reports_reduced_states(guest):
+    bell = {
+        "qubits": 2,
+        "initial_state": {"kind": "basis", "basis_index": 0},
+        "operations": [
+            {"op": "h", "targets": [0]},
+            {"op": "cx", "controls": [0], "targets": [1]},
+        ],
+    }
+    _, run = make_run(guest, "playground", bell, shots=256, seed=9)
+    final = run["result"]["frames"][-1]
+    assert run["result"]["exact_probabilities"] == pytest.approx([0.5, 0.0, 0.0, 0.5])
+    assert len(final["reduced_states"]) == 2
+    for state in final["reduced_states"]:
+        assert state["is_mixed"] is True
+        assert state["bloch_length"] == pytest.approx(0.0, abs=1e-9)
+
+
+def test_a_three_qubit_playground_circuit_is_rejected(guest):
+    response = guest.post(
+        "/api/v1/revisions",
+        json={
+            "topic_id": "playground",
+            "circuit": {
+                "qubits": 2,
+                "initial_state": {"kind": "basis", "basis_index": 0},
+                "operations": [{"op": "cx", "controls": [0], "targets": [2]}],
+            },
+        },
+    )
+    assert response.status_code == 422

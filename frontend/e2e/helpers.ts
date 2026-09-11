@@ -30,26 +30,28 @@ export function provenance(page: Page) {
   return page.locator('p.mono').filter({ hasText: 'qiskit-statevector' }).first();
 }
 
+/**
+ * Read the provenance line, or '' when no run exists yet.
+ *
+ * The explicit timeout matters. Without one, textContent waits indefinitely for
+ * an element that has not been rendered, and the catch never runs, so the next
+ * action in the test never starts.
+ */
+export async function provenanceText(page: Page): Promise<string> {
+  try {
+    return (await provenance(page).textContent({ timeout: 1_000 })) ?? '';
+  } catch {
+    return '';
+  }
+}
+
 export async function runCircuit(page: Page) {
-  const before =
-    (await provenance(page)
-      .textContent()
-      .catch(() => null)) ?? '';
+  const before = await provenanceText(page);
   await page
     .getByRole('button', { name: /^(Run|New preparation)$/ })
     .first()
     .click();
-  await expect
-    .poll(
-      async () =>
-        (await provenance(page)
-          .textContent()
-          .catch(() => '')) ?? '',
-      {
-        timeout: 25_000,
-      },
-    )
-    .not.toBe(before);
+  await expect.poll(() => provenanceText(page), { timeout: 25_000 }).not.toBe(before);
 }
 
 export async function exactProbabilities(page: Page): Promise<number[]> {

@@ -66,6 +66,26 @@ export function LabCatalogPage() {
         </ul>
       </Panel>
 
+      <Panel title="Open experiment" badge="No prerequisites">
+        <ul className="entry-list">
+          <li>
+            <div>
+              <h3>
+                <Link to="/lab/playground">One and two qubit playground</Link>
+              </h3>
+              <p className="note" style={{ marginTop: 0 }}>
+                Build a small circuit inside the published bounds and inspect every computed
+                quantity, including each qubit&rsquo;s reduced state.
+              </p>
+            </div>
+            <div className="cluster">
+              <span className="badge">experiment</span>
+              <span className="badge">ideal circuit simulation</span>
+            </div>
+          </li>
+        </ul>
+      </Panel>
+
       <Panel title="Planned" badge={`${planned.length} coming soon`} badgeTone="warning">
         <ul className="entry-list">
           {planned.map((entry) => (

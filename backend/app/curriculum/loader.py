@@ -64,6 +64,11 @@ def load_bridge() -> dict[str, Any]:
 
 
 @lru_cache
+def load_playground() -> dict[str, Any]:
+    return _read(PUBLIC_DIR, "playground")
+
+
+@lru_cache
 def load_chapter(chapter_id: str) -> dict[str, Any]:
     if chapter_id != "chapter-1":
         raise KeyError(chapter_id)
@@ -150,6 +155,7 @@ def content_versions() -> list[dict[str, Any]]:
         "introduction": (load_introduction(), "introduction"),
         "previews": (load_previews(), "previews"),
         "beginner-bridge": (load_bridge(), "bridge"),
+        "playground": (load_playground(), "playground"),
         "chapter-1": (load_chapter("chapter-1"), "chapter"),
         "chapter-1-assessment": (load_assessment(), "assessment"),
     }
@@ -170,6 +176,7 @@ def reset_cache() -> None:
         load_introduction,
         load_previews,
         load_bridge,
+        load_playground,
         load_chapter,
         load_task_rubrics,
         load_assessment,

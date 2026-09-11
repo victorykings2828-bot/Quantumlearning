@@ -285,3 +285,51 @@ def test_product_state_reduced_states_are_pure():
     for reduced in result.frames[-1].reduced_states:
         assert reduced.bloch_length == pytest.approx(1.0, abs=1e-12)
         assert not reduced.is_mixed
+
+
+def test_two_qubit_playground_operations_are_supported():
+    """The published playground allows X, H, Z, CNOT and CZ on two qubits."""
+    operations = [
+        {"op": "h", "targets": [0]},
+        {"op": "x", "targets": [1]},
+        {"op": "z", "targets": [0]},
+        {"op": "cx", "controls": [0], "targets": [1]},
+        {"op": "cz", "controls": [1], "targets": [0]},
+    ]
+    result = run(operations, qubits=2, shots=16, seed=4)
+    assert result.qubits == 2
+    assert sum(result.exact_probabilities) == pytest.approx(1.0)
+    assert sum(result.counts.values()) == 16
+
+
+def test_bell_state_is_reached_by_h_then_cnot():
+    result = run(
+        [{"op": "h", "targets": [0]}, {"op": "cx", "controls": [0], "targets": [1]}],
+        qubits=2,
+    )
+    final = final_state(result)
+    expected = [ROOT_HALF + 0j, 0j, 0j, ROOT_HALF + 0j]
+    assert states_equivalent(final, expected)
+
+
+def test_equal_marginals_alone_do_not_establish_entanglement():
+    """A product state can give each qubit an even 50/50 marginal too."""
+    product = run(
+        [{"op": "h", "targets": [0]}, {"op": "h", "targets": [1]}],
+        qubits=2,
+    )
+    bell = run(
+        [{"op": "h", "targets": [0]}, {"op": "cx", "controls": [0], "targets": [1]}],
+        qubits=2,
+    )
+    for frame in (product.frames[-1], bell.frames[-1]):
+        marginal_one = frame.probabilities[1] + frame.probabilities[3]
+        assert marginal_one == pytest.approx(0.5)
+    # The reduced states are what separate them, not the marginals.
+    assert all(not state.is_mixed for state in product.frames[-1].reduced_states)
+    assert all(state.is_mixed for state in bell.frames[-1].reduced_states)
+
+
+def test_three_qubit_register_rejects_playground_bounds_violation():
+    with pytest.raises(ValueError):
+        CircuitSpec(qubits=5, operations=[])

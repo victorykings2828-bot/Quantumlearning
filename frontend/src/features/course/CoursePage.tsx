@@ -18,15 +18,22 @@ export function CoursePage() {
       <ol className="chapter-list">
         {data.chapters.map((chapter) => (
           <li key={chapter.id}>
-            <ChapterRow chapter={chapter} />
+            <ChapterRow chapter={chapter} skillLabels={data.skill_labels} />
           </li>
         ))}
       </ol>
+      <p className="note">{data.skill_label_note}</p>
     </>
   );
 }
 
-function ChapterRow({ chapter }: { chapter: ChapterEntry }) {
+function ChapterRow({
+  chapter,
+  skillLabels,
+}: {
+  chapter: ChapterEntry;
+  skillLabels: Record<string, string>;
+}) {
   const published = chapter.publication === 'published';
   const progress = chapter.progress;
   const nextTopic = progress?.next_topic_id;
@@ -54,9 +61,15 @@ function ChapterRow({ chapter }: { chapter: ChapterEntry }) {
         <div>
           <dt>Prerequisites</dt>
           <dd>
-            {chapter.prerequisite_skills.length === 0
-              ? 'None beyond the beginner bridge'
-              : chapter.prerequisite_skills.join(', ')}
+            {chapter.prerequisite_skills.length === 0 ? (
+              'None beyond the beginner bridge'
+            ) : (
+              <ul className="plain-list">
+                {chapter.prerequisite_skills.map((skill) => (
+                  <li key={skill}>{skillLabels[skill] ?? skill}</li>
+                ))}
+              </ul>
+            )}
           </dd>
         </div>
         <div>
@@ -140,9 +153,7 @@ function ChapterRow({ chapter }: { chapter: ChapterEntry }) {
             Chapter assessment
           </Link>
         </p>
-      ) : (
-        <p className="note">{chapter.coming_soon_note}</p>
-      )}
+      ) : null}
     </article>
   );
 }

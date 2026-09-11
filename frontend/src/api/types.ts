@@ -256,6 +256,8 @@ export interface CourseResponse {
   route_note: string;
   chapters: ChapterEntry[];
   browsing_note: string;
+  skill_labels: Record<string, string>;
+  skill_label_note: string;
 }
 
 export interface SkillProgress {

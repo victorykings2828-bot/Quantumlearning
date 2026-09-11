@@ -37,7 +37,7 @@ Backend (`cd backend`):
 | `uv run --frozen ruff check .` | pass |
 | `uv run --frozen ruff format --check .` | pass |
 | `uv run --frozen alembic upgrade head` | pass, against a live PostgreSQL |
-| `uv run --frozen pytest` | **212 passed** |
+| `uv run --frozen pytest` | **220 passed** |
 | `uv run --frozen python -m app.tools.validate_content` | pass |
 | `uv run --frozen python export_contracts.py --check` | pass |
 | `uv run --frozen python -m app.tools.tutor_smoke` | exits 2, "no live call was attempted": no key configured |
@@ -50,10 +50,10 @@ Frontend (`cd frontend`):
 | `npm run generate:types` | pass, `src/api/schema.d.ts` regenerated from the committed contract |
 | `npm run lint` | pass (5 react-refresh warnings, no errors) |
 | `npm run typecheck` | pass |
-| `npm run test:unit` | **16 passed** |
+| `npm run test:unit` | **18 passed** |
 | `npm run build` | pass |
 | `npm run format:check` | pass |
-| `npm run test:e2e` | see the browser section below |
+| `npm run test:e2e` | **32 passed** in 36 s (Chromium against the real API and PostgreSQL) |
 
 ## What the browser suite covers
 
@@ -91,6 +91,15 @@ capability refusal; keyboard-only laboratory use; phone-width layout.
    an actual recorded outcome.
 7. **A missing topic rendered a bare error.** It now renders an explicit
    not-found page stating that it is not a lesson waiting to be unlocked.
+8. **Submitting a task wiped the laboratory.** Refreshing progress blanked the
+   page while the request was in flight, which unmounted the lesson and lost
+   the learner's circuit, selected run and the verdict they had just been
+   given. A refresh now keeps the current data on screen.
+9. **An answer could be lost inside the save debounce.** Navigating away within
+   400 ms of choosing an assessment answer dropped it. A pending save is now
+   flushed with `keepalive` when the page is hidden.
+10. **Single-asterisk emphasis rendered literally.** Authored italics showed
+    their asterisks; the Markdown renderer now supports them.
 
 ## Known limitations
 
@@ -102,10 +111,11 @@ capability refusal; keyboard-only laboratory use; phone-width layout.
   the real model.
 - **PostgreSQL 16 locally, 17 declared.** See the environment table above.
 - **The production container build has not been executed here.** Docker Hub
-  base-image layers cannot be pulled through this environment's network policy.
-  `infra/Dockerfile.backend`, `infra/Dockerfile.web` and `compose.yml` are
-  written and CI builds the backend image, but `docker compose up --build` has
-  not been run in this environment.
+  base-image layers return 403 through this environment's network policy
+  (verified for both `postgres:17` and `python:3.12-slim`). What was verified:
+  `docker compose config` validates the stack, and `docker build --check`
+  parses both Dockerfiles and fails only at base-image download. CI builds the
+  backend image, but `docker compose up --build` has not been run here.
 - **No deployment.** Nothing has been deployed, and no hosting has been
   provisioned or paid for.
 - **No independent educator review.** The content is researched and

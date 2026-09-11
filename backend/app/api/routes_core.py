@@ -182,6 +182,12 @@ def read_bridge() -> dict[str, Any]:
     return loader.load_bridge()
 
 
+@router.get("/playground", tags=["content"])
+def read_playground() -> dict[str, Any]:
+    """The open one/two-qubit playground. Not graded, no prerequisites."""
+    return loader.load_playground()
+
+
 @router.get("/previews", tags=["content"])
 def read_previews() -> dict[str, Any]:
     return loader.load_previews()

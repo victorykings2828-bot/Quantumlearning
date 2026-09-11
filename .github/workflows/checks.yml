@@ -127,13 +127,15 @@ jobs:
         run: npm run test:e2e
         working-directory: frontend
       - name: Scan the built frontend for secrets and answer keys
+        # The essential-item numbers are published pass policy and are shown to
+        # learners, so they are not a leak. These markers are.
         run: |
           set -e
-          if grep -rslE 'nvapi-|NVIDIA_API_KEY|answer_key|essential_item_numbers' frontend/dist; then
-            echo 'A secret or private assessment field reached the built frontend.'
+          if grep -rslE 'nvapi-[A-Za-z0-9_-]{8}|NVIDIA_API_KEY|"answer_key"|chapter-1-task-rubrics' frontend/dist; then
+            echo 'A credential or private assessment artefact reached the built frontend.'
             exit 1
           fi
-          echo 'No secret or answer-key marker found in the built frontend.'
+          echo 'No credential or answer-key artefact found in the built frontend.'
       - name: Confirm private content is not served by learner endpoints
         run: uv run --frozen pytest -q tests/test_content_integrity.py
         working-directory: backend

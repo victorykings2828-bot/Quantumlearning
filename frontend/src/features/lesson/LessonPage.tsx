@@ -28,7 +28,7 @@ export function LessonPage() {
   );
 
   if (loading) return <Loading label="Loading the topic." />;
-  if (error) {
+  if (error && !data) {
     return (
       <>
         <PageHeader

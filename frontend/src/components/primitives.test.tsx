@@ -40,3 +40,19 @@ describe('Markdown', () => {
     expect(links[0].getAttribute('href')).toBe('https://example.com');
   });
 });
+
+describe('Markdown emphasis', () => {
+  it('renders single-asterisk emphasis as italics', () => {
+    const { container } = render(
+      <Markdown text={'the quantity being squared is the *magnitude* of the amplitude'} />,
+    );
+    expect(container.querySelector('em')?.textContent).toBe('magnitude');
+    expect(container.textContent).not.toContain('*');
+  });
+
+  it('still renders double-asterisk emphasis as bold', () => {
+    const { container } = render(<Markdown text={'a **bold** word and an *italic* one'} />);
+    expect(container.querySelector('strong')?.textContent).toBe('bold');
+    expect(container.querySelector('em')?.textContent).toBe('italic');
+  });
+});

@@ -15,7 +15,8 @@ test.describe('assessment', () => {
       has: page.getByRole('heading', { name: 'Item 1', exact: true }),
     });
     await itemOne.getByRole('radio', { name: '|1>' }).check();
-    await expect(page.getByText(/Answers saved|Saving/)).toBeVisible();
+    // Wait for the save to land before reloading, not merely for it to start.
+    await expect(page.getByText('Answers saved')).toBeVisible();
 
     // A reload must restore the saved answer rather than losing it.
     await page.reload();

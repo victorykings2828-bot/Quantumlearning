@@ -1,0 +1,58 @@
+{
+  "id": "playground",
+  "version": 1,
+  "title": "One and two qubit playground",
+  "publication": "published",
+  "mode": "experiment",
+  "summary": "Build a small circuit inside the published bounds and inspect every computed quantity. Nothing here is graded.",
+  "bounds_note": "At most two qubits, the operations X, H, Z, CNOT and CZ, at most 100 operations, and at most 1024 shots. These are limits of this application, not claims about hardware.",
+  "qubits_options": [1, 2],
+  "gate_palette": ["x", "h", "z", "cx", "cz", "measure_z"],
+  "shot_options": [1, 16, 64, 256, 1024],
+  "default_shots": 256,
+  "initial_state_options": ["ket0", "ket1", "plus", "minus", "card_b", "card_c"],
+  "presets": [
+    {
+      "id": "bell",
+      "title": "Bell pair",
+      "qubits": 2,
+      "initial_state": "ket0",
+      "operations": ["h", "cx"],
+      "description": "H on q0, then CNOT with q0 controlling q1. This prepares (|00> + |11>)/sqrt(2)."
+    },
+    {
+      "id": "product",
+      "title": "Two independent coins",
+      "qubits": 2,
+      "initial_state": "ket0",
+      "operations": ["h", "h1"],
+      "description": "H on each qubit separately. Each qubit is an even coin flip, and the two results are independent."
+    },
+    {
+      "id": "interference",
+      "title": "H, Z, H",
+      "qubits": 1,
+      "initial_state": "ket0",
+      "operations": ["h", "z", "h"],
+      "description": "The Chapter 1 interference circuit, from |0> to |1>."
+    }
+  ],
+  "entanglement_guidance": {
+    "heading": "How to tell entanglement from a matching histogram",
+    "body_markdown": "Two qubits that always agree do **not** by themselves demonstrate entanglement. A classical pair of coins glued together would do the same.\n\nWhat distinguishes them is the **reduced state** of each qubit. For a Bell pair the reduced state of each qubit is maximally mixed: its density matrix is I/2 and its Bloch vector has length zero. Each qubit still has a local state; it is a mixed one, and the pair has a joint state that does not factor into two separate qubit states.\n\nFor a **verified pure** bipartite joint state, a mixed reduced state does establish entanglement. That reasoning does not extend to an arbitrary mixed joint state, where a mixed local state alone proves nothing. This laboratory knows the joint state exactly because it computed it, so the statement it makes is sound here.\n\nCompare the two presets above. **Two independent coins** and **Bell pair** give the same even marginals on each qubit. Only the Bell pair has mixed reduced states.",
+    "sources": [
+      {
+        "id": "S10",
+        "title": "Multiple-system quantum information - IBM Quantum Learning",
+        "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/multiple-systems/quantum-information"
+      },
+      {
+        "id": "S09",
+        "title": "Bloch sphere - IBM Quantum Learning",
+        "url": "https://quantum.cloud.ibm.com/learning/en/courses/general-formulation-of-quantum-information/density-matrices/bloch-sphere"
+      }
+    ]
+  },
+  "bloch_note": "A Bloch sphere represents one qubit. Local spheres for an entangled register do not encode the joint state. A pure single-qubit state lies on the surface; a mixed one lies inside.",
+  "prerequisite_note": "The playground is open to everyone. Chapter 3 teaches two-qubit states properly; this is a place to look, not a graded activity."
+}

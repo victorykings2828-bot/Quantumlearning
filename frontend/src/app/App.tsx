@@ -9,6 +9,7 @@ import { LessonPage } from '@/features/lesson/LessonPage';
 import { LabCatalogPage } from '@/features/lab/LabCatalogPage';
 import { GroverLabPage } from '@/features/lab/GroverLabPage';
 import { ShorLabPage } from '@/features/lab/ShorLabPage';
+import { PlaygroundPage } from '@/features/lab/PlaygroundPage';
 import { BridgePage } from '@/features/introduction/BridgePage';
 import { AssessmentPage } from '@/features/assessment/AssessmentPage';
 import { ProgressPage } from '@/features/progress/ProgressPage';
@@ -30,6 +31,7 @@ export function App() {
               <Route path="/lab" element={<LabCatalogPage />} />
               <Route path="/lab/grover" element={<GroverLabPage />} />
               <Route path="/lab/shor" element={<ShorLabPage />} />
+              <Route path="/lab/playground" element={<PlaygroundPage />} />
               <Route path="/progress" element={<ProgressPage />} />
               <Route path="/index.html" element={<Navigate to="/" replace />} />
               <Route path="*" element={<NotFoundPage />} />

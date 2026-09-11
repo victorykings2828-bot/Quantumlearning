@@ -254,3 +254,18 @@ def test_scientific_corrections_from_the_ui_specification_are_applied():
     assert "graded by simulator" not in corpus
     assert not re.search(r"chance\s*=\s*amplitude", corpus)
     assert "mixed" in corpus
+
+
+def test_every_skill_has_a_learner_readable_label():
+    """Prerequisites are shown to learners, so raw skill ids are not enough."""
+    course = loader.load_course()
+    labels = course["skill_labels"]
+    declared: set[str] = set()
+    for chapter in course["chapters"]:
+        declared.update(chapter["prerequisite_skills"])
+    for topic in CHAPTER["topics"]:
+        declared.update(topic["skills"])
+        declared.update(topic["prerequisite_skills"])
+    assert declared <= set(labels), sorted(declared - set(labels))
+    for label in labels.values():
+        assert label and not label.startswith(("gate.", "phase.", "amplitude."))

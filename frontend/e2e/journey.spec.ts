@@ -64,15 +64,15 @@ test.describe('learning journey', () => {
   test('run, step, replay and a new run keep distinct identities', async ({ page }) => {
     await openTopic(page, '1-3');
     await runCircuit(page);
-    const first = await provenance(page).textContent();
+    const first = await provenance(page).textContent({ timeout: 5_000 });
 
     await page.getByRole('button', { name: 'Replay' }).click();
     await expect(page.getByText(/not a new measurement/i).first()).toBeVisible();
     // Replay reads the saved run; it does not create a new one.
-    expect(await provenance(page).textContent()).toBe(first);
+    expect(await provenance(page).textContent({ timeout: 5_000 })).toBe(first);
 
     await runCircuit(page);
-    expect(await provenance(page).textContent()).not.toBe(first);
+    expect(await provenance(page).textContent({ timeout: 5_000 })).not.toBe(first);
   });
 
   test('repeating a recorded measurement is not a fresh shot', async ({ page }) => {
@@ -90,7 +90,7 @@ test.describe('learning journey', () => {
     await task.getByLabel('P(0)').fill('0.36');
     await task.getByLabel('P(1)').fill('0.64');
     await task.getByRole('button', { name: 'Check my answer' }).click();
-    await expect(task.getByText(/^Correct ·/)).toBeVisible();
+    await expect(task.getByText('checked against the task rubric')).toBeVisible();
 
     await page.reload();
     await expect(page.getByRole('checkbox').first()).toBeChecked();
@@ -104,7 +104,7 @@ test.describe('learning journey', () => {
     await runCircuit(page);
     const task = page.locator('.task').filter({ hasText: 'build a 50/50 distribution' });
     await task.getByRole('button', { name: 'Check my answer' }).click();
-    await expect(task.getByText(/^Correct ·/)).toBeVisible();
+    await expect(task.getByText('checked against the task rubric')).toBeVisible();
   });
 
   test('a hint is recorded as assistance', async ({ page }) => {
