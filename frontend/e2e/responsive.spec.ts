@@ -32,7 +32,9 @@ test.describe('mobile and keyboard use', () => {
     await page.keyboard.press('Tab');
     // Walk the focus order until the gate button is reached, then activate it.
     for (let index = 0; index < 60; index += 1) {
-      const label = await page.evaluate(() => document.activeElement?.textContent?.trim() ?? '');
+      const label = await page.evaluate(
+        () => document.activeElement?.textContent?.trim() ?? '',
+      );
       if (label === 'X') break;
       await page.keyboard.press('Tab');
     }

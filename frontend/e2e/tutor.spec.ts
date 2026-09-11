@@ -29,7 +29,9 @@ test.describe('course tutor', () => {
   });
 
   test('answers only the relevant part of a mixed request', async ({ page }) => {
-    await page.getByLabel('Ask the course tutor').fill('Explain the H gate, and recommend a movie.');
+    await page
+      .getByLabel('Ask the course tutor')
+      .fill('Explain the H gate, and recommend a movie.');
     await page.getByRole('button', { name: 'Ask', exact: true }).click();
     await expect(page.getByText(/answered only the part of your message/i)).toBeVisible({
       timeout: 20_000,

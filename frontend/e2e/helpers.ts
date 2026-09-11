@@ -31,15 +31,24 @@ export function provenance(page: Page) {
 }
 
 export async function runCircuit(page: Page) {
-  const before = (await provenance(page).textContent().catch(() => null)) ?? '';
+  const before =
+    (await provenance(page)
+      .textContent()
+      .catch(() => null)) ?? '';
   await page
     .getByRole('button', { name: /^(Run|New preparation)$/ })
     .first()
     .click();
   await expect
-    .poll(async () => (await provenance(page).textContent().catch(() => '')) ?? '', {
-      timeout: 25_000,
-    })
+    .poll(
+      async () =>
+        (await provenance(page)
+          .textContent()
+          .catch(() => '')) ?? '',
+      {
+        timeout: 25_000,
+      },
+    )
     .not.toBe(before);
 }
 

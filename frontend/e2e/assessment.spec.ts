@@ -8,11 +8,11 @@ test.describe('assessment', () => {
     await page.goto('/assessments/chapter-1');
     await ensureSession(page);
     await page.getByRole('button', { name: 'Start Form A as a test' }).click();
-    await expect(page.getByRole('heading', { name: 'Item 1' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Item 1', exact: true })).toBeVisible();
 
     // Answer item 1 correctly and leave the rest blank.
     const itemOne = page.locator('section.panel').filter({
-      has: page.getByRole('heading', { name: 'Item 1' }),
+      has: page.getByRole('heading', { name: 'Item 1', exact: true }),
     });
     await itemOne.getByRole('radio', { name: '|1>' }).check();
     await expect(page.getByText(/Answers saved|Saving/)).toBeVisible();
@@ -23,7 +23,7 @@ test.describe('assessment', () => {
     await expect(
       page
         .locator('section.panel')
-        .filter({ has: page.getByRole('heading', { name: 'Item 1' }) })
+        .filter({ has: page.getByRole('heading', { name: 'Item 1', exact: true }) })
         .getByRole('radio', { name: '|1>' }),
     ).toBeChecked();
 

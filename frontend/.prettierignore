@@ -1,0 +1,7 @@
+# Generated from contracts/openapi.json. Formatting it here would make the
+# CI drift check fail on every regeneration.
+src/api/schema.d.ts
+dist
+playwright-report
+test-results
+node_modules

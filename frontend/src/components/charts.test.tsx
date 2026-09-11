@@ -21,7 +21,14 @@ describe('AmplitudeChart', () => {
     const { container } = render(
       <AmplitudeChart
         amplitudes={[
-          amplitude({ index: 0, label: '|0>', re: 1, magnitude: 1, probability: 1, phase_radians: 0 }),
+          amplitude({
+            index: 0,
+            label: '|0>',
+            re: 1,
+            magnitude: 1,
+            probability: 1,
+            phase_radians: 0,
+          }),
           amplitude({ index: 1, label: '|1>', re: -0, magnitude: 0 }),
         ]}
       />,
@@ -33,7 +40,13 @@ describe('AmplitudeChart', () => {
     const { container } = render(
       <AmplitudeChart
         amplitudes={[
-          amplitude({ index: 0, re: 0.7071, magnitude: 0.7071, probability: 0.5, phase_radians: 0 }),
+          amplitude({
+            index: 0,
+            re: 0.7071,
+            magnitude: 0.7071,
+            probability: 0.5,
+            phase_radians: 0,
+          }),
           amplitude({
             index: 1,
             label: '|1>',
@@ -50,7 +63,9 @@ describe('AmplitudeChart', () => {
   });
 
   it('explains that probability hides the sign', () => {
-    render(<AmplitudeChart amplitudes={[amplitude({ re: 1, magnitude: 1, probability: 1 })]} />);
+    render(
+      <AmplitudeChart amplitudes={[amplitude({ re: 1, magnitude: 1, probability: 1 })]} />,
+    );
     expect(screen.getByText(/squared magnitude/i)).toBeInTheDocument();
   });
 });
@@ -65,7 +80,9 @@ describe('ProbabilityChart', () => {
 
 describe('CountsChart', () => {
   it('separates counts from frequencies', () => {
-    render(<CountsChart labels={['|0>', '|1>']} counts={{ '|0>': 129, '|1>': 127 }} shots={256} />);
+    render(
+      <CountsChart labels={['|0>', '|1>']} counts={{ '|0>': 129, '|1>': 127 }} shots={256} />,
+    );
     expect(screen.getByText('129')).toBeInTheDocument();
     expect(screen.getByText('50.39%')).toBeInTheDocument();
     expect(screen.getByText('49.61%')).toBeInTheDocument();

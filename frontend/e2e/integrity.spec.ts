@@ -29,7 +29,12 @@ test.describe('honesty and isolation', () => {
       const type = response.headers()['content-type'] ?? '';
       if (!type.includes('json')) return;
       const body = await response.text().catch(() => '');
-      for (const marker of ['answer_key', 'revision_guidance', '"rubrics"', 'essential_item_numbers"]']) {
+      for (const marker of [
+        'answer_key',
+        'revision_guidance',
+        '"rubrics"',
+        'essential_item_numbers"]',
+      ]) {
         if (body.includes(marker)) leaked.push(`${response.url()} contains ${marker}`);
       }
     });
@@ -41,11 +46,14 @@ test.describe('honesty and isolation', () => {
     expect(leaked).toEqual([]);
   });
 
-  test('another guest cannot read this guest\'s run', async ({ page, browser }) => {
+  test("another guest cannot read this guest's run", async ({ page, browser }) => {
     await page.goto('/learn/chapter-1/1-4');
     await ensureSession(page);
     await page.getByRole('button', { name: 'X', exact: true }).click();
-    await page.getByRole('button', { name: /^(Run|New preparation)$/ }).first().click();
+    await page
+      .getByRole('button', { name: /^(Run|New preparation)$/ })
+      .first()
+      .click();
     await expect(page.getByText(/State after step/)).toBeVisible({ timeout: 20_000 });
 
     const runId = await page.evaluate(async () => {
@@ -94,7 +102,9 @@ test.describe('honesty and isolation', () => {
     await page.getByLabel('Grover iterations').fill('2');
     await page.getByRole('button', { name: 'Run', exact: true }).click();
     await expect(page.getByText(/State after step/)).toBeVisible({ timeout: 20_000 });
-    const twoText = await page.getByText(/Exact target probability from the simulated circuit/).textContent();
+    const twoText = await page
+      .getByText(/Exact target probability from the simulated circuit/)
+      .textContent();
 
     await page.getByLabel('Grover iterations').fill('3');
     await page.getByRole('button', { name: 'Run', exact: true }).click();

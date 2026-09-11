@@ -17,14 +17,21 @@ test.describe('learning journey', () => {
 
     await page.getByRole('link', { name: 'Explore the course' }).click();
     await expect(page).toHaveURL(/\/course$/);
-    await expect(page.getByRole('heading', { name: 'Quantum Learning Laboratory' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Quantum Learning Laboratory' }),
+    ).toBeVisible();
 
-    await page.getByRole('link', { name: /^Start Chapter 1$|^Continue Topic/ }).first().click();
+    await page
+      .getByRole('link', { name: /^Start Chapter 1$|^Continue Topic/ })
+      .first()
+      .click();
     await expect(page).toHaveURL(/\/learn\/chapter-1\//);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   });
 
-  test('a changed gate changes the computed values and every linked panel', async ({ page }) => {
+  test('a changed gate changes the computed values and every linked panel', async ({
+    page,
+  }) => {
     await openTopic(page, '1-5');
     await addGates(page, ['H']);
     await runCircuit(page);
@@ -39,12 +46,16 @@ test.describe('learning journey', () => {
     expect(restored[1]).toBeCloseTo(0, 6);
   });
 
-  test('editing after a run marks the displayed result as no longer current', async ({ page }) => {
+  test('editing after a run marks the displayed result as no longer current', async ({
+    page,
+  }) => {
     await openTopic(page, '1-5');
     await addGates(page, ['H']);
     await runCircuit(page);
     await addGates(page, ['H']);
-    await expect(page.getByText(/circuit has changed since this result was computed/i)).toBeVisible();
+    await expect(
+      page.getByText(/circuit has changed since this result was computed/i),
+    ).toBeVisible();
     // The stale panel still describes the earlier circuit; it is not relabelled.
     const stale = await exactProbabilities(page);
     expect(stale[0]).toBeCloseTo(0.5, 6);
@@ -79,7 +90,7 @@ test.describe('learning journey', () => {
     await task.getByLabel('P(0)').fill('0.36');
     await task.getByLabel('P(1)').fill('0.64');
     await task.getByRole('button', { name: 'Check my answer' }).click();
-    await expect(task.getByText('Correct')).toBeVisible();
+    await expect(task.getByText(/^Correct ·/)).toBeVisible();
 
     await page.reload();
     await expect(page.getByRole('checkbox').first()).toBeChecked();
@@ -93,7 +104,7 @@ test.describe('learning journey', () => {
     await runCircuit(page);
     const task = page.locator('.task').filter({ hasText: 'build a 50/50 distribution' });
     await task.getByRole('button', { name: 'Check my answer' }).click();
-    await expect(task.getByText('Correct')).toBeVisible();
+    await expect(task.getByText(/^Correct ·/)).toBeVisible();
   });
 
   test('a hint is recorded as assistance', async ({ page }) => {
