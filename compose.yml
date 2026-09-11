@@ -43,13 +43,15 @@ services:
     env_file:
       - path: ./backend/.env
         required: false
+    # Only the values this stack must control are set here. Compose's
+    # `environment` wins over `env_file`, so TUTOR_PROVIDER, SESSION_SECRET and
+    # the provider settings are deliberately left out: they come from
+    # backend/.env, which is where you put your API key.
     environment:
       APP_ENV: ${APP_ENV:-development}
       DATABASE_URL: postgresql+psycopg://quantum:${POSTGRES_PASSWORD:-quantum_local_only}@db:5432/quantum
-      SESSION_SECRET: ${SESSION_SECRET:-local-compose-secret-change-me}
       PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:-http://localhost:8080}
       COOKIE_SECURE: ${COOKIE_SECURE:-false}
-      TUTOR_PROVIDER: ${TUTOR_PROVIDER:-authored}
     depends_on:
       db:
         condition: service_healthy
