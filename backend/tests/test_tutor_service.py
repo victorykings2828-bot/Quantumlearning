@@ -40,10 +40,12 @@ def scripted(payload: dict) -> providers.FakeAdapter:
     return providers.FakeAdapter({"": json.dumps(payload)})
 
 
-def test_authored_fallback_when_no_provider_is_configured(db):
+def test_authored_fallback_when_no_provider_is_configured(db, authored_settings):
     owner = principal(db)
     context = tutor_service.TutorContext(principal_id=owner, topic_id="1-6")
-    result = tutor_service.answer(db, context, "Why did the minus disappear?")
+    result = tutor_service.answer(
+        db, context, "Why did the minus disappear?", settings=authored_settings
+    )
     db.commit()
     assert result.source_label == "authored"
     assert "Authored course help" in result.answer_markdown
@@ -52,10 +54,12 @@ def test_authored_fallback_when_no_provider_is_configured(db):
     assert result.citations[0]["passage_id"].startswith("chapter-1.")
 
 
-def test_authored_fallback_is_never_labelled_as_a_live_answer(db):
+def test_authored_fallback_is_never_labelled_as_a_live_answer(db, authored_settings):
     owner = principal(db)
     context = tutor_service.TutorContext(principal_id=owner, topic_id="1-5")
-    result = tutor_service.answer(db, context, "Is H a random coin flip?")
+    result = tutor_service.answer(
+        db, context, "Is H a random coin flip?", settings=authored_settings
+    )
     db.commit()
     assert result.provider is None
     assert result.provider_model is None
@@ -207,11 +211,11 @@ def test_grade_mutation_request_is_refused_without_a_provider_call(db):
     assert "cannot change grades" in result.answer_markdown
 
 
-def test_conversation_history_is_owner_scoped(db):
+def test_conversation_history_is_owner_scoped(db, authored_settings):
     first = principal(db)
     second = principal(db)
     context = tutor_service.TutorContext(principal_id=first, topic_id="1-5")
-    tutor_service.answer(db, context, "Explain the H gate")
+    tutor_service.answer(db, context, "Explain the H gate", settings=authored_settings)
     db.commit()
     other = tutor_service.get_or_create_conversation(db, second, "1-5")
     turns = tutor_service.recent_turns(db, other.id)

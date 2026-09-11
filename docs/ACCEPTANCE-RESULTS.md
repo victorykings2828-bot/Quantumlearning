@@ -134,7 +134,7 @@ Corrections from `docs/UI-SPECIFICATION.md` that are implemented:
 ## G. Summary of statuses
 
 - **Implemented**: everything in the required demo scope.
-- **Tested locally**: 221 backend tests, 18 frontend unit tests, 32 browser
+- **Tested locally**: 223 backend tests, 18 frontend unit tests, 32 browser
   tests against the real API and PostgreSQL, lint, format, typecheck, build,
   migrations, content validation and the contract export. All pass.
 - **Tested in CI**: the workflow ran and failed at the backend test step
@@ -143,5 +143,9 @@ Corrections from `docs/UI-SPECIFICATION.md` that are implemented:
   backend sequence was verified from a clean environment under uv 0.12.12, the
   version the workflow pins. The corrected workflow has not yet completed a
   run.
-- **Verified with the live NVIDIA API**: nothing. No credential was supplied.
+- **Verified with the live NVIDIA API**: nothing. A real credential was
+  supplied and configured, but this build environment's network policy blocks
+  outbound connections to the provider, so no authenticated request reached it.
+  The blocked attempt did confirm the failure path: honest authored help, no
+  lost work, and no credential in any response or log.
 - **Deployed**: nothing.

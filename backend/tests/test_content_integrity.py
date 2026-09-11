@@ -269,3 +269,27 @@ def test_every_skill_has_a_learner_readable_label():
     assert declared <= set(labels), sorted(declared - set(labels))
     for label in labels.values():
         assert label and not label.startswith(("gate.", "phase.", "amplitude."))
+
+
+def test_the_test_environment_ignores_a_local_env_file(tmp_path, monkeypatch):
+    """A developer's real key must never be picked up by the test suite."""
+    from app.config import Settings, get_settings
+
+    env_file = tmp_path / ".env"
+    env_file.write_text("TUTOR_PROVIDER=nvidia\nNVIDIA_API_KEY=nvapi-should-not-be-read\n")
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("APP_ENV", "test")
+    # Clear the ambient values so the file would win if it were read at all.
+    monkeypatch.delenv("TUTOR_PROVIDER", raising=False)
+    monkeypatch.delenv("NVIDIA_API_KEY", raising=False)
+
+    # The file is readable, and pointing pydantic at it explicitly does pick it up.
+    assert Settings(_env_file=str(env_file)).nvidia_api_key == "nvapi-should-not-be-read"
+
+    get_settings.cache_clear()
+    try:
+        settings = get_settings()
+        assert settings.nvidia_api_key == ""
+        assert settings.tutor_provider != "nvidia"
+    finally:
+        get_settings.cache_clear()

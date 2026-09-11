@@ -97,8 +97,24 @@ class NvidiaAdapter:
                 f"{self._settings.tutor_timeout_seconds:.0f} seconds.",
                 retryable=False,
             ) from error
+        except httpx.ProxyError as error:
+            raise ProviderError(
+                "proxy_blocked",
+                "An HTTP proxy refused the connection to the provider. Check whether "
+                "this network allows outbound requests to "
+                f"{self._settings.nvidia_base_url}.",
+            ) from error
+        except httpx.ConnectError as error:
+            raise ProviderError(
+                "connect_error",
+                "The provider host could not be reached. This is a network or DNS "
+                f"failure rather than a credential problem: {error}",
+            ) from error
         except httpx.HTTPError as error:
-            raise ProviderError("transport_error", "The model could not be reached.") from error
+            raise ProviderError(
+                "transport_error",
+                f"The model could not be reached: {type(error).__name__}.",
+            ) from error
 
         latency_ms = int((time.monotonic() - started) * 1000)
 

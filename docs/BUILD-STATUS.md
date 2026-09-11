@@ -37,10 +37,10 @@ Backend (`cd backend`):
 | `uv run --frozen ruff check .` | pass |
 | `uv run --frozen ruff format --check .` | pass |
 | `uv run --frozen alembic upgrade head` | pass, against a live PostgreSQL |
-| `uv run --frozen pytest` | **221 passed** |
+| `uv run --frozen pytest` | **223 passed**, under both the default settings and CI's `TUTOR_PROVIDER=fake` |
 | `uv run --frozen python -m app.tools.validate_content` | pass |
 | `uv run --frozen python export_contracts.py --check` | pass |
-| `uv run --frozen python -m app.tools.tutor_smoke` | exits 2, "no live call was attempted": no key configured |
+| `uv run --frozen python -m app.tools.tutor_smoke` | **ran with a real key supplied by the user**; the request could not leave this sandbox. The build environment's proxy denies outbound CONNECT to `integrate.api.nvidia.com` with 403, as it does for any host outside its allowlist. The smoke test reports `proxy_blocked` and states that this is a network failure, not a rejected credential |
 
 Frontend (`cd frontend`):
 
@@ -113,15 +113,37 @@ capability refusal; keyboard-only laboratory use; phone-width layout.
 14. **Closing the drawer with Escape lost focus.** The launcher was focused
     while still hidden, which silently does nothing; focus is now restored
     after the render that unhides it.
+15. **Two tutor tests read the ambient provider setting.** They described
+    behaviour with no provider configured but did not pin it, so they passed
+    locally and failed in CI, where the workflow sets the fake adapter. They
+    now pin authored-only settings themselves.
+16. **The test suite read a developer's `.env`.** Someone with a real provider
+    key in `backend/.env` would have had the suite make live calls with it.
+    Under `APP_ENV=test` the local `.env` is now ignored, with a test proving
+    it.
+17. **A blocked connection was reported as a generic transport error.** The
+    adapter now distinguishes a proxy refusal and a connection failure from a
+    rejected credential, and says which it is.
 
 ## Known limitations
 
-- **Live NVIDIA verification pending.** No API key was supplied, so no
-  authenticated provider request has been made from this build. The adapter,
-  the validation path, every failure path, and the authored fallback are
-  covered by automated tests using an explicit test adapter. The live tutor
-  question set in `docs/ACCEPTANCE.md` section D has **not** been run against
-  the real model.
+- **Live NVIDIA verification is still pending, and cannot be completed from
+  this build environment.** A real key was supplied and configured correctly:
+  the application read it, reported `provider: nvidia` and
+  `live_answers_available: true`, and attempted the call. The request never
+  left the sandbox, because this environment's network policy denies outbound
+  CONNECT to `integrate.api.nvidia.com` with HTTP 403 (`pypi.org` and
+  `api.github.com` are reachable; `integrate.api.nvidia.com` and
+  `www.google.com` are not). So the credential has **not** been exercised
+  against the provider, and the live tutor question set in
+  `docs/ACCEPTANCE.md` section D has **not** been run against the real model.
+  Run `uv run --frozen python -m app.tools.tutor_smoke` from a machine with
+  direct internet access to complete it.
+
+  What this attempt did verify, against a genuine network failure rather than a
+  simulated one: the adapter surfaces the refusal as `proxy_blocked`, the
+  learner sees clearly labelled authored help rather than an error, work is not
+  lost, and the credential appears in no response, log or diagnostic.
 - **PostgreSQL 16 locally, 17 declared.** See the environment table above.
 - **The production container build has not been executed here.** Docker Hub
   base-image layers return 403 through this environment's network policy

@@ -279,3 +279,36 @@ def test_envelope_declares_when_no_run_is_selected():
     )
     assert "No computed run is selected" in envelope
     assert "Do not describe a run that does not exist" in envelope
+
+
+def test_network_failures_are_reported_as_network_failures(monkeypatch):
+    """A blocked connection must not be mistaken for a bad credential."""
+    import httpx
+
+    settings = get_settings().model_copy(
+        update={"tutor_provider": "nvidia", "nvidia_api_key": "nvapi-test"}
+    )
+    adapter = providers.NvidiaAdapter(settings)
+
+    class FailingClient:
+        def __init__(self, error):
+            self._error = error
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_):
+            return False
+
+        def post(self, *_args, **_kwargs):
+            raise self._error
+
+    for error, expected in [
+        (httpx.ProxyError("blocked"), "proxy_blocked"),
+        (httpx.ConnectError("no route"), "connect_error"),
+    ]:
+        monkeypatch.setattr(httpx, "Client", lambda *a, bound=error, **k: FailingClient(bound))
+        with pytest.raises(providers.ProviderError) as raised:
+            adapter.complete("policy", "envelope", "question")
+        assert raised.value.reason_code == expected
+        assert "credential" not in raised.value.message.lower() or expected == "connect_error"

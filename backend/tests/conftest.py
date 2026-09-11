@@ -104,3 +104,14 @@ def second_guest() -> Iterator[GuestClient]:
 @pytest.fixture
 def settings():
     return get_settings()
+
+
+@pytest.fixture
+def authored_settings():
+    """Settings pinned to authored-only mode.
+
+    A test that describes behaviour with no AI provider must say so itself.
+    Reading the ambient TUTOR_PROVIDER made these tests pass locally and fail
+    in CI, where the workflow sets the fake adapter.
+    """
+    return get_settings().model_copy(update={"tutor_provider": "authored", "nvidia_api_key": ""})

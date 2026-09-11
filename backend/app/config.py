@@ -6,6 +6,7 @@ environment. Nothing secret is ever defaulted to a working value.
 
 from __future__ import annotations
 
+import os
 from functools import lru_cache
 from typing import Literal
 
@@ -73,7 +74,11 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    settings = Settings()
+    # Under APP_ENV=test the local .env is ignored. A developer with a real
+    # provider key in backend/.env must never have the test suite make a live
+    # call with it, and tests must not depend on a machine's local file.
+    in_tests = os.environ.get("APP_ENV") == "test"
+    settings = Settings(_env_file=None) if in_tests else Settings()
     if settings.is_production:
         if settings.session_secret == "development-only-not-a-production-secret":
             raise RuntimeError("SESSION_SECRET must be set in production")

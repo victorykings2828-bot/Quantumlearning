@@ -67,6 +67,15 @@ def main() -> int:
     except providers.ProviderError as error:
         print(f"status              : FAILED ({error.reason_code})")
         print(f"detail              : {error.message}")
+        if error.reason_code in {"proxy_blocked", "connect_error", "transport_error"}:
+            print()
+            print(
+                "This is a network failure, not a rejected credential. Run this command "
+                "from a machine that can reach the provider directly."
+            )
+        elif error.reason_code == "unauthorized":
+            print()
+            print("The credential was reached and rejected. Check or regenerate the key.")
         return 1
 
     outcome = schema.validate(

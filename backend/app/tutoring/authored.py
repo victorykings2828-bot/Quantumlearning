@@ -67,6 +67,14 @@ def failure_note(reason_code: str) -> str:
             "The AI provider did not answer within the time budget, so authored help is "
             "shown instead. Your work is saved and unaffected."
         ),
+        "proxy_blocked": (
+            "This installation's network blocked the connection to the AI provider, so "
+            "authored help is shown instead. Your work is saved and unaffected."
+        ),
+        "connect_error": (
+            "The AI provider could not be reached over the network, so authored help is "
+            "shown instead. Your work is saved and unaffected."
+        ),
         "provider_unavailable": (
             "The AI provider is temporarily unavailable, so authored help is shown "
             "instead. Your work is saved and unaffected."
