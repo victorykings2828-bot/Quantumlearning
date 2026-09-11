@@ -1,0 +1,48 @@
+{
+  "id": "introduction",
+  "version": 1,
+  "eyebrow": "Introduction",
+  "title": "Learn quantum algorithms. See each step.",
+  "lede": "You will change inputs, follow circuits step by step, and watch how measurement probabilities change. We begin with a search experiment, then teach the ideas behind it through short lessons and practical challenges.",
+  "sections": [
+    {
+      "id": "what-this-is",
+      "heading": "What this is",
+      "body_markdown": "This is a laboratory, not a lecture. Every number you see below is computed by Qiskit for the exact circuit on screen. Nothing is a recorded animation, and nothing is estimated.\n\nYou do not need previous quantum mechanics or programming experience. Basic arithmetic is enough to start, and we introduce the mathematics at the point where it becomes useful.\n\nThe learning loop is the same everywhere in the app: **read a short explanation, predict a result, change an input, inspect the computation one step at a time, then explain what you saw.**"
+    },
+    {
+      "id": "simulator-label",
+      "heading": "What the numbers are",
+      "body_markdown": "The experiments run on a **quantum simulator executing on an ordinary classical computer**. Its state views exist to explain the mathematical model. They are not measurements of a physical quantum processor, and a real device would not hand you a full statevector from a shot.\n\nWhen a number comes from a formula rather than from a simulated circuit, we label it **analytical prediction** and state the assumptions it depends on."
+    },
+    {
+      "id": "honest-claims",
+      "heading": "What we will not claim",
+      "body_markdown": "Quantum computers do not solve every problem faster. Particular algorithms have advantages for particular problems under stated assumptions.\n\nGrover's result concerns unstructured search and gives a **quadratic** query advantage under an oracle model. Shor's result concerns factoring and discrete logarithms. Neither says anything about your spreadsheet."
+    },
+    {
+      "id": "tutor",
+      "heading": "The course tutor",
+      "body_markdown": "An AI tutor is available on every page for explanations and hints. It answers questions about this course, the experiments you have actually run, and the mathematics the course needs. It will redirect anything unrelated.\n\nIt cannot grade your work, change your progress, or unlock chapters. Those decisions come from the authored evaluator, which is deterministic and runs on the server."
+    },
+    {
+      "id": "guest",
+      "heading": "No account needed",
+      "body_markdown": "You are already started. This demo issues a private guest session and saves your progress, runs, attempts, and tutor history against it.\n\nThat session lives in **this browser**. Clearing site data, using private browsing, or switching to another device will not carry your progress across. There is no sign-up, and no way to recover an anonymous session once its cookie is gone."
+    }
+  ],
+  "journey": [
+    {"stage": "Introduction", "experience": "Understand the product, the simulator label, and the learning loop", "completion_meaning": "Orientation viewed. No mastery is claimed."},
+    {"stage": "Search preview", "experience": "Compare a classical search with a small Grover experiment", "completion_meaning": "Grover is marked Seen."},
+    {"stage": "Shor mystery", "experience": "Follow a conceptual route from factoring to a hidden repetition pattern", "completion_meaning": "Shor is marked Seen."},
+    {"stage": "Beginner bridge", "experience": "Check the arithmetic, vocabulary and notation the chapter assumes", "completion_meaning": "Optional preparation with targeted help."},
+    {"stage": "Chapter 1", "experience": "Complete eight connected foundation subtopics", "completion_meaning": "Evidence for the listed one-qubit skills."},
+    {"stage": "Revisit", "experience": "Explain one previously mysterious feature of the preview", "completion_meaning": "New knowledge connected to the saved experience."}
+  ],
+  "primary_cta": {"label": "Explore the course", "route": "/course"},
+  "secondary_cta": {"label": "Resume where you left off", "route": "/progress", "shown_when": "returning_guest"},
+  "sources": [
+    {"id": "S04", "title": "Grover, A fast quantum mechanical algorithm for database search", "url": "https://arxiv.org/abs/quant-ph/9605043"},
+    {"id": "S06", "title": "Shor, Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms", "url": "https://arxiv.org/abs/quant-ph/9508027"}
+  ]
+}

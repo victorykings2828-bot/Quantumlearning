@@ -1,0 +1,2172 @@
+{
+  "id": "chapter-1",
+  "version": 1,
+  "number": 1,
+  "publication": "published",
+  "title": "One qubit: from states to interference",
+  "outcome": "Read a one-qubit state, obtain its Z-basis probabilities, tell a probability apart from a sampled frequency, apply X, H and Z, and explain how a relative sign changes what a later H does.",
+  "scope_note": "These are foundation skills. Completing this chapter is not mastery of quantum algorithms.",
+  "notation_contract": "A one-qubit state is written |psi> = a|0> + b|1> with amplitude vector (a, b). Circuit arrows are chronological: H -> Z means H first, then Z. Measurements are in the computational (Z) basis unless labelled otherwise. Every core example is an ideal, noiseless, single-qubit experiment. Qubit 0 is the top wire and the least significant bit.",
+  "prerequisite_skills": [],
+  "estimated_minutes": [
+    90,
+    140
+  ],
+  "topics": [
+    {
+      "id": "1-1",
+      "slug": "bits-qubits-and-the-computational-basis",
+      "number": "1.1",
+      "title": "Bits, qubits, and the computational basis",
+      "objective": "Tell a state description apart from a measurement result, and read basis notation.",
+      "learning_objectives": [
+        "Write |0> and |1> as the vectors (1,0) and (0,1).",
+        "Explain that the two entries are amplitudes for two outcomes, not two qubits.",
+        "Identify which panel shows a recorded classical result rather than a state."
+      ],
+      "prerequisite_skills": [],
+      "skills": [
+        "basis.read_single_qubit"
+      ],
+      "estimated_minutes": 10,
+      "teach_markdown": "A classical bit holds one of two values, 0 or 1. In this laboratory a qubit is described using two reference states, written `|0>` and `|1>`. We represent them as the vectors `(1, 0)` and `(0, 1)`.\n\nThose two entries are **amplitudes**, one for each measurement outcome. They are not two separate qubits. A single wire carries a single qubit, and the amplitude table beneath it always has one row per outcome.\n\nA measurement produces a classical result, such as the digit 0. It does not print the vector. Keeping the *description* (the amplitude table) separate from the *result* (a recorded digit) is the habit this whole chapter depends on.\n\nThese two reference states are called the **computational basis**, and they are the starting point for describing every other qubit state you will meet.",
+      "sources": [
+        {
+          "id": "S07",
+          "title": "Preskill, Quantum Information, Chapter 2: States and Ensembles",
+          "url": "https://www.preskill.caltech.edu/ph219/chap2_15.pdf"
+        },
+        {
+          "id": "S01",
+          "title": "Single-system quantum information - IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/single-systems/quantum-information"
+        }
+      ],
+      "lab": {
+        "mode": "preset_states",
+        "qubits": 1,
+        "initial_state_options": [
+          "ket0",
+          "ket1"
+        ],
+        "gate_palette": [],
+        "max_gates": 0,
+        "shot_options": [
+          1,
+          16
+        ],
+        "default_shots": 1,
+        "panels": [
+          "amplitudes",
+          "probabilities",
+          "counts"
+        ],
+        "features": {
+          "replay": true,
+          "remeasure": false,
+          "step_playback": true,
+          "compare_runs": false
+        }
+      },
+      "prediction": {
+        "id": "1-1.predict",
+        "prompt": "You selected |1>. Which outcome is possible in an ideal Z measurement?",
+        "kind": "single_select",
+        "options": [
+          {
+            "id": "a",
+            "label": "Only 0"
+          },
+          {
+            "id": "b",
+            "label": "Only 1"
+          },
+          {
+            "id": "c",
+            "label": "Either 0 or 1, with equal chance"
+          },
+          {
+            "id": "d",
+            "label": "Neither; the measurement returns the vector (0,1)"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "s1",
+          "title": "Inspect |0>",
+          "instruction": "Select |0>. Read the amplitude vector (1, 0) and the probability bars P(0)=1, P(1)=0."
+        },
+        {
+          "id": "s2",
+          "title": "Measure once",
+          "instruction": "Run one shot. The result panel shows the classical outcome 0."
+        },
+        {
+          "id": "s3",
+          "title": "Inspect |1>",
+          "instruction": "Reset the preparation and select |1>. The vector is (0, 1) and the bars are P(0)=0, P(1)=1."
+        },
+        {
+          "id": "s4",
+          "title": "Run 16 shots",
+          "instruction": "Run 16 independent shots from |1>. In this ideal model every outcome is 1."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "1-1.checkpoint",
+          "kind": "matching",
+          "title": "Checkpoint: match the description to the object",
+          "prompt": "Match each item to what it describes.",
+          "assessed_skills": [
+            "basis.read_single_qubit"
+          ],
+          "item_family": "basis-matching",
+          "left": [
+            {
+              "id": "vec01",
+              "label": "The vector (0, 1)"
+            },
+            {
+              "id": "bars10",
+              "label": "Probability bars P(0)=1, P(1)=0"
+            },
+            {
+              "id": "outcome",
+              "label": "The Results panel entry reading \"outcome 1\""
+            }
+          ],
+          "right": [
+            {
+              "id": "ket1",
+              "label": "The state |1>"
+            },
+            {
+              "id": "ket0",
+              "label": "The state |0>"
+            },
+            {
+              "id": "classical",
+              "label": "A recorded classical result"
+            }
+          ]
+        },
+        {
+          "id": "1-1.transfer",
+          "kind": "single_select",
+          "title": "Transfer",
+          "prompt": "The laboratory shows the amplitude vector (0, 1) with no ket label. Which state is prepared, and what outcome will one ideal Z measurement record?",
+          "assessed_skills": [
+            "basis.read_single_qubit"
+          ],
+          "item_family": "basis-unlabelled",
+          "options": [
+            {
+              "id": "a",
+              "label": "|0>, and the outcome will be 0"
+            },
+            {
+              "id": "b",
+              "label": "|1>, and the outcome will be 1"
+            },
+            {
+              "id": "c",
+              "label": "|1>, and the outcome could be 0 or 1"
+            },
+            {
+              "id": "d",
+              "label": "Two qubits, so there are four possible outcomes"
+            }
+          ]
+        }
+      ],
+      "hints": [
+        {
+          "level": 1,
+          "text": "Which basis label belongs to the nonzero entry?"
+        },
+        {
+          "level": 2,
+          "text": "Read the labels printed beneath the two amplitude entries. The first entry is the amplitude for outcome 0; the second is for outcome 1."
+        },
+        {
+          "level": 3,
+          "text": "The vector (0, 1) has a zero amplitude on outcome 0 and amplitude 1 on outcome 1, so P(0)=0 and P(1)=1."
+        },
+        {
+          "level": 4,
+          "text": "Worked answer: (0, 1) is the state |1>. Its probabilities are P(0)=0 and P(1)=1, so every ideal Z measurement records the classical result 1."
+        }
+      ],
+      "misconceptions": [
+        {
+          "id": "two-qubits",
+          "trigger": "Calls (1, 0) two qubits",
+          "response": "The circuit shows one wire. The vector has one entry per measurement outcome, so a single qubit already needs two numbers. The number of amplitudes is not the number of qubits."
+        }
+      ],
+      "completion": {
+        "required_step_ids": [
+          "s1",
+          "s2",
+          "s3",
+          "s4"
+        ],
+        "required_task_ids": [
+          "1-1.checkpoint",
+          "1-1.transfer"
+        ]
+      }
+    },
+    {
+      "id": "1-2",
+      "slug": "amplitudes-become-probabilities",
+      "number": "1.2",
+      "title": "Amplitudes become probabilities",
+      "objective": "Calculate squared magnitudes and check normalization.",
+      "learning_objectives": [
+        "Apply the Born rule P(0)=|a|^2 and P(1)=|b|^2.",
+        "Check that squared magnitudes sum to 1.",
+        "Explain why a negative amplitude does not produce a negative probability."
+      ],
+      "prerequisite_skills": [
+        "basis.read_single_qubit"
+      ],
+      "skills": [
+        "amplitude.born_rule",
+        "state.normalization"
+      ],
+      "estimated_minutes": 15,
+      "teach_markdown": "For a state `a|0> + b|1>`, a Z-basis measurement gives outcome 0 with probability `|a|^2` and outcome 1 with probability `|b|^2`. This is the **Born rule**, and the quantity being squared is the *magnitude* of the amplitude.\n\nA valid normalized state satisfies `|a|^2 + |b|^2 = 1`. That is what makes the two probabilities a complete distribution.\n\nAmplitudes may be negative, and in general they are complex numbers. Probabilities never are. Squaring a magnitude removes the sign, which is why `(3/5, 4/5)` and `(-3/5, 4/5)` produce exactly the same probabilities. We start with real coefficients so the arithmetic stays visible; Chapter 2 introduces complex phases properly.\n\nThat hidden sign is not decoration. Later in this chapter you will build a circuit where it decides the final answer.",
+      "sources": [
+        {
+          "id": "S01",
+          "title": "Single-system quantum information - IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/single-systems/quantum-information"
+        }
+      ],
+      "lab": {
+        "mode": "amplitude_cards",
+        "qubits": 1,
+        "initial_state_options": [
+          "ket0",
+          "card_b",
+          "card_c",
+          "plus"
+        ],
+        "gate_palette": [],
+        "max_gates": 0,
+        "shot_options": [
+          1,
+          16,
+          64
+        ],
+        "default_shots": 16,
+        "panels": [
+          "amplitudes",
+          "probabilities",
+          "arithmetic"
+        ],
+        "features": {
+          "replay": true,
+          "remeasure": false,
+          "step_playback": false,
+          "compare_runs": true
+        },
+        "cards": [
+          {
+            "id": "A",
+            "state": "ket0",
+            "amplitudes": "(1, 0)",
+            "probabilities": "(1, 0)",
+            "valid": true,
+            "note": "A basis state is already normalized."
+          },
+          {
+            "id": "B",
+            "state": "card_b",
+            "amplitudes": "(3/5, 4/5)",
+            "probabilities": "(9/25, 16/25) = (0.36, 0.64)",
+            "valid": true,
+            "note": "9/25 + 16/25 = 1."
+          },
+          {
+            "id": "C",
+            "state": "card_c",
+            "amplitudes": "(-3/5, 4/5)",
+            "probabilities": "(0.36, 0.64)",
+            "valid": true,
+            "note": "The sign disappears when the magnitude is squared."
+          },
+          {
+            "id": "D",
+            "state": "plus",
+            "amplitudes": "(1/sqrt(2), 1/sqrt(2))",
+            "probabilities": "(0.5, 0.5)",
+            "valid": true,
+            "note": "Each squared magnitude is 1/2."
+          },
+          {
+            "id": "E",
+            "state": null,
+            "amplitudes": "(1/2, 1/2)",
+            "probabilities": "not a distribution",
+            "valid": false,
+            "note": "Squared magnitudes sum to 1/2, not 1. This laboratory rejects the vector instead of silently rescaling it."
+          }
+        ]
+      },
+      "prediction": {
+        "id": "1-2.predict",
+        "prompt": "Changing the first amplitude from 3/5 to -3/5: does the corresponding probability become negative?",
+        "kind": "single_select",
+        "options": [
+          {
+            "id": "a",
+            "label": "Yes, P(0) becomes -0.36"
+          },
+          {
+            "id": "b",
+            "label": "No, P(0) stays 0.36"
+          },
+          {
+            "id": "c",
+            "label": "No, but P(0) changes to 0.64"
+          },
+          {
+            "id": "d",
+            "label": "The state becomes invalid"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "s1",
+          "title": "Square each entry of card B",
+          "instruction": "Select card B, (3/5, 4/5). Reveal each squared magnitude separately: 9/25 = 0.36 and 16/25 = 0.64."
+        },
+        {
+          "id": "s2",
+          "title": "Check the total",
+          "instruction": "Add the two squared magnitudes. They sum to exactly 1, so card B is a valid normalized state."
+        },
+        {
+          "id": "s3",
+          "title": "Compare card C",
+          "instruction": "Select card C, (-3/5, 4/5). The amplitude bar for outcome 0 now points the other way, but the probability bar is unchanged."
+        },
+        {
+          "id": "s4",
+          "title": "Inspect the invalid card",
+          "instruction": "Open card E, (1/2, 1/2), in the arithmetic panel. Its squared magnitudes sum to 1/2. The laboratory marks it Not normalized and refuses to run it."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "1-2.checkpoint-numeric",
+          "kind": "numeric_fields",
+          "title": "Checkpoint: Born rule arithmetic",
+          "prompt": "For card B, (3/5, 4/5), enter the two Z-basis probabilities.",
+          "assessed_skills": [
+            "amplitude.born_rule"
+          ],
+          "item_family": "born-numeric",
+          "fields": [
+            {
+              "id": "p0",
+              "label": "P(0)",
+              "placeholder": "decimal or fraction"
+            },
+            {
+              "id": "p1",
+              "label": "P(1)",
+              "placeholder": "decimal or fraction"
+            }
+          ],
+          "tolerance": 0.001
+        },
+        {
+          "id": "1-2.checkpoint-compare",
+          "kind": "single_select",
+          "title": "Checkpoint: B against C",
+          "prompt": "Cards B = (3/5, 4/5) and C = (-3/5, 4/5). What is true of their Z-basis measurements?",
+          "assessed_skills": [
+            "amplitude.born_rule"
+          ],
+          "item_family": "born-sign",
+          "options": [
+            {
+              "id": "a",
+              "label": "They give the same Z probabilities"
+            },
+            {
+              "id": "b",
+              "label": "C gives a negative probability for outcome 0"
+            },
+            {
+              "id": "c",
+              "label": "C swaps the two probabilities"
+            },
+            {
+              "id": "d",
+              "label": "C cannot be measured"
+            }
+          ]
+        },
+        {
+          "id": "1-2.checkpoint-normalization",
+          "kind": "single_select",
+          "title": "Checkpoint: why card E is rejected",
+          "prompt": "Select the reason (1/2, 1/2) is not a valid normalized state vector.",
+          "assessed_skills": [
+            "state.normalization"
+          ],
+          "item_family": "normalization-reason",
+          "options": [
+            {
+              "id": "a",
+              "label": "Its squared magnitudes sum to 1/2, not 1"
+            },
+            {
+              "id": "b",
+              "label": "Its entries are equal, which is not allowed"
+            },
+            {
+              "id": "c",
+              "label": "Its entries are not whole numbers"
+            },
+            {
+              "id": "d",
+              "label": "It has no negative entry"
+            }
+          ]
+        },
+        {
+          "id": "1-2.transfer",
+          "kind": "numeric_fields",
+          "title": "Transfer",
+          "prompt": "A new card holds (4/5, -3/5). Enter its two Z-basis probabilities.",
+          "assessed_skills": [
+            "amplitude.born_rule"
+          ],
+          "item_family": "born-transfer",
+          "fields": [
+            {
+              "id": "p0",
+              "label": "P(0)",
+              "placeholder": "decimal or fraction"
+            },
+            {
+              "id": "p1",
+              "label": "P(1)",
+              "placeholder": "decimal or fraction"
+            }
+          ],
+          "tolerance": 0.001
+        }
+      ],
+      "hints": [
+        {
+          "level": 1,
+          "text": "Square the magnitude of each entry."
+        },
+        {
+          "level": 2,
+          "text": "Compare the amplitude bar with the probability bar. They use different scales, and the probability bar is never negative."
+        },
+        {
+          "level": 3,
+          "text": "For (3/5, 4/5): (3/5)^2 = 9/25 and (4/5)^2 = 16/25. Convert each fraction to a decimal."
+        },
+        {
+          "level": 4,
+          "text": "Worked answer: 9/25 = 0.36 and 16/25 = 0.64, and 0.36 + 0.64 = 1. For (4/5, -3/5) the same arithmetic gives 0.64 and 0.36; the minus sign is removed by squaring the magnitude."
+        }
+      ],
+      "misconceptions": [
+        {
+          "id": "negative-probability",
+          "trigger": "Reports a negative probability for a negative amplitude",
+          "response": "Squaring a magnitude discards the sign. (-3/5)^2 and (3/5)^2 are both 9/25. The sign is still part of the state description, and a later gate can make it matter, but it never appears in a probability bar."
+        }
+      ],
+      "future_payoff": "A probability chart can hide a sign difference. Topic 1.7 builds the circuit that reveals it.",
+      "completion": {
+        "required_step_ids": [
+          "s1",
+          "s2",
+          "s3",
+          "s4"
+        ],
+        "required_task_ids": [
+          "1-2.checkpoint-numeric",
+          "1-2.checkpoint-compare",
+          "1-2.checkpoint-normalization",
+          "1-2.transfer"
+        ]
+      }
+    },
+    {
+      "id": "1-3",
+      "slug": "measurement-shots-and-replay",
+      "number": "1.3",
+      "title": "Measurement, shots, and replay",
+      "objective": "Tell repeated preparation apart from repeated measurement of an already measured qubit.",
+      "learning_objectives": [
+        "Describe the conditional state left behind by an ideal Z measurement.",
+        "Explain why a fresh shot restarts the preparation.",
+        "Read an observed frequency without confusing it with an exact probability."
+      ],
+      "prerequisite_skills": [
+        "amplitude.born_rule"
+      ],
+      "skills": [
+        "measurement.conditioned_state",
+        "sampling.shots_vs_remeasure",
+        "sampling.probability_vs_frequency"
+      ],
+      "estimated_minutes": 18,
+      "teach_markdown": "In an ideal projective Z measurement two things happen at once. An outcome is sampled using the state's probabilities, and the qubit is left in the basis state matching that outcome. That leftover state is called the **conditional state**.\n\nSo if you measure again straight away, with no gate in between, you get the same answer. Nothing is left to be random: the qubit is already sitting on `|0>` or `|1>`.\n\nA **shot** is different. A shot throws the trajectory away and starts the whole preparation again from the beginning. Sixteen shots are sixteen independent preparations, each followed by one measurement.\n\nThat is why exact probabilities and observed counts are printed in separate panels. Equal probabilities do not require equal counts. More shots usually estimate the probabilities more closely, but one particular larger sample is not guaranteed to be closer than a smaller one.\n\n**Replay** shows you a saved run again, including the outcomes it actually recorded. It is not a new measurement, and it does not undo one.",
+      "sources": [
+        {
+          "id": "S07",
+          "title": "Preskill, States and Ensembles (measurement postulate)",
+          "url": "https://www.preskill.caltech.edu/ph219/chap2_15.pdf"
+        }
+      ],
+      "lab": {
+        "mode": "sampling",
+        "qubits": 1,
+        "initial_state_options": [
+          "plus",
+          "card_b"
+        ],
+        "gate_palette": [],
+        "max_gates": 0,
+        "shot_options": [
+          1,
+          16,
+          64,
+          256,
+          1024
+        ],
+        "default_shots": 16,
+        "panels": [
+          "probabilities",
+          "counts",
+          "trajectory"
+        ],
+        "features": {
+          "replay": true,
+          "remeasure": true,
+          "step_playback": true,
+          "compare_runs": true,
+          "new_preparation": true
+        }
+      },
+      "prediction": {
+        "id": "1-3.predict",
+        "prompt": "You will run 16 fresh preparations of |+>. Must the result be exactly eight zeros?",
+        "kind": "single_select",
+        "options": [
+          {
+            "id": "a",
+            "label": "Yes, because the probabilities are exactly 1/2 each"
+          },
+          {
+            "id": "b",
+            "label": "No; exactly eight is possible but not required"
+          },
+          {
+            "id": "c",
+            "label": "No; eight zeros is impossible"
+          },
+          {
+            "id": "d",
+            "label": "Only if the simulator is seeded"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "s1",
+          "title": "Prepare |+>",
+          "instruction": "Select |+>. The exact probabilities stay at (0.5, 0.5) no matter how many shots you later request."
+        },
+        {
+          "id": "s2",
+          "title": "One shot",
+          "instruction": "Run a single shot. The Trajectory panel shows the outcome that was actually sampled and the conditional basis state it left behind."
+        },
+        {
+          "id": "s3",
+          "title": "Measure the same trajectory again",
+          "instruction": "Press Measure this trajectory again. With no gate in between, the recorded outcome matches the first one."
+        },
+        {
+          "id": "s4",
+          "title": "Sixteen fresh shots",
+          "instruction": "Press New preparation and run 16 shots. Read the counts, the total, and the observed frequencies. Compare them with the unchanged exact probabilities."
+        },
+        {
+          "id": "s5",
+          "title": "Two hundred and fifty-six shots",
+          "instruction": "Run 256 fresh shots and compare the observed frequency with the exact probability again."
+        },
+        {
+          "id": "s6",
+          "title": "Replay",
+          "instruction": "Replay the saved run. The recorded samples do not change. A new run may differ."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "1-3.checkpoint-counts",
+          "kind": "single_select",
+          "title": "Checkpoint: sixteen shots of |+>",
+          "prompt": "Sixteen fresh preparations of |+> are measured. Which statement is correct?",
+          "assessed_skills": [
+            "sampling.probability_vs_frequency"
+          ],
+          "item_family": "sampling-counts",
+          "options": [
+            {
+              "id": "a",
+              "label": "Exactly eight zeros is possible, but not required"
+            },
+            {
+              "id": "b",
+              "label": "Exactly eight zeros is required by the Born rule"
+            },
+            {
+              "id": "c",
+              "label": "The counts must be eight and eight once the sample is large enough"
+            },
+            {
+              "id": "d",
+              "label": "The exact probabilities change as shots accumulate"
+            }
+          ]
+        },
+        {
+          "id": "1-3.checkpoint-action",
+          "kind": "single_select",
+          "title": "Checkpoint: which action restarts the preparation",
+          "prompt": "Which laboratory action starts a new preparation rather than re-reading an existing trajectory?",
+          "assessed_skills": [
+            "sampling.shots_vs_remeasure"
+          ],
+          "item_family": "sampling-action",
+          "options": [
+            {
+              "id": "a",
+              "label": "New preparation"
+            },
+            {
+              "id": "b",
+              "label": "Measure this trajectory again"
+            },
+            {
+              "id": "c",
+              "label": "Replay"
+            },
+            {
+              "id": "d",
+              "label": "Previous step"
+            }
+          ]
+        },
+        {
+          "id": "1-3.checkpoint-remeasure",
+          "kind": "single_select",
+          "title": "Checkpoint: the conditional state",
+          "prompt": "An ideal Z measurement of |+> recorded the outcome 1. With no gate applied, what does an immediate second Z measurement record?",
+          "assessed_skills": [
+            "measurement.conditioned_state"
+          ],
+          "item_family": "remeasure",
+          "options": [
+            {
+              "id": "a",
+              "label": "1, with probability 1"
+            },
+            {
+              "id": "b",
+              "label": "0 or 1, with equal chance"
+            },
+            {
+              "id": "c",
+              "label": "0, because measurement flips the qubit"
+            },
+            {
+              "id": "d",
+              "label": "It is undefined after a measurement"
+            }
+          ]
+        },
+        {
+          "id": "1-3.transfer",
+          "kind": "single_select",
+          "title": "Transfer",
+          "prompt": "Card B, (3/5, 4/5), is measured 100 times with a fresh preparation each time. The expected number of ones is 100 x 0.64 = 64. Is exactly 64 required?",
+          "assessed_skills": [
+            "sampling.probability_vs_frequency"
+          ],
+          "item_family": "sampling-expectation",
+          "options": [
+            {
+              "id": "a",
+              "label": "No; 64 is the expected value of a random count, not a promised result"
+            },
+            {
+              "id": "b",
+              "label": "Yes; the expectation fixes the count"
+            },
+            {
+              "id": "c",
+              "label": "Yes, provided the run is not replayed"
+            },
+            {
+              "id": "d",
+              "label": "No, because the expected value is actually 36"
+            }
+          ]
+        }
+      ],
+      "hints": [
+        {
+          "level": 1,
+          "text": "Ask yourself whether each trial restarts the preparation."
+        },
+        {
+          "level": 2,
+          "text": "Check whether the panel you are reading is labelled exact probability or observed frequency."
+        },
+        {
+          "level": 3,
+          "text": "An expectation is shots multiplied by probability. A random sample scatters around it; it is not pinned to it."
+        },
+        {
+          "level": 4,
+          "text": "Worked answer: 16 shots of |+> average eight zeros, but any count from 0 to 16 has nonzero chance. Re-measuring one already measured trajectory repeats its recorded outcome with probability 1, because the qubit is now in that basis state. Only New preparation restarts the experiment."
+        }
+      ],
+      "misconceptions": [
+        {
+          "id": "shots-change-state",
+          "trigger": "Treats more shots as changing the exact probabilities",
+          "response": "The exact bars come from the circuit, not from the sample. Run the same circuit at two shot counts and watch the exact panel stay still while the counts move."
+        }
+      ],
+      "completion": {
+        "required_step_ids": [
+          "s1",
+          "s2",
+          "s3",
+          "s4",
+          "s5",
+          "s6"
+        ],
+        "required_task_ids": [
+          "1-3.checkpoint-counts",
+          "1-3.checkpoint-action",
+          "1-3.checkpoint-remeasure",
+          "1-3.transfer"
+        ]
+      }
+    },
+    {
+      "id": "1-4",
+      "slug": "read-a-circuit-and-use-the-x-gate",
+      "number": "1.4",
+      "title": "Read a circuit and use the X gate",
+      "objective": "Follow operation order and predict a basis-state flip.",
+      "learning_objectives": [
+        "Read operations in chronological order along a wire.",
+        "Predict the effect of X on any amplitude vector.",
+        "Construct a circuit that meets a stated goal under published constraints."
+      ],
+      "prerequisite_skills": [
+        "basis.read_single_qubit",
+        "amplitude.born_rule"
+      ],
+      "skills": [
+        "circuit.read_order",
+        "gate.x_predict",
+        "circuit.construct_goal"
+      ],
+      "estimated_minutes": 15,
+      "teach_markdown": "A circuit wire identifies one qubit, and the operations on it happen in the order they are drawn, left to right. Each gate acts on the state produced by everything before it.\n\nThe **X gate** exchanges the two amplitudes: `(a, b)` becomes `(b, a)`. On the basis states this swaps `|0>` and `|1>`, which is why it is often called a bit flip. On a general state it moves the amplitudes without changing their values.\n\nBecause swapping twice puts everything back, applying X twice returns the original state. Every gate in this chapter is reversible in that sense; measurement is the operation that is not, and it is shown separately.",
+      "sources": [
+        {
+          "id": "S16",
+          "title": "XGate - IBM Quantum Documentation",
+          "url": "https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.library.XGate"
+        },
+        {
+          "id": "S20",
+          "title": "Quantum circuits: Introduction - IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/quantum-circuits/introduction"
+        }
+      ],
+      "lab": {
+        "mode": "gate_builder",
+        "qubits": 1,
+        "initial_state_options": [
+          "ket0",
+          "ket1",
+          "card_b"
+        ],
+        "gate_palette": [
+          "x"
+        ],
+        "max_gates": 4,
+        "shot_options": [
+          1,
+          16,
+          64,
+          256
+        ],
+        "default_shots": 64,
+        "panels": [
+          "circuit",
+          "amplitudes",
+          "probabilities",
+          "counts"
+        ],
+        "features": {
+          "replay": true,
+          "remeasure": false,
+          "step_playback": true,
+          "compare_runs": true
+        }
+      },
+      "prediction": {
+        "id": "1-4.predict",
+        "prompt": "Starting from |1>, what will two X gates produce?",
+        "kind": "single_select",
+        "options": [
+          {
+            "id": "a",
+            "label": "|1> again"
+          },
+          {
+            "id": "b",
+            "label": "|0>"
+          },
+          {
+            "id": "c",
+            "label": "An equal superposition"
+          },
+          {
+            "id": "d",
+            "label": "-|1>"
+          }
+        ]
+      },
+      "traces": [
+        {
+          "id": "A",
+          "initial": "(1, 0)",
+          "after_first_x": "(0, 1)",
+          "after_second_x": "(1, 0)"
+        },
+        {
+          "id": "B",
+          "initial": "(0, 1)",
+          "after_first_x": "(1, 0)",
+          "after_second_x": "(0, 1)"
+        },
+        {
+          "id": "C",
+          "initial": "(3/5, 4/5)",
+          "after_first_x": "(4/5, 3/5)",
+          "after_second_x": "(3/5, 4/5)"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "title": "One X on |0>",
+          "instruction": "Prepare |0>, place one X, and step through. The amplitude table swaps to (0, 1)."
+        },
+        {
+          "id": "s2",
+          "title": "Two X gates",
+          "instruction": "Add a second X. Step to the final frame: the state is back to (1, 0)."
+        },
+        {
+          "id": "s3",
+          "title": "X on a non-basis state",
+          "instruction": "Prepare card B, (3/5, 4/5), and apply one X. The entries swap to (4/5, 3/5), so P(0) becomes 0.64."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "1-4.build",
+          "kind": "circuit_goal",
+          "title": "Guided task: reach P(1) = 1",
+          "prompt": "Starting from |0>, build a circuit using only X gates, with at most three gates, whose final Z distribution is P(0)=0, P(1)=1.",
+          "assessed_skills": [
+            "circuit.construct_goal"
+          ],
+          "item_family": "x-construct",
+          "goal_kind": "distribution",
+          "constraints": {
+            "initial_state": "ket0",
+            "allowed_operations": [
+              "x"
+            ],
+            "max_operations": 3,
+            "min_operations": 1
+          },
+          "acceptance_note": "Any allowed circuit reaching the stated distribution passes. One X and three X gates both qualify. This task does not ask for the fewest gates."
+        },
+        {
+          "id": "1-4.checkpoint",
+          "kind": "single_select",
+          "title": "Checkpoint: two X gates",
+          "prompt": "Two X gates are applied to |1>. What is the output, and why?",
+          "assessed_skills": [
+            "gate.x_predict",
+            "circuit.read_order"
+          ],
+          "item_family": "x-double",
+          "options": [
+            {
+              "id": "a",
+              "label": "|1>, because the two amplitudes were swapped and then swapped back"
+            },
+            {
+              "id": "b",
+              "label": "|0>, because each X flips the bit and two flips make one"
+            },
+            {
+              "id": "c",
+              "label": "|1>, because X has no effect on |1>"
+            },
+            {
+              "id": "d",
+              "label": "An equal superposition, because two gates were applied"
+            }
+          ]
+        },
+        {
+          "id": "1-4.transfer",
+          "kind": "numeric_fields",
+          "title": "Transfer",
+          "prompt": "Start from card B, (3/5, 4/5), and apply one X gate. Enter the resulting P(0).",
+          "assessed_skills": [
+            "gate.x_predict"
+          ],
+          "item_family": "x-transfer",
+          "fields": [
+            {
+              "id": "p0",
+              "label": "P(0) after X",
+              "placeholder": "decimal or fraction"
+            }
+          ],
+          "tolerance": 0.001
+        }
+      ],
+      "hints": [
+        {
+          "level": 1,
+          "text": "X exchanges the two entries of the amplitude vector."
+        },
+        {
+          "level": 2,
+          "text": "Step to the frame immediately after the first gate and read the amplitude table there."
+        },
+        {
+          "level": 3,
+          "text": "Swapping (3/5, 4/5) gives (4/5, 3/5). Now square the magnitude of the first entry."
+        },
+        {
+          "level": 4,
+          "text": "Worked answer: X on (3/5, 4/5) gives (4/5, 3/5), so P(0) = (4/5)^2 = 0.64. On |1>, two X gates swap twice and return |1>."
+        }
+      ],
+      "misconceptions": [
+        {
+          "id": "order-ignored",
+          "trigger": "Reads gates right to left",
+          "response": "Operations run in the order drawn. Use Step forward and watch the amplitude table change one gate at a time."
+        }
+      ],
+      "completion": {
+        "required_step_ids": [
+          "s1",
+          "s2",
+          "s3"
+        ],
+        "required_task_ids": [
+          "1-4.build",
+          "1-4.checkpoint",
+          "1-4.transfer"
+        ]
+      }
+    },
+    {
+      "id": "1-5",
+      "slug": "h-and-superposition",
+      "number": "1.5",
+      "title": "H and superposition",
+      "objective": "Understand H as a specific linear operation, not a randomizer.",
+      "learning_objectives": [
+        "State what H does to |0>, |1>, |+> and |->.",
+        "Explain why H is deterministic even though measurement is not.",
+        "Reach a stated distribution goal with more than one valid circuit."
+      ],
+      "prerequisite_skills": [
+        "gate.x_predict",
+        "amplitude.born_rule"
+      ],
+      "skills": [
+        "gate.h_predict",
+        "superposition.read",
+        "state_vs_distribution.distinguish"
+      ],
+      "estimated_minutes": 18,
+      "teach_markdown": "The **Hadamard gate**, written H, maps `|0>` to `|+> = (|0> + |1>)/sqrt(2)` and `|1>` to `|-> = (|0> - |1>)/sqrt(2)`. Both results give equal Z-basis probabilities, so their probability bars look identical. Their amplitude tables do not: one has two plus signs, the other has a minus on the second entry.\n\nH also maps `|+>` back to `|0>` and `|->` back to `|1>`. Applying H twice returns the input.\n\nFor a general state, H maps `(a, b)` to `((a+b)/sqrt(2), (a-b)/sqrt(2))`. That formula is the whole gate. It is an exact, deterministic, reversible operation.\n\nThis is worth saying plainly: **H is not a coin flip**. It always does the same thing to the same input. Randomness enters only when you measure a state whose outcome is genuinely uncertain. And a superposition is defined relative to a chosen basis. It is not a list of answers waiting to be printed.",
+      "sources": [
+        {
+          "id": "S15",
+          "title": "HGate - IBM Quantum Documentation",
+          "url": "https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.library.HGate"
+        }
+      ],
+      "lab": {
+        "mode": "gate_builder",
+        "qubits": 1,
+        "initial_state_options": [
+          "ket0",
+          "ket1"
+        ],
+        "gate_palette": [
+          "h",
+          "x"
+        ],
+        "max_gates": 3,
+        "shot_options": [
+          1,
+          16,
+          64,
+          256,
+          1024
+        ],
+        "default_shots": 256,
+        "panels": [
+          "circuit",
+          "amplitudes",
+          "probabilities",
+          "counts"
+        ],
+        "features": {
+          "replay": true,
+          "remeasure": false,
+          "step_playback": true,
+          "compare_runs": true
+        }
+      },
+      "prediction": {
+        "id": "1-5.predict",
+        "prompt": "Will two H gates necessarily leave the Z probabilities at 50/50?",
+        "kind": "single_select",
+        "options": [
+          {
+            "id": "a",
+            "label": "Yes, because each H randomizes the qubit"
+          },
+          {
+            "id": "b",
+            "label": "No; from |0> two H gates return |0>, giving P(0)=1"
+          },
+          {
+            "id": "c",
+            "label": "Yes, but only for 256 shots or more"
+          },
+          {
+            "id": "d",
+            "label": "No; two H gates always give P(1)=1"
+          }
+        ]
+      },
+      "traces": [
+        {
+          "id": "from0",
+          "input": "|0>",
+          "after_h": "(1/sqrt(2), 1/sqrt(2))",
+          "z_probabilities": "(1/2, 1/2)",
+          "after_second_h": "|0>"
+        },
+        {
+          "id": "from1",
+          "input": "|1>",
+          "after_h": "(1/sqrt(2), -1/sqrt(2))",
+          "z_probabilities": "(1/2, 1/2)",
+          "after_second_h": "|1>"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "title": "H on |0>",
+          "instruction": "Prepare |0>, place one H, and step forward. The amplitudes are both +1/sqrt(2) and the bars are 1/2 each."
+        },
+        {
+          "id": "s2",
+          "title": "H on |1>",
+          "instruction": "Prepare |1> and apply one H. The bars are again 1/2 each, but the second amplitude is negative. The probability panel cannot tell these two states apart."
+        },
+        {
+          "id": "s3",
+          "title": "H twice",
+          "instruction": "Add a second H to the |0> circuit. The final state is |0> again, with P(0)=1. Two H gates are not two coin flips."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "1-5.build",
+          "kind": "circuit_goal",
+          "title": "Guided task: build a 50/50 distribution",
+          "prompt": "Starting from |0>, use X and H gates, at most three of them and no intermediate measurement, to reach a final Z distribution of P(0)=0.5, P(1)=0.5.",
+          "assessed_skills": [
+            "state_vs_distribution.distinguish",
+            "circuit.construct_goal"
+          ],
+          "item_family": "h-distribution",
+          "goal_kind": "distribution",
+          "constraints": {
+            "initial_state": "ket0",
+            "allowed_operations": [
+              "x",
+              "h"
+            ],
+            "max_operations": 3,
+            "min_operations": 1,
+            "forbid_measurement": true
+          },
+          "acceptance_note": "This is a distribution goal, so several circuits pass. H alone gives |+>; X then H gives |->. Those are different states with the same Z distribution, and both satisfy the stated goal."
+        },
+        {
+          "id": "1-5.checkpoint-deterministic",
+          "kind": "single_select",
+          "title": "Checkpoint: is H random?",
+          "prompt": "Which statement describes H correctly?",
+          "assessed_skills": [
+            "gate.h_predict"
+          ],
+          "item_family": "h-deterministic",
+          "options": [
+            {
+              "id": "a",
+              "label": "H performs a deterministic state transformation; measurement is where randomness can appear"
+            },
+            {
+              "id": "b",
+              "label": "H randomly chooses 0 or 1 for the qubit"
+            },
+            {
+              "id": "c",
+              "label": "H makes every state have equal probabilities"
+            },
+            {
+              "id": "d",
+              "label": "H is deterministic only when the input is |0>"
+            }
+          ]
+        },
+        {
+          "id": "1-5.checkpoint-signs",
+          "kind": "single_select",
+          "title": "Checkpoint: compare the two H outputs",
+          "prompt": "Compare H|0> with H|1>. What differs?",
+          "assessed_skills": [
+            "superposition.read"
+          ],
+          "item_family": "h-signs",
+          "options": [
+            {
+              "id": "a",
+              "label": "The sign of the second amplitude; the Z probabilities are identical"
+            },
+            {
+              "id": "b",
+              "label": "The Z probabilities; the amplitudes are identical"
+            },
+            {
+              "id": "c",
+              "label": "Nothing differs"
+            },
+            {
+              "id": "d",
+              "label": "H|1> is not a valid state"
+            }
+          ]
+        },
+        {
+          "id": "1-5.transfer",
+          "kind": "single_select",
+          "title": "Transfer",
+          "prompt": "Start from |1> and apply H, then H, then H. What is the final state?",
+          "assessed_skills": [
+            "gate.h_predict"
+          ],
+          "item_family": "h-triple",
+          "options": [
+            {
+              "id": "a",
+              "label": "|->, with equal Z probabilities"
+            },
+            {
+              "id": "b",
+              "label": "|+>, with equal Z probabilities"
+            },
+            {
+              "id": "c",
+              "label": "|1>, with P(1)=1"
+            },
+            {
+              "id": "d",
+              "label": "|0>, with P(0)=1"
+            }
+          ]
+        }
+      ],
+      "hints": [
+        {
+          "level": 1,
+          "text": "H can undo H."
+        },
+        {
+          "level": 2,
+          "text": "Compare the snapshot after the first H with the snapshot after the second, rather than only reading the measurement counts."
+        },
+        {
+          "level": 3,
+          "text": "Three H gates are the same as one H, because the first two cancel. Apply H once to |1>."
+        },
+        {
+          "level": 4,
+          "text": "Worked answer: H|1> = |->. A second H returns |1>, and a third H gives |-> again. Its Z probabilities are 1/2 and 1/2."
+        }
+      ],
+      "misconceptions": [
+        {
+          "id": "h-is-random",
+          "trigger": "Predicts 50/50 after every H",
+          "response": "Apply H to |+> and to |->. Each returns a basis state with probability 1. H is a fixed linear map, so its output depends on its input."
+        }
+      ],
+      "completion": {
+        "required_step_ids": [
+          "s1",
+          "s2",
+          "s3"
+        ],
+        "required_task_ids": [
+          "1-5.build",
+          "1-5.checkpoint-deterministic",
+          "1-5.checkpoint-signs",
+          "1-5.transfer"
+        ]
+      }
+    },
+    {
+      "id": "1-6",
+      "slug": "z-relative-phase-and-global-phase",
+      "number": "1.6",
+      "title": "Z, relative phase, and global phase",
+      "objective": "Recognize a relative sign change without claiming that every minus sign is observable.",
+      "learning_objectives": [
+        "Predict that Z leaves the immediate Z-basis probabilities unchanged.",
+        "Distinguish a relative phase between populated components from a global phase on the whole vector.",
+        "Explain why -|1> and |1> are the same physical state."
+      ],
+      "prerequisite_skills": [
+        "gate.h_predict",
+        "superposition.read"
+      ],
+      "skills": [
+        "gate.z_predict",
+        "phase.relative",
+        "phase.global_equivalence"
+      ],
+      "estimated_minutes": 18,
+      "teach_markdown": "The **Z gate** maps `(a, b)` to `(a, -b)`. It changes the sign of the second amplitude and nothing else. Because magnitudes are unchanged, the **immediate** Z-basis probabilities are unchanged too.\n\nOn `|+>` this produces `|->`. Those are genuinely different states: the sign between two populated components is a **relative phase**, and a later gate can turn it into a difference you can measure.\n\nOn `|1>` the story is different. `Z|1> = -|1>`, and that minus multiplies the entire state vector. A factor that multiplies *every* amplitude is a **global phase**, and it changes no prediction about that state at all. `|1>` and `-|1>` describe the same physical situation.\n\nSo the question to ask is never just \"is there a minus sign?\" It is: **did one populated component change sign, or did the whole vector?**\n\nOne caution for later chapters: do not turn \"global phase is unobservable\" into a rule that phases can always be dropped. A phase that becomes conditional inside a controlled operation is a relative phase in the larger system. Chapter 4 returns to this.",
+      "sources": [
+        {
+          "id": "S18",
+          "title": "ZGate - IBM Quantum Documentation",
+          "url": "https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.library.ZGate"
+        },
+        {
+          "id": "S08",
+          "title": "Limitations on quantum information (global phase) - IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/quantum-circuits/limitations-on-quantum-information"
+        }
+      ],
+      "lab": {
+        "mode": "gate_builder",
+        "qubits": 1,
+        "initial_state_options": [
+          "ket0",
+          "ket1",
+          "plus"
+        ],
+        "gate_palette": [
+          "h",
+          "z",
+          "x"
+        ],
+        "max_gates": 4,
+        "shot_options": [
+          1,
+          16,
+          64,
+          256
+        ],
+        "default_shots": 256,
+        "panels": [
+          "circuit",
+          "amplitudes",
+          "probabilities",
+          "phase",
+          "counts"
+        ],
+        "features": {
+          "replay": true,
+          "remeasure": false,
+          "step_playback": true,
+          "compare_runs": true,
+          "equivalent_notation": true
+        },
+        "equivalent_notation_note": "The Equivalent notation switch displays the same state with every amplitude multiplied by -1. It is a representation aid. It is not a measurement, and it is not a claim that global phase can be detected."
+      },
+      "prediction": {
+        "id": "1-6.predict",
+        "prompt": "You apply Z to |+>. Which panel changes?",
+        "kind": "single_select",
+        "options": [
+          {
+            "id": "a",
+            "label": "The amplitudes only"
+          },
+          {
+            "id": "b",
+            "label": "The immediate Z probabilities only"
+          },
+          {
+            "id": "c",
+            "label": "Both"
+          },
+          {
+            "id": "d",
+            "label": "Neither"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "s1",
+          "title": "Build |+>",
+          "instruction": "Prepare |0> and apply H. Record the amplitudes (a, a) with a = 1/sqrt(2)."
+        },
+        {
+          "id": "s2",
+          "title": "Apply Z",
+          "instruction": "Add a Z gate. The amplitudes become (a, -a). Both probability bars stay at 1/2."
+        },
+        {
+          "id": "s3",
+          "title": "Z on |1>",
+          "instruction": "Prepare |1> and apply Z. The whole vector picks up a minus sign."
+        },
+        {
+          "id": "s4",
+          "title": "Equivalent notation",
+          "instruction": "Turn on Equivalent notation and compare |1> with -|1>. Every prediction is identical, because the factor multiplies the entire state."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "1-6.checkpoint-classify",
+          "kind": "classification",
+          "title": "Checkpoint: classify each pair",
+          "prompt": "With a = 1/sqrt(2), classify each pair of state vectors.",
+          "assessed_skills": [
+            "phase.relative",
+            "phase.global_equivalence"
+          ],
+          "item_family": "phase-classify",
+          "categories": [
+            {
+              "id": "relative",
+              "label": "Different relative phase: physically different states"
+            },
+            {
+              "id": "global",
+              "label": "Global-phase equivalent: the same physical state"
+            }
+          ],
+          "items": [
+            {
+              "id": "pair1",
+              "label": "(a, a) and (a, -a)"
+            },
+            {
+              "id": "pair2",
+              "label": "(a, a) and (-a, -a)"
+            }
+          ]
+        },
+        {
+          "id": "1-6.checkpoint-probabilities",
+          "kind": "single_select",
+          "title": "Checkpoint: immediate probabilities",
+          "prompt": "After applying Z to |+>, what happens to the immediate Z-basis probabilities?",
+          "assessed_skills": [
+            "gate.z_predict"
+          ],
+          "item_family": "z-probabilities",
+          "options": [
+            {
+              "id": "a",
+              "label": "They are unchanged: still 1/2 and 1/2"
+            },
+            {
+              "id": "b",
+              "label": "They swap"
+            },
+            {
+              "id": "c",
+              "label": "P(1) becomes negative"
+            },
+            {
+              "id": "d",
+              "label": "P(1) becomes 1"
+            }
+          ]
+        },
+        {
+          "id": "1-6.transfer",
+          "kind": "single_select",
+          "title": "Transfer",
+          "prompt": "Two consecutive Z gates are applied to |+>. What is the final state and its Z distribution?",
+          "assessed_skills": [
+            "gate.z_predict",
+            "phase.relative"
+          ],
+          "item_family": "z-double",
+          "options": [
+            {
+              "id": "a",
+              "label": "|+> again, with both amplitudes positive and probabilities 1/2 and 1/2"
+            },
+            {
+              "id": "b",
+              "label": "|->, with a negative second amplitude and probabilities 1/2 and 1/2"
+            },
+            {
+              "id": "c",
+              "label": "-|+>, which is a physically different state"
+            },
+            {
+              "id": "d",
+              "label": "|0>, with P(0)=1"
+            }
+          ]
+        }
+      ],
+      "hints": [
+        {
+          "level": 1,
+          "text": "Did one populated component change sign, or did the whole vector?"
+        },
+        {
+          "level": 2,
+          "text": "Check the sign column in the amplitude table as well as the probability bars."
+        },
+        {
+          "level": 3,
+          "text": "Z flips the sign of the second amplitude each time. Apply it twice to (a, a) and track that entry."
+        },
+        {
+          "level": 4,
+          "text": "Worked answer: Z(a, a) = (a, -a) = |->, and Z(a, -a) = (a, a) = |+>. So two Z gates restore |+>, with probabilities 1/2 and 1/2 throughout. (a, a) against (-a, -a) is a global phase and describes one physical state."
+        }
+      ],
+      "misconceptions": [
+        {
+          "id": "z-changes-counts",
+          "trigger": "Claims Z always changes the measured counts",
+          "response": "Run H then measure, and H then Z then measure. The counts are statistically the same because Z did not change either magnitude. Topic 1.7 adds the gate that makes the difference visible."
+        },
+        {
+          "id": "z-never-matters",
+          "trigger": "Claims Z never matters",
+          "response": "Keep the Z and add one more H after it. The final probabilities change completely."
+        }
+      ],
+      "author_caution": "Global phase on a whole state is unobservable. That is not a licence to drop phases from controlled operations, where a conditional phase becomes relative in the larger system.",
+      "completion": {
+        "required_step_ids": [
+          "s1",
+          "s2",
+          "s3",
+          "s4"
+        ],
+        "required_task_ids": [
+          "1-6.checkpoint-classify",
+          "1-6.checkpoint-probabilities",
+          "1-6.transfer"
+        ]
+      }
+    },
+    {
+      "id": "1-7",
+      "slug": "interference-h-h-versus-h-z-h",
+      "number": "1.7",
+      "title": "Interference: why H-H and H-Z-H differ",
+      "objective": "Add amplitudes before squaring, and locate the step at which the probabilities first differ.",
+      "learning_objectives": [
+        "Apply H to a general amplitude vector by adding and subtracting contributions.",
+        "Identify the step where two circuits first differ in Z probabilities.",
+        "Explain why an inserted measurement destroys the interference."
+      ],
+      "prerequisite_skills": [
+        "gate.h_predict",
+        "gate.z_predict",
+        "phase.relative"
+      ],
+      "skills": [
+        "interference.phase_to_probability"
+      ],
+      "estimated_minutes": 22,
+      "teach_markdown": "This is the topic the rest of the chapter was building towards.\n\nH maps `(a, b)` to `((a+b)/sqrt(2), (a-b)/sqrt(2))`. Each output amplitude is a **sum of contributions** from both input amplitudes. Signs matter in that sum, because contributions can add or cancel. Only after the sum is complete do you square to get a probability.\n\nStart from `|0>` and write `a = 1/sqrt(2)`.\n\n| Circuit | After first H | After optional Z | After final H | Final P(1) |\n|---|---|---|---|---|\n| H -> H | (a, a) | (a, a) | (1, 0) | 0 |\n| H -> Z -> H | (a, a) | (a, -a) | (0, 1) | 1 |\n\nFollow the second row. Into output 0 go the contributions +1/2 and -1/2, which cancel. Into output 1 go +1/2 and +1/2, which add. The first row is the same arithmetic with the signs the other way round.\n\nSo the two circuits have **identical** probabilities right up until the final H. The Z gate changed only a sign, and a sign is invisible in a probability bar. The last H is what converts that sign into a difference in the outcome.\n\nThose arrows are **amplitude contributions**, not paths a particle travels.\n\n**If you measure in the middle instead**, the interference is gone. Compare H -> H with H -> Measure -> H. The measured qubit lands on `|0>` or `|1>`, and either branch followed by H gives equal final probabilities. Inspecting a saved simulator snapshot does not perform this measurement; only an actual measurement operation in the circuit does.",
+      "sources": [
+        {
+          "id": "S15",
+          "title": "HGate - IBM Quantum Documentation",
+          "url": "https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.library.HGate"
+        },
+        {
+          "id": "S07",
+          "title": "Preskill, States and Ensembles (measurement postulate)",
+          "url": "https://www.preskill.caltech.edu/ph219/chap2_15.pdf"
+        }
+      ],
+      "lab": {
+        "mode": "comparison",
+        "qubits": 1,
+        "initial_state_options": [
+          "ket0",
+          "ket1"
+        ],
+        "gate_palette": [
+          "h",
+          "z",
+          "measure_z"
+        ],
+        "max_gates": 4,
+        "shot_options": [
+          1,
+          16,
+          64,
+          256,
+          1024
+        ],
+        "default_shots": 256,
+        "panels": [
+          "circuit",
+          "amplitudes",
+          "contributions",
+          "probabilities",
+          "counts",
+          "branches"
+        ],
+        "features": {
+          "replay": true,
+          "remeasure": false,
+          "step_playback": true,
+          "compare_runs": true,
+          "second_circuit": true,
+          "middle_slot": true
+        },
+        "comparison": {
+          "left": {
+            "label": "H -> H",
+            "operations": [
+              "h",
+              "h"
+            ]
+          },
+          "right": {
+            "label": "H -> Z -> H",
+            "operations": [
+              "h",
+              "z",
+              "h"
+            ]
+          }
+        }
+      },
+      "prediction": {
+        "id": "1-7.predict",
+        "prompt": "At which step do H -> H and H -> Z -> H first have different Z probabilities?",
+        "kind": "single_select",
+        "options": [
+          {
+            "id": "a",
+            "label": "Immediately after the Z gate"
+          },
+          {
+            "id": "b",
+            "label": "After their final H gate"
+          },
+          {
+            "id": "c",
+            "label": "After the first H gate"
+          },
+          {
+            "id": "d",
+            "label": "Only once enough shots are recorded"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "s1",
+          "title": "Run both circuits",
+          "instruction": "Run H -> H and H -> Z -> H side by side from |0>."
+        },
+        {
+          "id": "s2",
+          "title": "Compare after the Z",
+          "instruction": "Step both circuits to the frame after the middle slot. The amplitude signs differ; the probability bars are identical."
+        },
+        {
+          "id": "s3",
+          "title": "Compare after the final H",
+          "instruction": "Step both to the final frame. One circuit gives P(0)=1, the other P(1)=1."
+        },
+        {
+          "id": "s4",
+          "title": "Read the contributions",
+          "instruction": "Open the Contributions panel at the final H and check which pair adds and which pair cancels."
+        },
+        {
+          "id": "s5",
+          "title": "Insert a measurement instead",
+          "instruction": "Replace the middle Z with a Z-basis measurement. Inspect both conditional branches and the ensemble summary: the final probabilities are 1/2 and 1/2 either way."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "1-7.build",
+          "kind": "circuit_goal",
+          "title": "Guided task: place the Z",
+          "prompt": "The first and last H gates are fixed. Decide whether a Z belongs in the middle slot so that the final state gives P(1)=1 from |0>.",
+          "assessed_skills": [
+            "interference.phase_to_probability",
+            "circuit.construct_goal"
+          ],
+          "item_family": "interference-placement",
+          "goal_kind": "state",
+          "constraints": {
+            "initial_state": "ket0",
+            "allowed_operations": [
+              "h",
+              "z"
+            ],
+            "max_operations": 3,
+            "fixed_prefix": [
+              "h"
+            ],
+            "fixed_suffix": [
+              "h"
+            ],
+            "forbid_measurement": true
+          },
+          "acceptance_note": "The goal is checked against the computed final state up to global phase, not against a gate string."
+        },
+        {
+          "id": "1-7.checkpoint-divergence",
+          "kind": "single_select",
+          "title": "Checkpoint: where the probabilities diverge",
+          "prompt": "Select the first step at which H -> H and H -> Z -> H from |0> have different Z probabilities.",
+          "assessed_skills": [
+            "interference.phase_to_probability"
+          ],
+          "item_family": "interference-divergence",
+          "options": [
+            {
+              "id": "a",
+              "label": "Their final H gate"
+            },
+            {
+              "id": "b",
+              "label": "The Z gate"
+            },
+            {
+              "id": "c",
+              "label": "The first H gate"
+            },
+            {
+              "id": "d",
+              "label": "The preparation"
+            }
+          ]
+        },
+        {
+          "id": "1-7.checkpoint-measurement",
+          "kind": "single_select",
+          "title": "Checkpoint: the measurement variant",
+          "prompt": "Compare H -> H with H -> Measure -> H, both from |0>. What are the final Z probabilities of the second circuit?",
+          "assessed_skills": [
+            "interference.phase_to_probability",
+            "measurement.conditioned_state"
+          ],
+          "item_family": "interference-measured",
+          "options": [
+            {
+              "id": "a",
+              "label": "1/2 and 1/2, because either branch followed by H gives equal probabilities"
+            },
+            {
+              "id": "b",
+              "label": "P(0)=1, the same as H -> H"
+            },
+            {
+              "id": "c",
+              "label": "P(1)=1, the same as H -> Z -> H"
+            },
+            {
+              "id": "d",
+              "label": "Undefined, because the state collapsed"
+            }
+          ]
+        },
+        {
+          "id": "1-7.transfer",
+          "kind": "single_select",
+          "title": "Transfer",
+          "prompt": "Starting from |1> instead, what does H -> Z -> H produce?",
+          "assessed_skills": [
+            "interference.phase_to_probability"
+          ],
+          "item_family": "interference-transfer",
+          "options": [
+            {
+              "id": "a",
+              "label": "|0>, via |1> -> |-> -> |+> -> |0>"
+            },
+            {
+              "id": "b",
+              "label": "|1>, via |1> -> |-> -> |-> -> |1>"
+            },
+            {
+              "id": "c",
+              "label": "|+>, with equal probabilities"
+            },
+            {
+              "id": "d",
+              "label": "|1>, because the input was |1>"
+            }
+          ]
+        }
+      ],
+      "hints": [
+        {
+          "level": 1,
+          "text": "Add the signed contributions before taking the square."
+        },
+        {
+          "level": 2,
+          "text": "Compare the amplitudes of the two circuits just before the last H, not after it."
+        },
+        {
+          "level": 3,
+          "text": "H maps (a, b) to ((a+b)/sqrt(2), (a-b)/sqrt(2)). Apply that formula to (a, -a) with a = 1/sqrt(2)."
+        },
+        {
+          "level": 4,
+          "text": "Worked answer: from |0>, H gives (a, a) and Z gives (a, -a). The final H sends (a, -a) to (0, 1) = |1>, so P(1)=1. Without the Z, the final H sends (a, a) to (1, 0) = |0>. From |1> the chain is |1> -> |-> -> |+> -> |0>."
+        }
+      ],
+      "misconceptions": [
+        {
+          "id": "z-visible-immediately",
+          "trigger": "Expects the probabilities to change at the Z gate",
+          "response": "Step to the frame after Z in both circuits and compare the bars. They are identical there. The difference appears only at the final H."
+        }
+      ],
+      "completion": {
+        "required_step_ids": [
+          "s1",
+          "s2",
+          "s3",
+          "s4",
+          "s5"
+        ],
+        "required_task_ids": [
+          "1-7.build",
+          "1-7.checkpoint-divergence",
+          "1-7.checkpoint-measurement",
+          "1-7.transfer"
+        ]
+      }
+    },
+    {
+      "id": "1-8",
+      "slug": "build-explain-and-revisit-the-mystery",
+      "number": "1.8",
+      "title": "Build, explain, and revisit the mystery",
+      "objective": "Combine the chapter's skills in a new task and connect them back to the search preview.",
+      "learning_objectives": [
+        "Control a circuit's output by choosing one operation.",
+        "Explain a changed result from an amplitude trace.",
+        "Separate exact probabilities from observed counts in your own run.",
+        "Connect relative phase to the Grover oracle step you saw earlier."
+      ],
+      "prerequisite_skills": [
+        "interference.phase_to_probability",
+        "sampling.probability_vs_frequency"
+      ],
+      "skills": [
+        "interference.phase_to_probability",
+        "sampling.probability_vs_frequency",
+        "circuit.construct_goal"
+      ],
+      "estimated_minutes": 25,
+      "teach_markdown": "Three short capstones, then a return to the experiment you started with.\n\nYou now have everything needed to control a one-qubit circuit deliberately: you can read a state, convert amplitudes to probabilities, apply X, H and Z, tell a relative phase from a global one, and predict where interference will show up.\n\nThe last part matters most. When you first ran the search preview, the oracle changed a sign and **no probability bar moved**. That looked like nothing happening. You now know exactly what kind of event that was, and what has to come next for it to matter.",
+      "sources": [
+        {
+          "id": "S15",
+          "title": "HGate - IBM Quantum Documentation",
+          "url": "https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.library.HGate"
+        },
+        {
+          "id": "S03",
+          "title": "Grover analysis - IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/fundamentals-of-quantum-algorithms/grover-algorithm/analysis"
+        }
+      ],
+      "lab": {
+        "mode": "capstone",
+        "qubits": 1,
+        "initial_state_options": [
+          "ket0",
+          "ket1"
+        ],
+        "gate_palette": [
+          "h",
+          "z",
+          "x"
+        ],
+        "max_gates": 4,
+        "shot_options": [
+          1,
+          16,
+          64,
+          256,
+          1024
+        ],
+        "default_shots": 256,
+        "panels": [
+          "circuit",
+          "amplitudes",
+          "probabilities",
+          "counts"
+        ],
+        "features": {
+          "replay": true,
+          "remeasure": false,
+          "step_playback": true,
+          "compare_runs": true,
+          "middle_slot": true
+        }
+      },
+      "prediction": {
+        "id": "1-8.predict",
+        "prompt": "Two H gates are fixed, and you control only the middle slot. How many different final states can you reach from |0>?",
+        "kind": "single_select",
+        "options": [
+          {
+            "id": "a",
+            "label": "Two: |0> with the slot empty, and |1> with a Z in the slot"
+          },
+          {
+            "id": "b",
+            "label": "One, because H undoes H whatever is between them"
+          },
+          {
+            "id": "c",
+            "label": "Four"
+          },
+          {
+            "id": "d",
+            "label": "None; the middle slot cannot change the outcome"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "s1",
+          "title": "Capstone A",
+          "instruction": "Build both versions of the fixed H _ H circuit from |0>: one reaching P(0)=1 and one reaching P(1)=1. Submit each."
+        },
+        {
+          "id": "s2",
+          "title": "Capstone B",
+          "instruction": "Change the input of H -> Z -> H to |1>. Predict the output before you run it, then read the amplitude trace."
+        },
+        {
+          "id": "s3",
+          "title": "Capstone C",
+          "instruction": "Run an H-only circuit with the shot count of your choice. Read the exact probabilities, the measured counts, and the shot total from their separate panels."
+        },
+        {
+          "id": "s4",
+          "title": "Revisit the search preview",
+          "instruction": "Reopen your saved N=4 Grover run at its oracle step and answer the question you were left with."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "1-8.capstone-a-zero",
+          "kind": "circuit_goal",
+          "title": "Capstone A, part 1: reach |0>",
+          "prompt": "With the first and last H fixed, fill the middle slot so the final state is |0>.",
+          "assessed_skills": [
+            "circuit.construct_goal",
+            "interference.phase_to_probability"
+          ],
+          "item_family": "capstone-select-output",
+          "goal_kind": "state",
+          "constraints": {
+            "initial_state": "ket0",
+            "allowed_operations": [
+              "h",
+              "z"
+            ],
+            "max_operations": 3,
+            "fixed_prefix": [
+              "h"
+            ],
+            "fixed_suffix": [
+              "h"
+            ],
+            "forbid_measurement": true
+          }
+        },
+        {
+          "id": "1-8.capstone-a-one",
+          "kind": "circuit_goal",
+          "title": "Capstone A, part 2: reach |1>",
+          "prompt": "Same fixed H gates. Fill the middle slot so the final state is |1>.",
+          "assessed_skills": [
+            "circuit.construct_goal",
+            "interference.phase_to_probability"
+          ],
+          "item_family": "capstone-select-output",
+          "goal_kind": "state",
+          "constraints": {
+            "initial_state": "ket0",
+            "allowed_operations": [
+              "h",
+              "z"
+            ],
+            "max_operations": 3,
+            "fixed_prefix": [
+              "h"
+            ],
+            "fixed_suffix": [
+              "h"
+            ],
+            "forbid_measurement": true
+          }
+        },
+        {
+          "id": "1-8.capstone-a-role",
+          "kind": "single_select",
+          "title": "Capstone A, part 3: the role of the middle slot",
+          "prompt": "What does the middle operation actually do in this circuit?",
+          "assessed_skills": [
+            "interference.phase_to_probability"
+          ],
+          "item_family": "capstone-role",
+          "options": [
+            {
+              "id": "a",
+              "label": "It sets the relative sign between the two amplitudes, which the final H turns into a definite outcome"
+            },
+            {
+              "id": "b",
+              "label": "It randomly selects which outcome the measurement reports"
+            },
+            {
+              "id": "c",
+              "label": "It changes the probabilities immediately, before the final H"
+            },
+            {
+              "id": "d",
+              "label": "It has no effect unless more shots are used"
+            }
+          ]
+        },
+        {
+          "id": "1-8.capstone-b",
+          "kind": "single_select",
+          "title": "Capstone B: diagnose the changed input",
+          "prompt": "The circuit H -> Z -> H now starts from |1>. Which trace and result are correct?",
+          "assessed_skills": [
+            "interference.phase_to_probability"
+          ],
+          "item_family": "capstone-changed-input",
+          "options": [
+            {
+              "id": "a",
+              "label": "|1> -> |-> -> |+> -> |0>, so the outcome is 0"
+            },
+            {
+              "id": "b",
+              "label": "|1> -> |+> -> |-> -> |1>, so the outcome is 1"
+            },
+            {
+              "id": "c",
+              "label": "|1> -> |-> -> |-> -> |1>, so the outcome is 1"
+            },
+            {
+              "id": "d",
+              "label": "The result is 50/50 because the input changed"
+            }
+          ],
+          "free_text": {
+            "enabled": true,
+            "prompt": "Optional: explain in your own words why changing the input changed the result. This box receives feedback only and is not graded.",
+            "graded": false
+          }
+        },
+        {
+          "id": "1-8.capstone-c",
+          "kind": "run_reading",
+          "title": "Capstone C: separate theory and observation",
+          "prompt": "Using your own H-only run, report the exact probability of outcome 0, the measured count of outcome 0, and the shot total. Then select why the counts need not split equally.",
+          "assessed_skills": [
+            "sampling.probability_vs_frequency"
+          ],
+          "item_family": "capstone-theory-observation",
+          "fields": [
+            {
+              "id": "exact_p0",
+              "label": "Exact P(0) from the model",
+              "kind": "numeric"
+            },
+            {
+              "id": "count_0",
+              "label": "Measured count of outcome 0",
+              "kind": "integer"
+            },
+            {
+              "id": "shots",
+              "label": "Shot total",
+              "kind": "integer"
+            }
+          ],
+          "tolerance": 0.001,
+          "options": [
+            {
+              "id": "a",
+              "label": "Each shot is an independent random trial, so a finite sample scatters around the expected value"
+            },
+            {
+              "id": "b",
+              "label": "The simulator is imprecise"
+            },
+            {
+              "id": "c",
+              "label": "The exact probabilities are not really 1/2"
+            },
+            {
+              "id": "d",
+              "label": "Counts always split equally once there are at least 256 shots"
+            }
+          ]
+        },
+        {
+          "id": "1-8.revisit-grover",
+          "kind": "single_select",
+          "title": "Revisit: your first Grover mystery",
+          "prompt": "In your saved N=4 search run, the oracle changed a sign and no probability bar moved. Which idea from this chapter explains why that sign can still matter?",
+          "assessed_skills": [
+            "interference.phase_to_probability"
+          ],
+          "item_family": "grover-revisit",
+          "options": [
+            {
+              "id": "a",
+              "label": "A relative phase changes nothing immediately, but a later operation can turn it into different probabilities"
+            },
+            {
+              "id": "b",
+              "label": "The oracle secretly increased the target's probability straight away"
+            },
+            {
+              "id": "c",
+              "label": "A global phase on the whole state became measurable"
+            },
+            {
+              "id": "d",
+              "label": "More shots would have revealed the change at the oracle step"
+            }
+          ],
+          "records_preview_note": "Recognizes phase-to-probability connection"
+        }
+      ],
+      "hints": [
+        {
+          "level": 1,
+          "text": "Use your H-H against H-Z-H comparison from Topic 1.7."
+        },
+        {
+          "level": 2,
+          "text": "Inspect the state immediately before the last H in each version."
+        },
+        {
+          "level": 3,
+          "text": "An empty middle slot leaves (a, a); a Z makes it (a, -a). The final H sends the first to |0> and the second to |1>."
+        },
+        {
+          "level": 4,
+          "text": "Worked answer: empty slot gives |0>, Z gives |1>. From |1> the chain H -> Z -> H runs |1> -> |-> -> |+> -> |0>. After a revealed answer the laboratory offers an equivalent new-input task before recording independent evidence."
+        }
+      ],
+      "revisit": {
+        "algorithm_id": "grover",
+        "keeps_status": "seen",
+        "note": "Recognizes phase-to-probability connection",
+        "status_explanation": "Completing one foundation chapter does not earn Can Explain or Mastered for Grover. Those require the algorithm's own objectives, in Chapter 6."
+      },
+      "completion": {
+        "required_step_ids": [
+          "s1",
+          "s2",
+          "s3",
+          "s4"
+        ],
+        "required_task_ids": [
+          "1-8.capstone-a-zero",
+          "1-8.capstone-a-one",
+          "1-8.capstone-a-role",
+          "1-8.capstone-b",
+          "1-8.capstone-c",
+          "1-8.revisit-grover"
+        ]
+      }
+    }
+  ]
+}

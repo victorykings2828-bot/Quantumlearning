@@ -1,0 +1,279 @@
+{
+  "id": "course-root",
+  "version": 1,
+  "title": "Quantum Learning Laboratory",
+  "subtitle": "Learn how quantum algorithms work by experimenting with them.",
+  "route_note": "Chapter numbers describe a recommended route. Access to assessed work is decided by demonstrated prerequisite skills, not by a chapter counter.",
+  "chapters": [
+    {
+      "id": "chapter-1",
+      "number": 1,
+      "title": "One qubit: from states to interference",
+      "outcome": "Read a one-qubit state, turn amplitudes into probabilities, apply X, H and Z, and explain how a relative sign decides what a later H does.",
+      "subtopic_titles": [
+        "1.1 Bits, qubits, and the computational basis",
+        "1.2 Amplitudes become probabilities",
+        "1.3 Measurement, shots, and replay",
+        "1.4 Read a circuit and use the X gate",
+        "1.5 H and superposition",
+        "1.6 Z, relative phase, and global phase",
+        "1.7 Interference: why H-H and H-Z-H differ",
+        "1.8 Build, explain, and revisit the mystery"
+      ],
+      "topic_count": 8,
+      "prerequisite_skills": [],
+      "publication": "published",
+      "demonstration": "Predict, construct, and explain a short one-qubit circuit.",
+      "coming_soon_note": null
+    },
+    {
+      "id": "chapter-2",
+      "number": 2,
+      "title": "Geometry and measurement bases",
+      "outcome": "Place a qubit state on the Bloch sphere, work with complex phase, and distinguish states that share a Z distribution by measuring in another basis.",
+      "subtopic_titles": [
+        "2.1 Complex numbers and phase angles",
+        "2.2 Vectors and matrices",
+        "2.3 The Bloch sphere",
+        "2.4 Rotations",
+        "2.5 X, Y and Z measurements",
+        "2.6 State-versus-distribution challenge"
+      ],
+      "topic_count": 6,
+      "prerequisite_skills": [
+        "amplitude.born_rule",
+        "gate.h_predict",
+        "phase.relative"
+      ],
+      "publication": "coming_soon",
+      "demonstration": "Distinguish equal-Z-probability states using another basis.",
+      "coming_soon_note": "This chapter is not implemented yet. Its description is accurate; there is no hidden lesson behind it."
+    },
+    {
+      "id": "chapter-3",
+      "number": 3,
+      "title": "Multiple qubits and entanglement",
+      "outcome": "Build two-qubit states, read joint and marginal statistics, prepare a Bell state, and say precisely what does and does not count as evidence of entanglement.",
+      "subtopic_titles": [
+        "3.1 Bit ordering",
+        "3.2 Tensor products",
+        "3.3 Controlled gates",
+        "3.4 Bell preparation",
+        "3.5 Joint and marginal statistics",
+        "3.6 Mixtures versus entanglement",
+        "3.7 The teleportation protocol"
+      ],
+      "topic_count": 7,
+      "prerequisite_skills": [
+        "gate.h_predict",
+        "measurement.conditioned_state",
+        "circuit.read_order"
+      ],
+      "publication": "coming_soon",
+      "demonstration": "Build a Bell state and explain why one correlation plot alone is not evidence of entanglement.",
+      "coming_soon_note": "This chapter is not implemented yet. Its description is accurate; there is no hidden lesson behind it."
+    },
+    {
+      "id": "chapter-4",
+      "number": 4,
+      "title": "Reversible functions and quantum oracles",
+      "outcome": "Turn a small truth table into a reversible operation, understand phase kickback, and clean up the workspace afterwards.",
+      "subtopic_titles": [
+        "4.1 Reversible computation",
+        "4.2 Ancillas",
+        "4.3 Bit oracles",
+        "4.4 Phase kickback",
+        "4.5 Uncomputation",
+        "4.6 Promises and cost models"
+      ],
+      "topic_count": 6,
+      "prerequisite_skills": [
+        "circuit.construct_goal",
+        "phase.relative",
+        "interference.phase_to_probability"
+      ],
+      "publication": "coming_soon",
+      "demonstration": "Translate a small truth table into a verified oracle and clean up the workspace.",
+      "coming_soon_note": "This chapter is not implemented yet. Its description is accurate; there is no hidden lesson behind it."
+    },
+    {
+      "id": "chapter-5",
+      "number": 5,
+      "title": "First query algorithms",
+      "outcome": "Work through Deutsch, Bernstein-Vazirani and Deutsch-Jozsa, and compare each against the matching classical model rather than a convenient one.",
+      "subtopic_titles": [
+        "5.1 Deutsch",
+        "5.2 Bernstein-Vazirani",
+        "5.3 Deutsch-Jozsa",
+        "5.4 Deterministic versus randomized baselines",
+        "5.5 Oracle-debugging challenge"
+      ],
+      "topic_count": 5,
+      "prerequisite_skills": [
+        "interference.phase_to_probability"
+      ],
+      "publication": "coming_soon",
+      "demonstration": "State a problem promise, derive the output, and compare matching cost models.",
+      "coming_soon_note": "This chapter is not implemented yet. Its description is accurate; there is no hidden lesson behind it."
+    },
+    {
+      "id": "chapter-6",
+      "number": 6,
+      "title": "Grover, revisited in full",
+      "outcome": "Return to the search experiment from the introduction and build every part of it: preparation, phase marking, diffusion, iteration count, and the retries a real run needs.",
+      "subtopic_titles": [
+        "6.1 The search model",
+        "6.2 Preparation",
+        "6.3 Phase marking and kickback",
+        "6.4 Diffusion",
+        "6.5 Choosing the iteration count",
+        "6.6 Measurement and retries",
+        "6.7 Query cost versus gate cost",
+        "6.8 Build, break, debug, optimize",
+        "6.9 Transfer"
+      ],
+      "topic_count": 9,
+      "prerequisite_skills": [
+        "interference.phase_to_probability",
+        "phase.relative"
+      ],
+      "publication": "coming_soon",
+      "demonstration": "Build and modify a small search circuit, and predict overshoot before running it.",
+      "coming_soon_note": "This chapter is not implemented yet. Its description is accurate; there is no hidden lesson behind it."
+    },
+    {
+      "id": "chapter-7",
+      "number": 7,
+      "title": "Hidden XOR structure: Simon",
+      "outcome": "An optional branch: collect sampled linear constraints and solve for a hidden string over the two-element field.",
+      "subtopic_titles": [
+        "7.1 XOR",
+        "7.2 Binary linear algebra",
+        "7.3 The Simon promise",
+        "7.4 Sampled constraints",
+        "7.5 Recover and verify the hidden string"
+      ],
+      "topic_count": 5,
+      "prerequisite_skills": [],
+      "publication": "coming_soon",
+      "demonstration": "Collect enough independent equations and solve for the hidden string.",
+      "coming_soon_note": "This chapter is not implemented yet. Its description is accurate; there is no hidden lesson behind it."
+    },
+    {
+      "id": "chapter-8",
+      "number": 8,
+      "title": "The quantum Fourier transform",
+      "outcome": "Construct a small QFT, verify its action on chosen states, and see why its output is not a readable amplitude list.",
+      "subtopic_titles": [
+        "8.1 Complex roots of unity",
+        "8.2 The amplitude transform",
+        "8.3 Controlled phases",
+        "8.4 The inverse QFT",
+        "8.5 Output ordering",
+        "8.6 Readout limitations"
+      ],
+      "topic_count": 6,
+      "prerequisite_skills": [],
+      "publication": "coming_soon",
+      "demonstration": "Construct a small QFT and verify its action on selected states.",
+      "coming_soon_note": "This chapter is not implemented yet. Its description is accurate; there is no hidden lesson behind it."
+    },
+    {
+      "id": "chapter-9",
+      "number": 9,
+      "title": "Quantum phase estimation",
+      "outcome": "Recover an exactly representable phase, then explain what happens when the phase is not exactly representable.",
+      "subtopic_titles": [
+        "9.1 Eigenvectors and eigenvalues",
+        "9.2 Controlled powers",
+        "9.3 Phase kickback",
+        "9.4 The inverse QFT",
+        "9.5 Finite precision",
+        "9.6 Input superpositions"
+      ],
+      "topic_count": 6,
+      "prerequisite_skills": [],
+      "publication": "coming_soon",
+      "demonstration": "Recover an exactly representable phase, then explain a non-exact distribution.",
+      "coming_soon_note": "This chapter is not implemented yet. Its description is accurate; there is no hidden lesson behind it."
+    },
+    {
+      "id": "chapter-10",
+      "number": 10,
+      "title": "Shor and order finding",
+      "outcome": "Follow one complete small factoring attempt end to end, including a branch that fails and has to be retried.",
+      "subtopic_titles": [
+        "10.1 Modular arithmetic and gcd",
+        "10.2 Orders",
+        "10.3 Modular multiplication",
+        "10.4 QPE and order finding",
+        "10.5 Continued fractions",
+        "10.6 Verification and retries",
+        "10.7 Resource estimates"
+      ],
+      "topic_count": 7,
+      "prerequisite_skills": [],
+      "publication": "coming_soon",
+      "demonstration": "Trace one complete small factoring attempt and identify an unsuccessful branch.",
+      "coming_soon_note": "This chapter is not implemented yet. Its description is accurate; there is no hidden lesson behind it."
+    },
+    {
+      "id": "chapter-11",
+      "number": 11,
+      "title": "Noise and quantum error correction",
+      "outcome": "Density matrices, noise channels, and what a chosen code does and does not correct.",
+      "subtopic_titles": [
+        "11.1 Density matrices",
+        "11.2 Noise channels",
+        "11.3 Sampling noise versus device noise",
+        "11.4 The bit-flip repetition code",
+        "11.5 Phase errors",
+        "11.6 Syndrome measurements",
+        "11.7 Stabilizers and logical qubits"
+      ],
+      "topic_count": 7,
+      "prerequisite_skills": [],
+      "publication": "coming_soon",
+      "demonstration": "Explain what a chosen code corrects and what it does not.",
+      "coming_soon_note": "This chapter is not implemented yet. Its description is accurate; there is no hidden lesson behind it."
+    },
+    {
+      "id": "chapter-12",
+      "number": 12,
+      "title": "Variational and simulation branches",
+      "outcome": "Observables, Hamiltonians, and hybrid optimization, with honest benchmark design.",
+      "subtopic_titles": [
+        "12.1 Observables and expectation values",
+        "12.2 Hamiltonians",
+        "12.3 Hybrid optimization",
+        "12.4 VQE",
+        "12.5 QAOA",
+        "12.6 Benchmark design",
+        "12.7 Quantum dynamics"
+      ],
+      "topic_count": 7,
+      "prerequisite_skills": [],
+      "publication": "coming_soon",
+      "demonstration": "Interpret an objective trace and justify the comparison assumptions.",
+      "coming_soon_note": "This chapter is not implemented yet. Its description is accurate; there is no hidden lesson behind it."
+    },
+    {
+      "id": "chapter-13",
+      "number": 13,
+      "title": "Advanced extensions",
+      "outcome": "Amplitude amplification and estimation, quantum walks, complexity, and fault tolerance.",
+      "subtopic_titles": [
+        "13.1 Generalized amplitude amplification",
+        "13.2 Amplitude estimation",
+        "13.3 Quantum walks",
+        "13.4 Complexity",
+        "13.5 Surface codes and fault tolerance"
+      ],
+      "topic_count": 5,
+      "prerequisite_skills": [],
+      "publication": "coming_soon",
+      "demonstration": "Complete a reviewed project with explicit assumptions and limitations.",
+      "coming_soon_note": "This chapter is not implemented yet. Its description is accurate; there is no hidden lesson behind it."
+    }
+  ]
+}

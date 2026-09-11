@@ -1,0 +1,334 @@
+{
+  "id": "chapter-1-task-rubrics",
+  "version": 1,
+  "visibility": "server_only",
+  "warning": "Private evaluator data. Never include in public content responses, frontend bundles, or tutor context.",
+  "rubrics": [
+    {
+      "task_id": "1-1.checkpoint",
+      "kind": "matching",
+      "key": {"vec01": "ket1", "bars10": "ket0", "outcome": "classical"},
+      "feedback": {
+        "correct": "The vector and the probability bars are both descriptions of a state. Only the Results entry is a recorded classical outcome.",
+        "incorrect": "Look again at which item records something that already happened. A vector and a probability bar predict; a result reports."
+      }
+    },
+    {
+      "task_id": "1-1.transfer",
+      "kind": "single_select",
+      "key": "b",
+      "feedback": {
+        "correct": "(0, 1) puts all the amplitude on outcome 1, so every ideal Z measurement records 1.",
+        "incorrect": "The nonzero entry is the second one, which belongs to outcome 1."
+      }
+    },
+    {
+      "task_id": "1-2.checkpoint-numeric",
+      "kind": "numeric_fields",
+      "key": {"p0": 0.36, "p1": 0.64},
+      "tolerance": 0.001,
+      "feedback": {
+        "correct": "(3/5)^2 = 9/25 = 0.36 and (4/5)^2 = 16/25 = 0.64, and they sum to 1.",
+        "incorrect": "Square each entry's magnitude separately, then check that the two results add to 1."
+      }
+    },
+    {
+      "task_id": "1-2.checkpoint-compare",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "Squaring a magnitude removes the sign, so B and C share a Z distribution while remaining different state vectors.",
+        "incorrect": "A probability is a squared magnitude, so it can never be negative."
+      }
+    },
+    {
+      "task_id": "1-2.checkpoint-normalization",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "(1/2)^2 + (1/2)^2 = 1/2, so the vector is not a normalized state.",
+        "incorrect": "Add the squared magnitudes and compare the total with 1."
+      }
+    },
+    {
+      "task_id": "1-2.transfer",
+      "kind": "numeric_fields",
+      "key": {"p0": 0.64, "p1": 0.36},
+      "tolerance": 0.001,
+      "feedback": {
+        "correct": "(4/5)^2 = 0.64 and (-3/5)^2 = 0.36. The minus sign did not survive the squaring.",
+        "incorrect": "Square the magnitude of each entry. A negative amplitude gives a positive probability."
+      }
+    },
+    {
+      "task_id": "1-3.checkpoint-counts",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "Equal probabilities describe the model, not any single finite sample.",
+        "incorrect": "A probability of 1/2 per shot makes eight zeros the most likely count, not a required one."
+      }
+    },
+    {
+      "task_id": "1-3.checkpoint-action",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "Only New preparation restarts the experiment. Replay and Previous step read saved data.",
+        "incorrect": "Re-measuring a trajectory and replaying a saved run both work on an experiment that already happened."
+      }
+    },
+    {
+      "task_id": "1-3.checkpoint-remeasure",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "The first measurement left the qubit in |1>, so an immediate same-basis measurement returns 1 with certainty.",
+        "incorrect": "After an ideal Z measurement the conditional state is the measured basis state. Nothing random is left."
+      }
+    },
+    {
+      "task_id": "1-3.transfer",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "64 is the expected value of 100 independent trials at probability 0.64, not a guaranteed count.",
+        "incorrect": "An expectation is an average over many repetitions of the whole experiment, not a promise about one batch."
+      }
+    },
+    {
+      "task_id": "1-4.build",
+      "kind": "circuit_goal",
+      "goal_kind": "distribution",
+      "key": {"distribution": [0.0, 1.0]},
+      "constraints": {
+        "initial_state": "ket0",
+        "allowed_operations": ["x"],
+        "max_operations": 3,
+        "min_operations": 1
+      },
+      "feedback": {
+        "correct": "An odd number of X gates moves all the amplitude to outcome 1. One or three both satisfy the published constraints.",
+        "incorrect": "Count your X gates. An even number returns the qubit to its starting state."
+      }
+    },
+    {
+      "task_id": "1-4.checkpoint",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "X swaps the two amplitudes, and swapping twice restores them.",
+        "incorrect": "Step through the circuit one gate at a time and read the amplitude table after each."
+      }
+    },
+    {
+      "task_id": "1-4.transfer",
+      "kind": "numeric_fields",
+      "key": {"p0": 0.64},
+      "tolerance": 0.001,
+      "feedback": {
+        "correct": "X sends (3/5, 4/5) to (4/5, 3/5), so P(0) = (4/5)^2 = 0.64.",
+        "incorrect": "Swap the entries first, then square the magnitude of the new first entry."
+      }
+    },
+    {
+      "task_id": "1-5.build",
+      "kind": "circuit_goal",
+      "goal_kind": "distribution",
+      "key": {"distribution": [0.5, 0.5]},
+      "constraints": {
+        "initial_state": "ket0",
+        "allowed_operations": ["x", "h"],
+        "max_operations": 3,
+        "min_operations": 1,
+        "forbid_measurement": true
+      },
+      "feedback": {
+        "correct": "This is a distribution goal, so H and X -> H both pass. They prepare |+> and |->, which are different states with the same Z distribution.",
+        "incorrect": "You need one H acting on a basis state. Check that no measurement sits inside the circuit."
+      }
+    },
+    {
+      "task_id": "1-5.checkpoint-deterministic",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "H always maps a given input to the same output. Randomness belongs to measurement.",
+        "incorrect": "Apply H to |+>: the result is |0> every single time. A randomizer could not do that."
+      }
+    },
+    {
+      "task_id": "1-5.checkpoint-signs",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "H|0> and H|1> differ only in the sign of the second amplitude, which the probability panel cannot show.",
+        "incorrect": "Compare the two amplitude tables entry by entry, not the probability bars."
+      }
+    },
+    {
+      "task_id": "1-5.transfer",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "The first two H gates cancel, leaving H|1> = |->, whose Z probabilities are 1/2 and 1/2.",
+        "incorrect": "H undoes H. Cancel the first pair and see what remains."
+      }
+    },
+    {
+      "task_id": "1-6.checkpoint-classify",
+      "kind": "classification",
+      "key": {"pair1": "relative", "pair2": "global"},
+      "feedback": {
+        "correct": "(a, a) against (a, -a) changes one populated component: a relative phase. (a, a) against (-a, -a) multiplies the whole vector: a global phase.",
+        "incorrect": "Ask whether the sign changed on one component or on every component."
+      }
+    },
+    {
+      "task_id": "1-6.checkpoint-probabilities",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "Z changes a sign, not a magnitude, so the immediate Z probabilities are untouched.",
+        "incorrect": "A probability is a squared magnitude. Z leaves both magnitudes exactly as they were."
+      }
+    },
+    {
+      "task_id": "1-6.transfer",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "The second Z undoes the first, restoring |+> with both amplitudes positive.",
+        "incorrect": "Apply Z twice to (a, a) and track the sign of the second entry through both gates."
+      }
+    },
+    {
+      "task_id": "1-7.build",
+      "kind": "circuit_goal",
+      "goal_kind": "state",
+      "key": {"state": [[0.0, 0.0], [1.0, 0.0]]},
+      "constraints": {
+        "initial_state": "ket0",
+        "allowed_operations": ["h", "z"],
+        "max_operations": 3,
+        "fixed_prefix": ["h"],
+        "fixed_suffix": ["h"],
+        "forbid_measurement": true
+      },
+      "feedback": {
+        "correct": "The Z belongs between the two H gates. It sets the relative sign that the final H converts into P(1)=1.",
+        "incorrect": "A Z placed before the first H or after the last one cannot change this result. Try the middle slot."
+      }
+    },
+    {
+      "task_id": "1-7.checkpoint-divergence",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "Right up to the final H the two circuits share a probability distribution. The last H turns the sign difference into an outcome difference.",
+        "incorrect": "Step both circuits to the frame after the Z and compare their probability bars there."
+      }
+    },
+    {
+      "task_id": "1-7.checkpoint-measurement",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "A real measurement leaves a basis state, and H applied to either basis state gives equal probabilities.",
+        "incorrect": "Work out each conditional branch separately, then combine them with their branch probabilities."
+      }
+    },
+    {
+      "task_id": "1-7.transfer",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "|1> -> |-> -> |+> -> |0>. The Z flips the sign that H|1> produced, and the final H completes the round trip.",
+        "incorrect": "Start by writing H|1>, which is |->, and track the sign through the Z."
+      }
+    },
+    {
+      "task_id": "1-8.capstone-a-zero",
+      "kind": "circuit_goal",
+      "goal_kind": "state",
+      "key": {"state": [[1.0, 0.0], [0.0, 0.0]]},
+      "constraints": {
+        "initial_state": "ket0",
+        "allowed_operations": ["h", "z"],
+        "max_operations": 3,
+        "fixed_prefix": ["h"],
+        "fixed_suffix": ["h"],
+        "forbid_measurement": true
+      },
+      "feedback": {
+        "correct": "An empty middle slot leaves (a, a), and the final H returns |0>.",
+        "incorrect": "Leave the middle slot empty and check the state just before the final H."
+      }
+    },
+    {
+      "task_id": "1-8.capstone-a-one",
+      "kind": "circuit_goal",
+      "goal_kind": "state",
+      "key": {"state": [[0.0, 0.0], [1.0, 0.0]]},
+      "constraints": {
+        "initial_state": "ket0",
+        "allowed_operations": ["h", "z"],
+        "max_operations": 3,
+        "fixed_prefix": ["h"],
+        "fixed_suffix": ["h"],
+        "forbid_measurement": true
+      },
+      "feedback": {
+        "correct": "A Z in the middle slot makes the amplitudes (a, -a), and the final H sends that to |1>.",
+        "incorrect": "You need the relative sign flipped before the last H."
+      }
+    },
+    {
+      "task_id": "1-8.capstone-a-role",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "The middle operation sets a relative sign; the final H is what converts it into a definite measured outcome.",
+        "incorrect": "Compare the probability bars immediately after the middle slot in both versions. They are identical there."
+      }
+    },
+    {
+      "task_id": "1-8.capstone-b",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "|1> -> |-> -> |+> -> |0>. Changing the input changed which relative sign the Z acts on.",
+        "incorrect": "Write out H|1> first. It is |->, not |+>."
+      }
+    },
+    {
+      "task_id": "1-8.capstone-c",
+      "kind": "run_reading",
+      "key": {"selection": "a"},
+      "reads_from_run": {
+        "exact_p0": "exact_probabilities[0]",
+        "count_0": "counts[|0>]",
+        "shots": "shots"
+      },
+      "tolerance": 0.001,
+      "feedback": {
+        "correct": "You read the exact probability, the observed count, and the shot total from three separate panels, and identified finite sampling as the reason they need not agree exactly.",
+        "incorrect": "Read each number from its own panel. The exact probability comes from the model; the count comes from your run."
+      }
+    },
+    {
+      "task_id": "1-8.revisit-grover",
+      "kind": "single_select",
+      "key": "a",
+      "feedback": {
+        "correct": "That is the chapter's central idea, and it is exactly what the oracle step was doing.",
+        "incorrect": "Think about what the Z gate did in Topic 1.7 before the final H arrived."
+      },
+      "records": {
+        "algorithm_id": "grover",
+        "status": "seen",
+        "note": "Recognizes phase-to-probability connection"
+      }
+    }
+  ]
+}

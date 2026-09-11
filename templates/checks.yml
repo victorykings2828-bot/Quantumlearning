@@ -1,0 +1,126 @@
+# Install as .github/workflows/checks.yml only after these commands exist.
+# This extends the supplied workflow. It is not an application test result.
+# Resolve verified official full SHA pins before the release baseline;
+# the supplied action majors are retained here rather than inventing hashes.
+name: Checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: quantum
+          POSTGRES_PASSWORD: ci_ephemeral_only
+          POSTGRES_DB: quantum_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U quantum -d quantum_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      APP_ENV: test
+      DATABASE_URL: postgresql+psycopg://quantum:ci_ephemeral_only@localhost:5432/quantum_test
+      SESSION_SECRET: ci-ephemeral-not-a-production-secret-0000000000000000
+      COOKIE_SECURE: "false"
+      PUBLIC_ORIGIN: http://127.0.0.1:5173
+      TUTOR_PROVIDER: fake
+      TUTOR_USAGE_MODE: internal_evaluation
+      NVIDIA_API_KEY: ""
+      CI: "true"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install pinned uv
+        run: python -m pip install uv==0.12.12
+      - name: Install backend from lock
+        run: uv sync --frozen
+        working-directory: backend
+      - name: Check backend lock consistency
+        run: uv lock --check
+        working-directory: backend
+      - name: Apply migrations
+        run: uv run --frozen alembic upgrade head
+        working-directory: backend
+      - name: Backend and integration tests
+        run: uv run --frozen pytest -q
+        working-directory: backend
+      - name: Backend lint
+        run: uv run --frozen ruff check .
+        working-directory: backend
+      - name: Backend formatting
+        run: uv run --frozen ruff format --check .
+        working-directory: backend
+      - name: Validate authored content and references
+        run: uv run --frozen python -m app.tools.validate_content
+        working-directory: backend
+      - name: Verify backend contract export
+        run: uv run --frozen python export_contracts.py --check
+        working-directory: backend
+      - name: Install frontend
+        run: npm ci
+        working-directory: frontend
+      - name: Generate API types
+        run: npm run generate:types
+        working-directory: frontend
+      - name: Require committed contract artifacts
+        run: git ls-files --error-unmatch contracts/openapi.json frontend/src/api/schema.d.ts
+      - name: Check generated contract drift
+        run: git diff --exit-code -- contracts/openapi.json frontend/src/api/schema.d.ts
+      - name: Frontend lint
+        run: npm run lint
+        working-directory: frontend
+      - name: TypeScript check
+        run: npm run typecheck
+        working-directory: frontend
+      - name: Frontend unit tests
+        run: npm run test:unit
+        working-directory: frontend
+      - name: Frontend production build
+        run: npm run build
+        working-directory: frontend
+      - name: Frontend formatting
+        run: npm run format:check
+        working-directory: frontend
+      - name: Install browser dependencies
+        run: npx --no-install playwright install --with-deps chromium
+        working-directory: frontend
+      - name: Browser E2E against real API and database
+        # playwright.config.ts starts FastAPI and Vite with inherited test env.
+        # Configure isolated database cleanup/fixtures; do not race unit fixtures.
+        run: npm run test:e2e
+        working-directory: frontend
+      - name: Upload failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-failure-diagnostics
+          path: |
+            frontend/playwright-report/
+            frontend/test-results/
+          if-no-files-found: ignore
+          retention-days: 7

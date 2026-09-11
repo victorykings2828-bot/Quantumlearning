@@ -1,0 +1,22 @@
+# Merge with existing patterns; do not overwrite project-specific exclusions.
+.env
+.env.*
+!.env.example
+!*.env.example
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+*.log
+.DS_Store
+Thumbs.db
+
+# Never ignore package-lock.json, uv.lock, migrations, content, or contracts.

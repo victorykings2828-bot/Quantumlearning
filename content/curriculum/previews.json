@@ -1,0 +1,92 @@
+{
+  "id": "previews",
+  "version": 1,
+  "algorithms": [
+    {
+      "id": "grover",
+      "title": "Search without an index",
+      "kind": "preview",
+      "publication": "published",
+      "result_label": "ideal_circuit_simulation",
+      "requires_prerequisites": false,
+      "summary": "One item in an unsorted list satisfies a hidden yes/no test. Compare checking candidates one at a time with a small Grover experiment you can steer.",
+      "problem_markdown": "You have N candidate labels. Exactly one of them satisfies a hidden yes/no test f(x). Your job is to return that label.\n\nA **query** is one use of that test. There is no sorted order and no index to exploit: this is the unstructured search problem.\n\nThe quantum method needs something stronger than a function you can call. It needs **coherent oracle access**: a reversible quantum operation encoding the same predicate. One quantum query can act on a superposition, but it does not hand you a readable list of every value of the predicate. Building that operation has a cost that sits outside the query count.",
+      "paradox_note": "The experiment generator knows which candidate you selected, because it has to construct the toy oracle. The search procedure is then demonstrated as if it could only reach the oracle. This is an instructional instance, not a useful search for an answer you already have.",
+      "classical_markdown": "Scanning in increasing order, the queried label, its yes/no answer, and the running query count are shown for each check.\n\nTwo stopping rules give different numbers, so we label which one is in use:\n\n- **Check every candidate, including the last:** mean (N+1)/2 checks, worst case N.\n- **Use the exactly-one-target promise to infer the final unchecked candidate:** mean (2N-1)/... see the table, worst case N-1.\n\nBoth are linear in N.\n\nFor a fixed budget of q queries with q < N, a strategy that checks q distinct candidates and guesses one unchecked candidate if all fail succeeds with probability **(q+1)/N**. A strategy that reports only confirmed successes reaches **q/N**. The guessing baseline is included so the comparison does not disadvantage classical search.",
+      "quantum_markdown": "Standard Grover prepares a uniform superposition, applies a phase oracle, applies a diffusion reflection, repeats that pair k times, then measures one candidate.\n\n**P(target) = sin^2((2k+1) x theta), with theta = arcsin(1/sqrt(N)).**\n\nThat expression assumes an ideal noiseless model, exactly one marked state, uniform initial preparation, the specified phase oracle, and the usual diffusion operation. It does not hold for arbitrary initial states.\n\nThe useful first probability peak is near k = pi/(4 theta) - 1/2. More iterations can move you past it and make things worse.\n\nThe algorithm uses O(sqrt(N)) oracle queries for constant success probability against classical linear query scaling. That is a **quadratic query advantage**. It is not a wall-clock claim about this web demo.",
+      "worked_example_markdown": "Take N = 4 and mark candidate 2, written |10>. Amplitudes are listed in the order |00>, |01>, |10>, |11>.\n\n| Step | Amplitudes | Probabilities | What to notice |\n|---|---|---|---|\n| Initial register | (1, 0, 0, 0) | (1, 0, 0, 0) | The reset register is a known basis state. |\n| Prepare uniformly | (1/2, 1/2, 1/2, 1/2) | (1/4, 1/4, 1/4, 1/4) | Every candidate is equally likely. |\n| Oracle | (1/2, 1/2, -1/2, 1/2) | (1/4, 1/4, 1/4, 1/4) | A sign changed. No probability changed. |\n| Diffusion | (0, 0, 1, 0) | (0, 0, 1, 0) | The marked outcome now has probability 1. |\n| Measurement | recorded outcome 2 | one observed candidate | A shot returns a candidate, not the amplitude table. |\n\nThe arithmetic: after the oracle the mean amplitude is 1/4. Diffusion maps each amplitude a to 2 x mean - a. Unmarked amplitudes become 1/2 - 1/2 = 0, and the marked amplitude becomes 1/2 - (-1/2) = 1.",
+      "overshoot_note": "The iteration table is evaluated from the formula above. Those are analytical predictions, not measured counts. Your run's numbers come from the simulator and appear in the result panels.",
+      "cost_note": "One 256-shot Grover histogram at k = 2 represents 256 complete preparations and 512 phase-oracle uses, before any optional candidate verification. It is not a single two-query search. There is no quantum speed multiplier in this app because there is no honest way to compute one here.",
+      "closing_question": "The oracle changed a sign before any probability changed. Why did the next operation make that sign matter?",
+      "closing_question_note": "This is saved as your first Grover mystery. Topic 1.8 returns to it.",
+      "controls": {
+        "candidates": [4, 8, 16],
+        "iterations": {"min": 0, "max": 8},
+        "shots": [1, 16, 64, 256, 1024],
+        "preparations": [
+          {"id": "uniform", "label": "Standard uniform preparation", "default": true},
+          {"id": "missing", "label": "What if preparation is missing?", "warning": "This variant starts in |0...0> and is explicitly outside the standard success formula. The uniform-start prediction curve does not apply to it, and it is not general amplitude amplification."}
+        ]
+      },
+      "sources": [
+        {"id": "S02", "title": "Unstructured search - IBM Quantum Learning", "url": "https://quantum.cloud.ibm.com/learning/en/courses/fundamentals-of-quantum-algorithms/grover-algorithm/unstructured-search"},
+        {"id": "S03", "title": "Grover analysis - IBM Quantum Learning", "url": "https://quantum.cloud.ibm.com/learning/en/courses/fundamentals-of-quantum-algorithms/grover-algorithm/analysis"},
+        {"id": "S04", "title": "Grover, A fast quantum mechanical algorithm for database search", "url": "https://arxiv.org/abs/quant-ph/9605043"}
+      ]
+    },
+    {
+      "id": "shor",
+      "title": "The Shor mystery",
+      "kind": "conceptual",
+      "publication": "published",
+      "result_label": "conceptual_walkthrough",
+      "persistent_label": "Conceptual walkthrough with exact classical arithmetic. No Shor circuit is executed.",
+      "requires_prerequisites": false,
+      "summary": "Factoring 15 is easy. We use it to reveal a method that connects factors to a hidden repetition pattern.",
+      "opening_note": "Factoring this tiny number demonstrates nothing about practical speed advantage. It is a way to see the shape of the method.",
+      "storyboard": [
+        {"id": "problem", "stage": "The factoring problem", "body": "Find integers greater than 1 whose product is 15.", "future_concept": null},
+        {"id": "base", "stage": "Choose a base", "body": "Use a = 2. First check gcd(2, 15) = 1, so 2 shares no factor with 15 and is a usable base.", "future_concept": "Modular arithmetic"},
+        {"id": "powers", "stage": "Repeated modular powers", "body": "Compute 2^x mod 15 for x = 0 to 7. The results are 1, 2, 4, 8, 1, 2, 4, 8. The pattern repeats.", "future_concept": "Modular arithmetic", "table": {"headers": ["x", "2^x mod 15"], "rows": [[0, 1], [1, 2], [2, 4], [3, 8], [4, 1], [5, 2], [6, 4], [7, 8]]}},
+        {"id": "period", "stage": "The hidden period", "body": "The smallest positive r with 2^r mod 15 = 1 is r = 4. That r is the order of 2 modulo 15.", "future_concept": null},
+        {"id": "subroutine", "stage": "The quantum subroutine", "body": "Controlled modular operations and phase estimation are the tools that find such an order on a quantum computer. Chapters 9 and 10 build them.", "future_concept": "Controlled operations, Eigenphases, QPE"},
+        {"id": "fourier", "stage": "Fourier analysis and measurement", "body": "An inverse QFT stage produces a sampled value related to a rational phase. It does not print r directly.", "future_concept": "QFT"},
+        {"id": "classical", "stage": "Classical processing", "body": "Rational reconstruction and verification turn that sample into an order candidate. Some measurements are unhelpful and the attempt has to be repeated.", "future_concept": "Classical post-processing"},
+        {"id": "factors", "stage": "The factors", "body": "With the valid order r = 4, compute gcd(2^2 - 1, 15) = gcd(3, 15) = 3 and gcd(2^2 + 1, 15) = gcd(5, 15) = 5. And 3 x 5 = 15.", "future_concept": null}
+      ],
+      "retry_note": "A full lesson has to teach the retries: an unsuitable order, an unhelpful measured phase, or a trivial gcd all send you back for another attempt.",
+      "complexity_note": "Shor's algorithm runs in polynomial time in the input bit length on the theoretical quantum model. A toy demonstration establishes nothing about the physical resources a large instance would need.",
+      "arithmetic_note": "The modular-power table above is explanatory classical arithmetic, computed on the server. Displaying it is not running quantum order finding.",
+      "future_concepts": ["Modular arithmetic", "Controlled operations", "Eigenphases", "QFT", "QPE", "Classical post-processing"],
+      "sources": [
+        {"id": "S05", "title": "Shor's algorithm - IBM Quantum Learning", "url": "https://quantum.cloud.ibm.com/learning/en/courses/fundamentals-of-quantum-algorithms/phase-estimation-and-factoring/shor-algorithm"},
+        {"id": "S06", "title": "Shor, Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms", "url": "https://arxiv.org/abs/quant-ph/9508027"}
+      ]
+    }
+  ],
+  "planned_lab_entries": [
+    {"id": "deutsch", "title": "Deutsch", "kind": "algorithm", "publication": "coming_soon", "summary": "Decide whether a one-bit Boolean function is constant or balanced. One ideal quantum query against two classical queries for exact identification.", "chapter": 5},
+    {"id": "bernstein-vazirani", "title": "Bernstein-Vazirani", "kind": "algorithm", "publication": "coming_soon", "summary": "Recover a hidden n-bit string from a parity oracle. One quantum query against n classical queries for exact recovery.", "chapter": 5},
+    {"id": "deutsch-jozsa", "title": "Deutsch-Jozsa", "kind": "algorithm", "publication": "coming_soon", "summary": "A promise problem with an exponential query separation against exact deterministic classical computation. Bounded-error randomized methods change that comparison.", "chapter": 5},
+    {"id": "simon", "title": "Simon", "kind": "algorithm", "publication": "coming_soon", "summary": "Measurement supplies constraints orthogonal to a hidden XOR string; a classical linear solve finishes the job.", "chapter": 7},
+    {"id": "qft", "title": "Quantum Fourier transform", "kind": "subroutine", "publication": "coming_soon", "summary": "A transform on amplitudes. It does not expose an amplitude vector to a single measurement.", "chapter": 8},
+    {"id": "qpe", "title": "Quantum phase estimation", "kind": "algorithm", "publication": "coming_soon", "summary": "Estimates an eigenvalue phase using controlled powers and an inverse QFT. Used inside other algorithms.", "chapter": 9},
+    {"id": "teleportation", "title": "Teleportation", "kind": "protocol", "publication": "coming_soon", "summary": "Transfers a state using an entangled pair and two classical bits. It transports no matter and sends no message faster than light.", "chapter": 3}
+  ],
+  "lab_modes": [
+    {"id": "preview", "label": "Preview", "meaning": "Curiosity experiment or conceptual story. No grade and no prerequisite mastery."},
+    {"id": "guided", "label": "Guided", "meaning": "Authored sequence with explicit checkpoints and hints."},
+    {"id": "experiment", "label": "Experiment", "meaning": "Change the allowed parameters and compare results."},
+    {"id": "build", "label": "Build", "meaning": "Construct and submit a circuit under stated constraints."}
+  ],
+  "evidence_levels": [
+    {"id": "seen", "label": "Seen", "evidence": "Opened an actual preview and reached its main result or story step."},
+    {"id": "understood", "label": "Understood", "evidence": "Passed an authored check about the algorithm's core mechanism and assumptions."},
+    {"id": "can_explain", "label": "Can Explain", "evidence": "Passed structured reasoning items about why the mechanism works."},
+    {"id": "can_modify", "label": "Can Modify", "evidence": "Changed a parameter or oracle successfully and predicted the effect."},
+    {"id": "can_build", "label": "Can Build", "evidence": "Constructed a valid solution under the algorithm's task constraints."},
+    {"id": "can_transfer", "label": "Can Transfer", "evidence": "Applied the mechanism to a new problem instance or encoding."},
+    {"id": "mastered", "label": "Mastered", "evidence": "Met published requirements across explanation, construction, modification and independent transfer."}
+  ],
+  "evidence_note": "These are evidence-backed capabilities with a suggested progression, not a fixed sequence. A learner may build a circuit before being able to explain it, and one successful build does not promote every lower level."
+}
