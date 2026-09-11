@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useApiQuery } from '@/app/useApi';
-import { useSession } from '@/app/session';
+import { useSession } from '@/app/useSession';
 import { Loading, Markdown, PageHeader, Panel } from '@/components/primitives';
 import { GroverExperiment } from '@/features/lab/GroverExperiment';
-import { useTutor } from '@/features/tutor/TutorContext';
+import { useTutor } from '@/features/tutor/useTutor';
 
 interface IntroductionResponse {
   eyebrow: string;

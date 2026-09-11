@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { CircuitEditor, buildCircuit } from './CircuitEditor';
+import { CircuitEditor } from './CircuitEditor';
+import { buildCircuit } from './circuit';
 
 describe('buildCircuit', () => {
   it('maps a named preset onto the validated schema', () => {

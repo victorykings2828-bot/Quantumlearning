@@ -16,8 +16,9 @@ import type {
   TaskResult,
   Topic,
 } from '@/api/types';
-import { useTutor } from '@/features/tutor/TutorContext';
-import { CircuitEditor, STATE_LABELS, buildCircuit } from './CircuitEditor';
+import { useTutor } from '@/features/tutor/useTutor';
+import { CircuitEditor } from './CircuitEditor';
+import { STATE_LABELS, buildCircuit } from './circuit';
 import { TaskForm, type Submission } from './TaskForm';
 
 export function LessonPage() {

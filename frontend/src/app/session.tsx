@@ -1,16 +1,6 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { startGuestSession } from '@/api/client';
-
-interface SessionState {
-  principalId: string | null;
-  created: boolean;
-  disclosure: string;
-  status: 'loading' | 'ready' | 'error';
-  error: string | null;
-  refresh: () => void;
-}
-
-const SessionContext = createContext<SessionState | null>(null);
+import { SessionContext, type SessionState } from './sessionContext';
 
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [principalId, setPrincipalId] = useState<string | null>(null);
@@ -57,12 +47,4 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   );
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
-}
-
-export function useSession(): SessionState {
-  const context = useContext(SessionContext);
-  if (!context) {
-    throw new Error('useSession must be used inside SessionProvider');
-  }
-  return context;
 }

@@ -48,12 +48,12 @@ Frontend (`cd frontend`):
 |---|---|
 | `npm install` | pass |
 | `npm run generate:types` | pass, `src/api/schema.d.ts` regenerated from the committed contract |
-| `npm run lint` | pass (5 react-refresh warnings, no errors) |
+| `npm run lint` | pass, **no errors and no warnings** |
 | `npm run typecheck` | pass |
 | `npm run test:unit` | **18 passed** |
 | `npm run build` | pass |
 | `npm run format:check` | pass |
-| `npm run test:e2e` | **32 passed** in 36 s (Chromium against the real API and PostgreSQL) |
+| `npm run test:e2e` | **32 passed** in 38 s (Chromium against the real API and PostgreSQL). This sandbox's preinstalled Chromium is an older build than the one the pinned Playwright expects, so the run needs `PW_CHROMIUM_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome`. On an ordinary machine `npx playwright install chromium` makes the variable unnecessary; CI installs the matching browser and does not set it |
 
 ## What the browser suite covers
 
@@ -124,6 +124,28 @@ capability refusal; keyboard-only laboratory use; phone-width layout.
 17. **A blocked connection was reported as a generic transport error.** The
     adapter now distinguishes a proxy refusal and a connection failure from a
     rejected credential, and says which it is.
+
+## Lint cleanliness (react-refresh)
+
+ESLint's `react-refresh/only-export-components` rule fired on six files that
+exported a React component *and* a hook or context object from the same module.
+The rule is not cosmetic: a mixed module breaks fast refresh, so an edit during
+development remounts the tree and silently discards component state.
+
+The fix separates the concerns rather than disabling the rule. Contexts and
+hooks now live in their own modules and the component files import them:
+
+| New module | What it holds |
+|---|---|
+| `src/app/sessionContext.ts` | the guest-session context object |
+| `src/app/useSession.ts` | the `useSession` hook |
+| `src/features/tutor/context.ts` | the tutor context object and its types |
+| `src/features/tutor/useTutor.ts` | the `useTutor` hook |
+| `src/features/lesson/circuit.ts` | circuit helpers shared by the editor and its tests |
+
+`npm run lint` now reports no errors and no warnings, and the full browser
+suite passes unchanged after the move, which is what establishes that the
+refactor is behaviour-preserving.
 
 ## Known limitations
 

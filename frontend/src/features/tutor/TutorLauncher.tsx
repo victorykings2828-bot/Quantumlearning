@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { api, ApiError } from '@/api/client';
 import { Markdown } from '@/components/primitives';
 import type { TutorAnswer } from '@/api/types';
-import { useTutor } from './TutorContext';
+import { useTutor } from './useTutor';
 
 interface Turn {
   id: string;

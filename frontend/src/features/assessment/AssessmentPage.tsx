@@ -4,8 +4,9 @@ import { api, ApiError } from '@/api/client';
 import { useApiQuery } from '@/app/useApi';
 import { ErrorBanner, Loading, PageHeader, Panel } from '@/components/primitives';
 import type { CircuitSpec, OperationName } from '@/api/types';
-import { useTutor } from '@/features/tutor/TutorContext';
-import { CircuitEditor, buildCircuit } from '@/features/lesson/CircuitEditor';
+import { useTutor } from '@/features/tutor/useTutor';
+import { CircuitEditor } from '@/features/lesson/CircuitEditor';
+import { buildCircuit } from '@/features/lesson/circuit';
 
 interface AssessmentItem {
   number: number;

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { TutorLauncher } from '@/features/tutor/TutorLauncher';
-import { useTutor } from '@/features/tutor/TutorContext';
-import { useSession } from './session';
+import { useTutor } from '@/features/tutor/useTutor';
+import { useSession } from './useSession';
 
 const NAV = [
   { to: '/', label: 'Introduction', end: true },

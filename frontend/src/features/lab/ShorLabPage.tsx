@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { api } from '@/api/client';
 import { useApiQuery } from '@/app/useApi';
 import { Loading, PageHeader, Panel } from '@/components/primitives';
-import { useTutor } from '@/features/tutor/TutorContext';
+import { useTutor } from '@/features/tutor/useTutor';
 
 interface StoryboardStage {
   id: string;

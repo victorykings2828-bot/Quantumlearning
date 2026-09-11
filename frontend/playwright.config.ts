@@ -26,6 +26,7 @@ export default defineConfig({
   timeout: 60_000,
   expect: { timeout: 10_000 },
   reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : [['list']],
+  globalSetup: './e2e/global-setup.ts',
   use: {
     baseURL,
     trace: 'retain-on-failure',
@@ -49,9 +50,11 @@ export default defineConfig({
     {
       command: `uv run --frozen uvicorn app.main:app --host 127.0.0.1 --port ${API_PORT}`,
       cwd: '../backend',
-      url: `http://127.0.0.1:${API_PORT}/api/v1/health/ready`,
+      url: `http://127.0.0.1:${API_PORT}/api/v1/health/live`,
       reuseExistingServer: !process.env.CI,
-      timeout: 120_000,
+      timeout: 180_000,
+      stdout: 'pipe',
+      stderr: 'pipe',
       env: {
         APP_ENV: 'test',
         DATABASE_URL: databaseUrl,
@@ -63,10 +66,12 @@ export default defineConfig({
       },
     },
     {
-      command: `npm run dev -- --port ${PORT} --strictPort`,
+      command: `npm run dev -- --host 127.0.0.1 --port ${PORT} --strictPort`,
       url: baseURL,
       reuseExistingServer: !process.env.CI,
-      timeout: 120_000,
+      timeout: 180_000,
+      stdout: 'pipe',
+      stderr: 'pipe',
       env: { VITE_API_PROXY_TARGET: `http://127.0.0.1:${API_PORT}` },
     },
   ],

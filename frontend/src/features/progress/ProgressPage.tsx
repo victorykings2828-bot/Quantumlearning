@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '@/api/client';
 import { useApiQuery } from '@/app/useApi';
-import { useSession } from '@/app/session';
+import { useSession } from '@/app/useSession';
 import { ErrorBanner, Loading, PageHeader, Panel } from '@/components/primitives';
 import type { ChapterProgress } from '@/api/types';
 

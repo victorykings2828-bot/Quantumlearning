@@ -1,25 +1,5 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-  type ReactNode,
-} from 'react';
-
-export interface TutorScope {
-  topicId: string | null;
-  runId: string | null;
-  runLabel: string | null;
-  stepIndex: number | null;
-  mode: 'practice' | 'test';
-}
-
-interface TutorState extends TutorScope {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  setContext: (scope: Partial<TutorScope>) => void;
-}
+import { useCallback, useMemo, useState, type ReactNode } from 'react';
+import { TutorCtx, type TutorScope, type TutorState } from './context';
 
 const EMPTY: TutorScope = {
   topicId: null,
@@ -28,8 +8,6 @@ const EMPTY: TutorScope = {
   stepIndex: null,
   mode: 'practice',
 };
-
-const TutorCtx = createContext<TutorState | null>(null);
 
 export function TutorProvider({ children }: { children: ReactNode }) {
   const [scope, setScope] = useState<TutorScope>(EMPTY);
@@ -53,12 +31,4 @@ export function TutorProvider({ children }: { children: ReactNode }) {
   );
 
   return <TutorCtx.Provider value={value}>{children}</TutorCtx.Provider>;
-}
-
-export function useTutor(): TutorState {
-  const context = useContext(TutorCtx);
-  if (!context) {
-    throw new Error('useTutor must be used inside TutorProvider');
-  }
-  return context;
 }

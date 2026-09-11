@@ -26,3 +26,6 @@ backend/.venv/
 frontend/node_modules/
 frontend/dist/
 .uv-cache/
+
+# TypeScript incremental build cache
+*.tsbuildinfo

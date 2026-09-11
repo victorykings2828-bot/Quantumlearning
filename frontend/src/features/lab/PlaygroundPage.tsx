@@ -9,8 +9,8 @@ import {
 } from '@/components/charts';
 import { Loading, Markdown, PageHeader, Panel } from '@/components/primitives';
 import type { CircuitSpec, InitialStateName, Operation, RunRecord } from '@/api/types';
-import { useTutor } from '@/features/tutor/TutorContext';
-import { STATE_LABELS, initialStateSpec } from '@/features/lesson/CircuitEditor';
+import { useTutor } from '@/features/tutor/useTutor';
+import { STATE_LABELS, initialStateSpec } from '@/features/lesson/circuit';
 
 /** A placed operation, with the wires it acts on. */
 interface Placed {

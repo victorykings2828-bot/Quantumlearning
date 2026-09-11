@@ -4,7 +4,7 @@ import { useApiQuery } from '@/app/useApi';
 import { AmplitudeChart, CountsChart, ProbabilityChart } from '@/components/charts';
 import { Panel } from '@/components/primitives';
 import type { GroverRunRecord } from '@/api/types';
-import { useTutor } from '@/features/tutor/TutorContext';
+import { useTutor } from '@/features/tutor/useTutor';
 
 const CANDIDATES = [4, 8, 16] as const;
 const SHOTS = [1, 16, 64, 256, 1024] as const;
