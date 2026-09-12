@@ -147,6 +147,38 @@ hooks now live in their own modules and the component files import them:
 suite passes unchanged after the move, which is what establishes that the
 refactor is behaviour-preserving.
 
+## The one-command launchers
+
+`start.sh` (macOS, Linux) and `start.ps1` (Windows) reduce starting the demo to
+a single command. Each one checks that Docker is installed and running, creates
+`backend/.env` from the example on first run, starts the stack detached, then
+**polls the site until it answers** before printing "Ready". `docker compose up
+--wait` is deliberately not used: it has a rough edge with the one-shot
+`migrate` service, and polling the URL verifies the thing that actually matters.
+
+What was exercised here, with a stub `docker` on the PATH where a real one
+could not be used:
+
+| Path | How it was tested | Result |
+|---|---|---|
+| Docker missing | isolated PATH with no `docker` | prints the install instructions, exits 1 |
+| Start succeeds | stub `docker`, a real server on 8080 | polls, prints Ready, exits 0 |
+| Containers fail to start | real `docker`, base-image pull blocked by this sandbox | prints the failure and how to see logs, exits 1 |
+| Site never answers | stub `docker`, dead port | gives up after the timeout, exits 1 |
+| `--stop` | stub `docker` | runs `compose down`, exits 0 |
+| `--help` | direct | prints usage only |
+
+**`start.ps1` has not been executed.** No PowerShell exists in this build
+environment. It is a line-by-line translation of the shell script whose logic
+was tested, but it is unrun, and that is the one part of the quickstart a
+Windows user would be the first to try.
+
+**A full `docker compose up` has still never completed anywhere.** CI builds
+the backend image successfully, and `docker compose config` validates the
+stack, but this sandbox cannot pull the `postgres:17` and `python:3.12-slim`
+base layers (403 through its network policy), so the assembled stack has not
+been observed running. The launchers are written against that unverified path.
+
 ## Known limitations
 
 - **Live NVIDIA verification is still pending, and cannot be completed from

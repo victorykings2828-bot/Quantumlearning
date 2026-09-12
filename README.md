@@ -71,26 +71,46 @@ On macOS the first line is `cd ~` instead; everything else is identical.
 
 ### Step 4 — start it
 
+One command. On **Windows**:
+
 ```powershell
-docker compose up --build
+.\start.ps1
+```
+
+On **macOS**:
+
+```bash
+./start.sh
 ```
 
 The first run downloads and builds everything, so it takes five to fifteen
-minutes. You will see a lot of scrolling text. That is normal. Wait until the
-scrolling stops and you see lines mentioning `api` and `web`.
+minutes. You will see a lot of scrolling text. That is normal.
 
-Leave this window open. Closing it stops the app.
+The script checks that Docker is running, creates your configuration file if
+this is the first time, starts everything, and then waits until the site
+actually answers before telling you it is ready. It opens your browser for you.
+
+If it says Docker is not installed or not running, do what it says and run it
+again. It is safe to run as many times as you like.
 
 ### Step 5 — use it
 
-Open your browser at **<http://localhost:8080>**.
+Your browser should already be at **<http://localhost:8080>**. If not, open
+that address yourself.
 
 That is the whole demo: the introduction, the search experiment, all eight
 Chapter 1 topics, the assessment and the laboratory. No sign-up, no account.
 
-To stop it, click the terminal window and press **Ctrl+C**. To start it again
-later, `cd` back into the folder and run `docker compose up` (no `--build`
-needed the second time).
+You can close the terminal window — the app keeps running.
+
+| To do this | Run this (macOS) | Run this (Windows) |
+|---|---|---|
+| Stop it | `./start.sh --stop` | `.\start.ps1 -Stop` |
+| Start it again | `./start.sh` | `.\start.ps1` |
+| See what it is doing | `./start.sh --logs` | `.\start.ps1 -Logs` |
+
+Stopping keeps your saved progress. Starting again takes about twenty seconds,
+because nothing needs building the second time.
 
 ### Step 6 — turn on the AI tutor (optional)
 
@@ -337,6 +357,8 @@ cd backend && DATABASE_URL=postgresql+psycopg://quantum:quantum_local_only@127.0
 ## Repository layout
 
 ```
+start.sh     One-command launcher for macOS and Linux
+start.ps1    One-command launcher for Windows
 backend/     FastAPI, the Qiskit engine, evaluator, tutor, Alembic migrations
 frontend/    React, TypeScript, Vite, Playwright browser tests
 content/     Versioned curriculum, private rubrics, tutor knowledge and policy
