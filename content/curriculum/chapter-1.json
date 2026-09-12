@@ -2168,5 +2168,23 @@
         ]
       }
     }
+  ],
+  "recap": [
+    [
+      "Bit",
+      "A classical value: 0 or 1."
+    ],
+    [
+      "Probability",
+      "A number from 0 to 1; all mutually exclusive outcomes sum to 1."
+    ],
+    [
+      "Circuit",
+      "A sequence of instructions read in execution order."
+    ],
+    [
+      "Sample",
+      "An observed result; several samples need not exactly match the predicted proportions."
+    ]
   ]
 }

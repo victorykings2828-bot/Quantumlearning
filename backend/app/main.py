@@ -12,7 +12,7 @@ from typing import Any
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
-from app.api import routes_assessment, routes_core, routes_lab, routes_tutor
+from app.api import routes_assessment, routes_core, routes_lab, routes_learning, routes_tutor
 from app.config import get_settings
 from app.quantum.errors import CircuitRejected
 
@@ -47,6 +47,7 @@ def create_app() -> FastAPI:
         )
 
     for router in (
+        routes_learning.router,
         routes_core.router,
         routes_lab.router,
         routes_assessment.router,

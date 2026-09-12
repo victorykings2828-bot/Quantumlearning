@@ -1,0 +1,893 @@
+{
+  "version": 1,
+  "calibrated": false,
+  "items": [
+    {
+      "id": "2-1-A",
+      "topic_id": "2-1",
+      "family": "2-1-A",
+      "version": 1,
+      "question": "For (√3/2, i/2), what is P(1)?",
+      "options": [
+        "0.25",
+        "−0.25",
+        "0.5"
+      ],
+      "key": 0,
+      "prompt": "Explain why an imaginary amplitude still gives a real, nonnegative probability. Then multiply both amplitudes by i: what changes physically?",
+      "reference": "Squared magnitude sums squares of real and imaginary parts. P1=1/4. A common phase changes no physical prediction.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Squared magnitude sums squares of real and imaginary parts. P1=1/4. A common phase changes no physical prediction."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct concrete changed-condition prediction with reasoning"
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "2-1-B",
+      "topic_id": "2-1",
+      "family": "2-1-B",
+      "version": 1,
+      "question": "What is the squared magnitude of (3+4i)/5?",
+      "options": [
+        "1",
+        "−7/25",
+        "7/5"
+      ],
+      "key": 0,
+      "prompt": "Explain why (3+4i)/5 is a valid unit-length amplitude. Compare it with 3/5 alone.",
+      "reference": "Squared magnitude=(9+16)/25=1, whereas |3/5|²=.36. Phase and magnitude are distinct.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Squared magnitude=(9+16)/25=1, whereas |3/5|²=.36. Phase and magnitude are distinct."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct changed-condition comparison explicitly requested by this question."
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "2-2-A",
+      "topic_id": "2-2",
+      "family": "2-2-A",
+      "version": 1,
+      "question": "Starting from |0⟩, X then H produces:",
+      "options": [
+        "|+⟩",
+        "|−⟩",
+        "|1⟩"
+      ],
+      "key": 1,
+      "prompt": "Explain why identical Z probabilities do not make X→H and H→X equivalent. Name a measurement that distinguishes their outputs.",
+      "reference": "Matrix order matters. Outputs minus and plus differ by relative phase; X readout distinguishes them.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Matrix order matters. Outputs minus and plus differ by relative phase; X readout distinguishes them."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct concrete changed-condition prediction with reasoning"
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "2-2-B",
+      "topic_id": "2-2",
+      "family": "2-2-B",
+      "version": 1,
+      "question": "Starting at |1⟩, H then Z produces:",
+      "options": [
+        "|−⟩",
+        "|+⟩",
+        "|0⟩"
+      ],
+      "key": 1,
+      "prompt": "Calculate H then Z on |1⟩. Would reversing the gate order give the same physical state? Explain with amplitudes.",
+      "reference": "HZ in time gives plus. Z thenH gives minus up to globalphase; relative signs differ and X readout distinguishes.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "HZ in time gives plus. Z thenH gives minus up to globalphase; relative signs differ and X readout distinguishes."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct changed-condition comparison explicitly requested by this question."
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "2-3-A",
+      "topic_id": "2-3",
+      "family": "2-3-A",
+      "version": 1,
+      "question": "Which state is on the +y axis?",
+      "options": [
+        "|+⟩",
+        "|0⟩",
+        "(|0⟩+i|1⟩)/√2"
+      ],
+      "key": 2,
+      "prompt": "A qubit lies on the equator. Predict its Z probabilities and explain why its longitude still matters.",
+      "reference": "z=0 gives equal Z probabilities; longitude encodes relative phase and changes X/Y probabilities.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "z=0 gives equal Z probabilities; longitude encodes relative phase and changes X/Y probabilities."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct concrete changed-condition prediction with reasoning"
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "2-3-B",
+      "topic_id": "2-3",
+      "family": "2-3-B",
+      "version": 1,
+      "question": "A pure qubit has Bloch z=−1. PZ(1) is:",
+      "options": [
+        "0",
+        "0.5",
+        "1"
+      ],
+      "key": 2,
+      "prompt": "Locate this state on the sphere and explain why changing longitude at this pole does not change the physical state.",
+      "reference": "South pole |1>; P1=1; the sole nonzero amplitude phase is global, longitude is not a distinct state at a pole.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "South pole |1>; P1=1; the sole nonzero amplitude phase is global, longitude is not a distinct state at a pole."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct changed-condition comparison explicitly requested by this question."
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "2-4-A",
+      "topic_id": "2-4",
+      "family": "2-4-A",
+      "version": 1,
+      "question": "For H→P(π/2)→H on |0⟩, P0 is:",
+      "options": [
+        "1",
+        "0.5",
+        "0"
+      ],
+      "key": 1,
+      "prompt": "At which step can the Z chart first change with φ, and why? Predict the final result for φ=π.",
+      "reference": "P changes phase while intermediate Z odds stay half; final H interferes amplitudes. At pi final P0=0.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "P changes phase while intermediate Z odds stay half; final H interferes amplitudes. At pi final P0=0."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct concrete changed-condition prediction with reasoning"
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "2-4-B",
+      "topic_id": "2-4",
+      "family": "2-4-B",
+      "version": 1,
+      "question": "H→P(2π)→H on |0⟩ has P0:",
+      "options": [
+        "0",
+        "0.5",
+        "1"
+      ],
+      "key": 2,
+      "prompt": "Compare phase 0, π and 2π in the interferometer. Explain the repeated result at 2π.",
+      "reference": "Phase0 and2pi yield0 certainly; pi yields1. Complexphase is periodic and finalH converts relativephase to probability.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Phase0 and2pi yield0 certainly; pi yields1. Complexphase is periodic and finalH converts relativephase to probability."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct changed-condition comparison explicitly requested by this question."
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "2-5-A",
+      "topic_id": "2-5",
+      "family": "2-5-A",
+      "version": 1,
+      "question": "Which chronological sequence implements Y readout?",
+      "options": [
+        "H then S†",
+        "S† then H",
+        "Z then H"
+      ],
+      "key": 1,
+      "prompt": "Predict Y outcomes for |+i⟩, then explain how to read Y using a Z measurement device.",
+      "reference": "Y+ gives +1 certainly; S dagger followed by H maps Y basis to Z.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Y+ gives +1 certainly; S dagger followed by H maps Y basis to Z."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct concrete changed-condition prediction with reasoning"
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "2-5-B",
+      "topic_id": "2-5",
+      "family": "2-5-B",
+      "version": 1,
+      "question": "Y measurement of (|0⟩−i|1⟩)/√2 produces:",
+      "options": [
+        "+1 certainly",
+        "−1 certainly",
+        "Equal outcomes"
+      ],
+      "key": 1,
+      "prompt": "Give the pre-readout state and the result of S† then H. Explain why a final Z bit 1 is labelled Y eigenvalue −1.",
+      "reference": "Yminus becomes |1> up tophase afterSdagH; bit1 encodes Yminus eigenvalue.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Yminus becomes |1> up tophase afterSdagH; bit1 encodes Yminus eigenvalue."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct changed-condition comparison explicitly requested by this question."
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "2-6-A",
+      "topic_id": "2-6",
+      "family": "2-6-A",
+      "version": 1,
+      "question": "Does a 50/50 Z chart uniquely identify |+⟩?",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "key": 1,
+      "prompt": "Give two states with the same Z chart and design a new measurement to distinguish them. Predict that measurement for both.",
+      "reference": "Plus and minus both have half Z probabilities but deterministic opposite X outcomes.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Plus and minus both have half Z probabilities but deterministic opposite X outcomes."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct concrete changed-condition prediction with reasoning"
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "2-6-B",
+      "topic_id": "2-6",
+      "family": "2-6-B",
+      "version": 1,
+      "question": "Which measurements determine all three Bloch coordinates from repeated identical preparations?",
+      "options": [
+        "Z only",
+        "X and Z only",
+        "X, Y and Z"
+      ],
+      "key": 2,
+      "prompt": "Explain what Y adds if X and Z statistics are already known. Give two states that those two axes cannot distinguish.",
+      "reference": "Y reveals imaginarycoherence; plusi/minusi bothXandZhalfbut oppositeY. Repeatedpreparations necessary; finitecountsuncertain.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Y reveals imaginarycoherence; plusi/minusi bothXandZhalfbut oppositeY. Repeatedpreparations necessary; finitecountsuncertain."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct changed-condition comparison explicitly requested by this question."
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "3-1-A",
+      "topic_id": "3-1",
+      "family": "3-1-A",
+      "version": 1,
+      "question": "q2=1, q1=0, q0=1 gives index:",
+      "options": [
+        "3",
+        "5",
+        "6"
+      ],
+      "key": 1,
+      "prompt": "Explain why X on q0 produces |01⟩ rather than |10⟩. Extend the rule to three qubits.",
+      "reference": "q0 rightmost least significant; integer index sums bit times 2 to qubit index.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "q0 rightmost least significant; integer index sums bit times 2 to qubit index."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct concrete changed-condition prediction with reasoning"
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "3-1-B",
+      "topic_id": "3-1",
+      "family": "3-1-B",
+      "version": 1,
+      "question": "Starting at |10⟩, X(q0) produces:",
+      "options": [
+        "|00⟩",
+        "|11⟩",
+        "|01⟩"
+      ],
+      "key": 1,
+      "prompt": "Track both wires and the integer index before and after X(q0). Explain which bit in the label changes.",
+      "reference": "q1 remains1, q0 goes0to1, rightmost changes, index2to3.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "q1 remains1, q0 goes0to1, rightmost changes, index2to3."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct changed-condition comparison explicitly requested by this question."
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "3-2-A",
+      "topic_id": "3-2",
+      "family": "3-2-A",
+      "version": 1,
+      "question": "q1=|+⟩, q0=|1⟩ can produce:",
+      "options": [
+        "00 and 11",
+        "01 and 11",
+        "00 and 10"
+      ],
+      "key": 1,
+      "prompt": "For q1=(.6,.8), q0=|+⟩, calculate joint probabilities and the probability q1=1.",
+      "reference": "Joint .18,.18,.32,.32; marginal q1=1 is .64; tensor amplitudes then square.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Joint .18,.18,.32,.32; marginal q1=1 is .64; tensor amplitudes then square."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct concrete changed-condition prediction with reasoning"
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "3-2-B",
+      "topic_id": "3-2",
+      "family": "3-2-B",
+      "version": 1,
+      "question": "q1=(.6,.8), q0=|+⟩. P(10) is:",
+      "options": [
+        "0.18",
+        "0.32",
+        "0.64"
+      ],
+      "key": 1,
+      "prompt": "Calculate the amplitude of 10 and its probability, then sum outcomes to obtain P(q1=1).",
+      "reference": "Amplitude .8/sqrt2; squared=.32. P10+P11=.64. Tensorordering q1q0.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Amplitude .8/sqrt2; squared=.32. P10+P11=.64. Tensorordering q1q0."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct changed-condition comparison explicitly requested by this question."
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "3-3-A",
+      "topic_id": "3-3",
+      "family": "3-3-A",
+      "version": 1,
+      "question": "Does CX always create entanglement?",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "key": 1,
+      "prompt": "Give a concrete input on which CX does not create entanglement and explain its output. Then give an input that does.",
+      "reference": "00 stays00 or ++ stays++; + on control and0 target yields Bell.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "00 stays00 or ++ stays++; + on control and0 target yields Bell."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct concrete changed-condition prediction with reasoning"
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "3-3-B",
+      "topic_id": "3-3",
+      "family": "3-3-B",
+      "version": 1,
+      "question": "CX(q0,q1) on q0=1, q1=+ produces:",
+      "options": [
+        "An entangled state",
+        "The same product state",
+        "Both qubits zero"
+      ],
+      "key": 1,
+      "prompt": "Explain why a target in |+⟩ is unchanged by this controlled X even when the control is 1.",
+      "reference": "Xplus=plus; targetunchanged and inputproductremainsproduct; CX not sufficient byitself.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Xplus=plus; targetunchanged and inputproductremainsproduct; CX not sufficient byitself."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct changed-condition comparison explicitly requested by this question."
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "3-4-A",
+      "topic_id": "3-4",
+      "family": "3-4-A",
+      "version": 1,
+      "question": "Equal Z outcomes prove entanglement:",
+      "options": [
+        "True",
+        "False"
+      ],
+      "key": 1,
+      "prompt": "Why does a 50/50 chart on 00 and 11 fail to prove entanglement? Describe a different measurement for the Bell-versus-mixture comparison.",
+      "reference": "Classical equal mixture sameZ; Bell gives correlatedX, mixture uniformX. Not universal entanglement test.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Classical equal mixture sameZ; Bell gives correlatedX, mixture uniformX. Not universal entanglement test."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct concrete changed-condition prediction with reasoning"
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "3-4-B",
+      "topic_id": "3-4",
+      "family": "3-4-B",
+      "version": 1,
+      "question": "Φ−=(|00⟩−|11⟩)/√2 measured in X has:",
+      "options": [
+        "Always equal results",
+        "Always opposite results",
+        "Four equally likely results"
+      ],
+      "key": 1,
+      "prompt": "Compare Φ− and Φ+ in Z and X. Explain why changing the relative sign matters.",
+      "reference": "SameZ only00/11. X Φminus only01/10 versus Φplus00/11. Relativecoherence causes interference.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "SameZ only00/11. X Φminus only01/10 versus Φplus00/11. Relativecoherence causes interference."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct changed-condition comparison explicitly requested by this question."
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "3-5-A",
+      "topic_id": "3-5",
+      "family": "3-5-A",
+      "version": 1,
+      "question": "For .6|00⟩+.8|11⟩, P(q1=1) is:",
+      "options": [
+        "0.8",
+        "0.64",
+        "0.5"
+      ],
+      "key": 1,
+      "prompt": "Both qubits have 50/50 marginal charts. What information is missing? Compare Bell and independent plus preparations.",
+      "reference": "Marginals hide joint correlations; Bell only00/11 while ++ allfour equally.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Marginals hide joint correlations; Bell only00/11 while ++ allfour equally."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct concrete changed-condition prediction with reasoning"
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "3-5-B",
+      "topic_id": "3-5",
+      "family": "3-5-B",
+      "version": 1,
+      "question": "For .6|00⟩+.8|11⟩, P(q1=1 given q0=1) is:",
+      "options": [
+        "0.64",
+        "0.8",
+        "1"
+      ],
+      "key": 2,
+      "prompt": "Calculate this conditional probability from joint probabilities. Explain why the unconditional marginal gives a different number.",
+      "reference": "Conditional=.64/.64=1; marginal=.64 includes bothpossibleq0; denominatorcondition matters.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Conditional=.64/.64=1; marginal=.64 includes bothpossibleq0; denominatorcondition matters."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct changed-condition comparison explicitly requested by this question."
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "3-6-A",
+      "topic_id": "3-6",
+      "family": "3-6-A",
+      "version": 1,
+      "question": "A zero local Bloch vector alone proves entanglement:",
+      "options": [
+        "True",
+        "False"
+      ],
+      "key": 1,
+      "prompt": "Give a separable state with zero local Bloch vectors. Explain what extra assumption makes local mixedness evidence of entanglement.",
+      "reference": "Equal00/11 mixture is separable with I/2 locals; pure joint assumption needed.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Equal00/11 mixture is separable with I/2 locals; pure joint assumption needed."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct concrete changed-condition prediction with reasoning"
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "3-6-B",
+      "topic_id": "3-6",
+      "family": "3-6-B",
+      "version": 1,
+      "question": "A known pure joint state has a mixed reduced state. Is it entangled?",
+      "options": [
+        "Yes",
+        "No",
+        "Never decidable"
+      ],
+      "key": 0,
+      "prompt": "Explain why the pure-joint assumption matters. Give a mixed separable counterexample if that assumption is removed.",
+      "reference": "Pureproduct haspurereduced; hencepurejointmixedlocal meansentangled. Equal00/11classicalmixture counterexamplewithoutpurity.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Pureproduct haspurereduced; hencepurejointmixedlocal meansentangled. Equal00/11classicalmixture counterexamplewithoutpurity."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct changed-condition comparison explicitly requested by this question."
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "3-7-A",
+      "topic_id": "3-7",
+      "family": "3-7-A",
+      "version": 1,
+      "question": "m0=1, m1=0 requires:",
+      "options": [
+        "X",
+        "Z",
+        "No correction"
+      ],
+      "key": 1,
+      "prompt": "Why does teleportation require classical communication? Explain correction branch 11 and why the input is not copied.",
+      "reference": "ApplyX thenZ branch11; unknown outcome ensemble Bob I/2 until message; Alice original measured consumed.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "ApplyX thenZ branch11; unknown outcome ensemble Bob I/2 until message; Alice original measured consumed."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct concrete changed-condition prediction with reasoning"
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "3-7-B",
+      "topic_id": "3-7",
+      "family": "3-7-B",
+      "version": 1,
+      "question": "For m0=1,m1=1, Bob applies:",
+      "options": [
+        "X only",
+        "Z only",
+        "X then Z"
+      ],
+      "key": 2,
+      "prompt": "Explain why checking only the 00 branch is insufficient. What is Bob’s state if the classical message is unknown?",
+      "reference": "Allfourbranches need correction; 00 needsnone butothersdo. UnknownmessageensembleBobI/2, no usable fasterthanlight signal.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Allfourbranches need correction; 00 needsnone butothersdo. UnknownmessageensembleBobI/2, no usable fasterthanlight signal."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct changed-condition comparison explicitly requested by this question."
+        }
+      },
+      "followup": "What would change if you used a different preparation or measurement basis? Predict before trying it."
+    },
+    {
+      "id": "1-7-A",
+      "topic_id": "1-7",
+      "family": "1-7-A",
+      "version": 1,
+      "question": "H→Z→H on 0 gives:",
+      "options": [
+        "0",
+        "1",
+        "50/50"
+      ],
+      "key": 1,
+      "prompt": "Explain why Z can change the final result without changing the probabilities immediately after Z.",
+      "reference": "Z changes relative sign; finalH interferes amplitudes to1. HH instead returns0.",
+      "criteria": {
+        "claim": {
+          "0": "Incorrect claim or missing answer",
+          "1": "Partly correct or ambiguous claim",
+          "2": "Scientifically correct claim matching reference"
+        },
+        "mechanism": {
+          "0": "Missing mechanism or contradicts reference",
+          "1": "Relevant but incomplete mechanism",
+          "2": "Squared magnitude sums squares of real and imaginary parts. P1=1/4. A common phase changes no physical prediction."
+        },
+        "transfer": {
+          "0": "No changed-condition prediction or incorrect prediction",
+          "1": "Reasonable experiment without clear prediction",
+          "2": "Correct concrete changed-condition prediction with reasoning"
+        }
+      },
+      "followup": "Predict H→H and explain the difference."
+    }
+  ]
+}

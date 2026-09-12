@@ -6,7 +6,9 @@ export async function ensureSession(page: Page) {
     .poll(
       async () => {
         const cookies = await page.context().cookies();
-        return cookies.some((cookie) => cookie.name === 'qll_session');
+        return cookies.some(
+          (cookie) => cookie.name === (process.env.E2E_SESSION_COOKIE ?? 'qll_session'),
+        );
       },
       { timeout: 15_000 },
     )

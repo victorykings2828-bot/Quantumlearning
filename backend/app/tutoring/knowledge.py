@@ -15,11 +15,11 @@ from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
 
-from app.curriculum.loader import content_root
+from app.curriculum.loader import content_root, get_topic
 
 # Server allowlist. A file not named here is never retrieved, whatever its
 # frontmatter claims.
-ALLOWED_KNOWLEDGE_FILES = ("chapter-1", "math-prerequisites", "platform")
+ALLOWED_KNOWLEDGE_FILES = ("chapter-1", "chapter-2", "chapter-3", "math-prerequisites", "platform")
 
 # Per-passage topic scope, decided by the server. Frontmatter supplied inside a
 # knowledge file is a convenience for authors; it never widens what a given
@@ -130,7 +130,19 @@ def _load_file(path: Path) -> list[Passage]:
                 title=title,
                 text=text,
                 version=version,
-                topics=PASSAGE_TOPICS.get(passage_id, topics),
+                topics=(
+                    PASSAGE_TOPICS.get(passage_id, ())
+                    if file_id == "chapter-1"
+                    else (
+                        (f"ch{current_heading.removeprefix('topic-')}",)
+                        if current_heading.startswith("topic-")
+                        and get_topic(current_heading.removeprefix("topic-"))
+                        and current_heading.startswith(f"topic-{file_id[-1]}-")
+                        else ()
+                    )
+                    if file_id in {"chapter-2", "chapter-3"}
+                    else topics
+                ),
                 sources=sources,
             )
         )
@@ -206,7 +218,7 @@ def retrieve(
     for passage, score in bm25_scores(query):
         if score < minimum_score:
             continue
-        if allowed_topics and passage.topics and not (set(passage.topics) & allowed_topics):
+        if topic_ids is not None and not (set(passage.topics) & allowed_topics):
             continue
         results.append(passage)
         if len(results) >= limit:

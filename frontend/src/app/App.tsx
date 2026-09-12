@@ -5,6 +5,8 @@ import { TutorProvider } from '@/features/tutor/TutorContext';
 import { IntroductionPage } from '@/features/introduction/IntroductionPage';
 import { CoursePage } from '@/features/course/CoursePage';
 import { ChapterPage } from '@/features/course/ChapterPage';
+import { ChapterLesson } from '@/features/lesson/ChapterLesson';
+import { UnderstandingPage } from '@/features/assessment/UnderstandingPage';
 import { LessonPage } from '@/features/lesson/LessonPage';
 import { LabCatalogPage } from '@/features/lab/LabCatalogPage';
 import { GroverLabPage } from '@/features/lab/GroverLabPage';
@@ -27,6 +29,8 @@ export function App() {
               <Route path="/course" element={<CoursePage />} />
               <Route path="/course/:chapterId" element={<ChapterPage />} />
               <Route path="/learn/chapter-1/:topicId" element={<LessonPage />} />
+              <Route path="/learn/:chapterId/:topicId" element={<ChapterLesson />} />
+              <Route path="/evidence/:chapterId" element={<UnderstandingPage />} />
               <Route path="/assessments/chapter-1" element={<AssessmentPage />} />
               <Route path="/lab" element={<LabCatalogPage />} />
               <Route path="/lab/grover" element={<GroverLabPage />} />

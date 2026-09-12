@@ -12,7 +12,19 @@ from collections import Counter
 
 import numpy as np
 import qiskit
-from qiskit.circuit.library import CXGate, CZGate, HGate, XGate, ZGate
+from qiskit.circuit.library import (
+    CXGate,
+    CZGate,
+    HGate,
+    PhaseGate,
+    RXGate,
+    RYGate,
+    RZGate,
+    SdgGate,
+    SGate,
+    XGate,
+    ZGate,
+)
 from qiskit.quantum_info import Statevector
 
 from app.quantum.errors import CircuitRejected
@@ -35,6 +47,12 @@ _ZERO_MAGNITUDE = 1e-12
 _BRANCH_CUTOFF = 1e-12
 
 _OPERATION_LABELS = {
+    "s": "S gate",
+    "sdg": "S dagger",
+    "p": "Phase",
+    "ry": "Y rotation",
+    "rx": "X rotation",
+    "rz": "Z rotation",
     "x": "X gate",
     "h": "Hadamard",
     "z": "Z gate",
@@ -46,6 +64,12 @@ _OPERATION_LABELS = {
 
 
 def _gate(operation: Operation):
+    fixed = {"s": SGate, "sdg": SdgGate}
+    rotations = {"p": PhaseGate, "ry": RYGate, "rx": RXGate, "rz": RZGate}
+    if operation.op in fixed:
+        return fixed[operation.op](), list(operation.targets)
+    if operation.op in rotations:
+        return rotations[operation.op](operation.angle), list(operation.targets)
     if operation.op == "x":
         return XGate(), list(operation.targets)
     if operation.op == "h":

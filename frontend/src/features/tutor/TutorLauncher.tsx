@@ -29,6 +29,13 @@ export function TutorLauncher() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const requestId = useRef(0);
 
+  useEffect(() => {
+    requestId.current += 1;
+    setTurns([]);
+    setBusy(false);
+    setError(null);
+  }, [tutor.topicId, tutor.mode]);
+
   const close = useCallback(() => {
     tutor.setOpen(false);
   }, [tutor]);
@@ -79,6 +86,7 @@ export function TutorLauncher() {
           step_index: capturedStep,
           mode: tutor.mode ?? 'practice',
         });
+        if (id !== requestId.current) return;
         setTurns((current) => [
           ...current,
           {
@@ -93,13 +101,14 @@ export function TutorLauncher() {
           },
         ]);
       } catch (cause) {
+        if (id !== requestId.current) return;
         setError(
           cause instanceof ApiError
             ? cause.message
             : 'The tutor request failed. Your work is saved and unaffected.',
         );
       } finally {
-        setBusy(false);
+        if (id === requestId.current) setBusy(false);
       }
     },
     [busy, tutor.topicId, tutor.runId, tutor.runLabel, tutor.stepIndex, tutor.mode],
@@ -135,7 +144,7 @@ export function TutorLauncher() {
               <h2 className="panel__title">Course tutor</h2>
               <p className="note" style={{ margin: 0 }}>
                 {tutor.topicId
-                  ? `Scope: Topic ${tutor.topicId.replace('-', '.')}`
+                  ? `Scope: Chapters 1–${tutor.topicId.split('-')[0]} · Topic ${tutor.topicId.replace('-', '.')}`
                   : 'Scope: course overview'}
                 {tutor.runLabel ? ` · ${tutor.runLabel}` : ''}
                 {tutor.mode === 'test' ? ' · test mode' : ''}

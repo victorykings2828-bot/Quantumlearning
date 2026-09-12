@@ -67,9 +67,15 @@ test.describe('honesty and isolation', () => {
     const otherPage = await other.newPage();
     await otherPage.goto('/');
     await expect
-      .poll(async () => (await other.cookies()).some((c) => c.name === 'qll_session'), {
-        timeout: 15_000,
-      })
+      .poll(
+        async () =>
+          (await other.cookies()).some(
+            (c) => c.name === (process.env.E2E_SESSION_COOKIE ?? 'qll_session'),
+          ),
+        {
+          timeout: 15_000,
+        },
+      )
       .toBe(true);
     const status = await otherPage.evaluate(async (id) => {
       const response = await fetch(`/api/v1/runs/${id}`, { credentials: 'same-origin' });

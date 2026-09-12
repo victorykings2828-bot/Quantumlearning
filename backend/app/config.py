@@ -28,6 +28,8 @@ class Settings(BaseSettings):
     session_secret: str = "development-only-not-a-production-secret"
     session_ttl_days: int = 30
     cookie_secure: bool = False
+    session_cookie_name: str = Field(default="qll_session", pattern=r"^[a-zA-Z0-9_]{1,64}$")
+    csrf_cookie_name: str = Field(default="qll_csrf", pattern=r"^[a-zA-Z0-9_]{1,64}$")
 
     tutor_provider: TutorProvider = "authored"
     tutor_usage_mode: Literal["internal_evaluation", "production"] = "internal_evaluation"

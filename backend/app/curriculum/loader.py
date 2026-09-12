@@ -70,7 +70,7 @@ def load_playground() -> dict[str, Any]:
 
 @lru_cache
 def load_chapter(chapter_id: str) -> dict[str, Any]:
-    if chapter_id != "chapter-1":
+    if chapter_id not in {"chapter-1", "chapter-2", "chapter-3"}:
         raise KeyError(chapter_id)
     return _read(PUBLIC_DIR, chapter_id)
 
@@ -121,7 +121,7 @@ def public_topic(topic: dict[str, Any], *, include_body: bool = True) -> dict[st
 
 
 def get_topic(topic_id: str) -> dict[str, Any] | None:
-    for topic in load_chapter("chapter-1")["topics"]:
+    for topic in all_topics():
         if topic["id"] == topic_id:
             return topic
     return None
@@ -129,7 +129,7 @@ def get_topic(topic_id: str) -> dict[str, Any] | None:
 
 def get_task(task_id: str) -> tuple[dict[str, Any], dict[str, Any]] | None:
     """Return (topic, task) for an authored topic task."""
-    for topic in load_chapter("chapter-1")["topics"]:
+    for topic in all_topics():
         for task in topic.get("tasks", []):
             if task["id"] == task_id:
                 return topic, task
@@ -143,7 +143,7 @@ def get_hints(topic_id: str) -> list[dict[str, Any]]:
 
 def all_skills() -> set[str]:
     skills: set[str] = set()
-    for topic in load_chapter("chapter-1")["topics"]:
+    for topic in all_topics():
         skills.update(topic.get("skills", []))
     return skills
 
@@ -157,7 +157,10 @@ def content_versions() -> list[dict[str, Any]]:
         "beginner-bridge": (load_bridge(), "bridge"),
         "playground": (load_playground(), "playground"),
         "chapter-1": (load_chapter("chapter-1"), "chapter"),
+        "chapter-2": (load_chapter("chapter-2"), "chapter"),
+        "chapter-3": (load_chapter("chapter-3"), "chapter"),
         "chapter-1-assessment": (load_assessment(), "assessment"),
+        "understanding": (_read(PRIVATE_DIR, "understanding"), "assessment"),
     }
     return [
         {
@@ -182,3 +185,10 @@ def reset_cache() -> None:
         load_assessment,
     ):
         cached.cache_clear()
+
+
+def all_topics():
+    for chapter_id in ("chapter-1", "chapter-2", "chapter-3"):
+        path = content_root() / PUBLIC_DIR / f"{chapter_id}.json"
+        if path.is_file():
+            yield from load_chapter(chapter_id)["topics"]

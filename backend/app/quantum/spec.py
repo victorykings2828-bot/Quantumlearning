@@ -108,15 +108,25 @@ class InitialState(BaseModel):
 class Operation(BaseModel):
     """One circuit operation in chronological order."""
 
-    op: Literal["x", "h", "z", "cx", "cz", "mcz", "measure_z"]
+    op: Literal["x", "h", "z", "s", "sdg", "p", "ry", "rx", "rz", "cx", "cz", "mcz", "measure_z"]
     targets: list[int] = Field(default_factory=list)
     controls: list[int] = Field(default_factory=list)
+    angle: float | None = None
 
     model_config = {"extra": "forbid"}
 
     @model_validator(mode="after")
     def _shape(self) -> Operation:
-        single = {"x", "h", "z", "measure_z"}
+        single = {"x", "h", "z", "s", "sdg", "p", "ry", "rx", "rz", "measure_z"}
+        if self.op in {"p", "ry", "rx", "rz"}:
+            if (
+                self.angle is None
+                or not math.isfinite(self.angle)
+                or abs(self.angle) > 100 * math.pi
+            ):
+                raise ValueError("rotation requires a finite angle within 100 pi radians")
+        elif self.angle is not None:
+            raise ValueError("this operation does not accept an angle")
         if self.op in single:
             if len(self.targets) != 1 or self.controls:
                 raise ValueError(f"{self.op} takes exactly one target and no control")

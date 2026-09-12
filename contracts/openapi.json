@@ -117,6 +117,46 @@
         "title": "Complex",
         "type": "object"
       },
+      "EvidenceInput": {
+        "additionalProperties": false,
+        "properties": {
+          "assisted": {
+            "default": false,
+            "title": "Assisted",
+            "type": "boolean"
+          },
+          "explanation": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Explanation",
+            "type": "string"
+          },
+          "idempotency_key": {
+            "format": "uuid",
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "item_id": {
+            "maxLength": 64,
+            "title": "Item Id",
+            "type": "string"
+          },
+          "selection": {
+            "maximum": 10.0,
+            "minimum": 0.0,
+            "title": "Selection",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "item_id",
+          "selection",
+          "explanation",
+          "idempotency_key"
+        ],
+        "title": "EvidenceInput",
+        "type": "object"
+      },
       "GroverRunRequest": {
         "properties": {
           "candidates": {
@@ -267,10 +307,72 @@
         "title": "InitialState",
         "type": "object"
       },
+      "LabInput": {
+        "additionalProperties": false,
+        "properties": {
+          "angle": {
+            "default": 1.5707963267948966,
+            "maximum": 6.283185307179586,
+            "minimum": 0.0,
+            "title": "Angle",
+            "type": "number"
+          },
+          "basis": {
+            "default": "Z",
+            "enum": [
+              "Z",
+              "X",
+              "Y"
+            ],
+            "title": "Basis",
+            "type": "string"
+          },
+          "correction": {
+            "default": true,
+            "title": "Correction",
+            "type": "boolean"
+          },
+          "shots": {
+            "default": 256,
+            "enum": [
+              1,
+              16,
+              64,
+              256,
+              1024
+            ],
+            "title": "Shots",
+            "type": "integer"
+          },
+          "variant": {
+            "default": "A",
+            "enum": [
+              "A",
+              "B",
+              "C"
+            ],
+            "title": "Variant",
+            "type": "string"
+          }
+        },
+        "title": "LabInput",
+        "type": "object"
+      },
       "Operation": {
         "additionalProperties": false,
         "description": "One circuit operation in chronological order.",
         "properties": {
+          "angle": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Angle"
+          },
           "controls": {
             "items": {
               "type": "integer"
@@ -283,6 +385,12 @@
               "x",
               "h",
               "z",
+              "s",
+              "sdg",
+              "p",
+              "ry",
+              "rx",
+              "rz",
               "cx",
               "cz",
               "mcz",
@@ -840,6 +948,56 @@
         "summary": "Read Bridge",
         "tags": [
           "content"
+        ]
+      }
+    },
+    "/api/v1/chapter-labs/{topic_id}": {
+      "post": {
+        "operationId": "chapter_lab_api_v1_chapter_labs__topic_id__post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "topic_id",
+            "required": true,
+            "schema": {
+              "title": "Topic Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LabInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Chapter Lab",
+        "tags": [
+          "lab"
         ]
       }
     },
@@ -2087,6 +2245,94 @@
         "summary": "Create Turn",
         "tags": [
           "tutor"
+        ]
+      }
+    },
+    "/api/v1/understanding/{chapter_id}": {
+      "get": {
+        "operationId": "understanding_api_v1_understanding__chapter_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "chapter_id",
+            "required": true,
+            "schema": {
+              "title": "Chapter Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Understanding",
+        "tags": [
+          "assessment"
+        ]
+      },
+      "post": {
+        "operationId": "submit_understanding_api_v1_understanding__chapter_id__post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "chapter_id",
+            "required": true,
+            "schema": {
+              "title": "Chapter Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Submit Understanding",
+        "tags": [
+          "assessment"
         ]
       }
     }

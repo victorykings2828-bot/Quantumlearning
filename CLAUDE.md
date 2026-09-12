@@ -65,3 +65,7 @@ Specific command locations and environment are in the build guide and workflow t
 Update docs/BUILD-STATUS.md after each phase: changes, commands actually run, outcomes, remaining work, and blockers. Missing credentials block live-provider verification, not independent feature work. Missing images block visual-match claims, not backend work. Report these honestly.
 
 Do not publish, merge, change repository visibility, or provision paid services unless the user has authorized that action. Local reversible implementation and verification are already requested.
+
+## Reviewer test revision
+
+The current user authorized Chapters 2 and 3 and a separate AI-assisted explanation assessor in this isolated test checkout. This supersedes the earlier Chapter 1-only scope and AI-teaches-only boundary for the privileged assessor. Normal tutoring still never receives private rubrics or changes grades. See docs/TEST-COPY.md; keep main files safe and do not merge or publish without approval.

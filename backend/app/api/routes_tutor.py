@@ -41,6 +41,8 @@ def create_turn(
             },
         )
 
+    if body.topic_id and loader.get_topic(body.topic_id) is None:
+        raise HTTPException(status_code=422, detail="Unknown topic")
     run = None
     if body.run_id:
         try:
@@ -50,6 +52,14 @@ def create_turn(
                 status_code=404,
                 detail={"code": "not_found", "message": "No such run for this guest."},
             ) from error
+
+    if run is not None and body.topic_id:
+        from app.storage.models import Revision, Workspace
+
+        revision = session.get(Revision, run.revision_id)
+        workspace = session.get(Workspace, revision.workspace_id) if revision else None
+        if workspace is None or workspace.topic_id != body.topic_id:
+            raise HTTPException(status_code=422, detail="Run does not belong to the selected topic")
 
     max_hint_level = 0
     if body.topic_id:

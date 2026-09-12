@@ -349,6 +349,12 @@ export function AssessmentPage() {
             badge={result.passed ? 'Passed' : 'Not yet passed'}
             badgeTone={result.passed ? 'success' : 'warning'}
           >
+            <p className="note">
+              This is your objective quiz result. It does not by itself establish understanding.
+            </p>
+            <Link className="button" to="/evidence/chapter-1">
+              Explain and apply the ideas
+            </Link>
             <p className="score">
               {result.score} / {result.max_score}
             </p>

@@ -7,7 +7,7 @@
  */
 
 export const API_BASE = '/api/v1';
-const CSRF_COOKIE = 'qll_csrf';
+const CSRF_COOKIE = import.meta.env.VITE_CSRF_COOKIE ?? 'qll_csrf';
 const CSRF_HEADER = 'x-qll-csrf';
 
 export class ApiError extends Error {

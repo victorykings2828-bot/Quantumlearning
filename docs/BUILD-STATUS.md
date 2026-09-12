@@ -253,3 +253,58 @@ been observed running. The launchers are written against that unverified path.
 - **Action pinning.** The CI workflow keeps the supplied major-version action
   tags. Full commit SHAs should be resolved and pinned before a release
   baseline; none were invented here.
+
+
+## 12 September 2026 — isolated reviewer implementation
+
+This section records the separate codex/reviewer-test checkout, starting at c76df99.
+Earlier entries describe the original implementation and its environment. No main
+installation, remote branch or deployment was changed. See TEST-COPY.md for scope
+and remaining learning/AI acceptance work.
+
+Implemented separate Chapter 2/3 content and 13 bounded Qiskit labs; chapter recaps;
+phase and Bell animations; Bloch geometry and joint/marginal readouts; saved
+experiments; cumulative tutor boundaries; metadata-based future deferral; private
+rubric explanation assessment; reviewed evidence summaries and local educator tools.
+Cookie names are configurable so the review instance can coexist with the original.
+Added a Docker build-context exclusion file to keep local environments/credentials
+and dependency caches out of images.
+
+Executed validation:
+
+- Python 3.12.14, Qiskit 2.5.2, PostgreSQL 17.11 running locally in an isolated
+  cluster. uv sync --frozen succeeded; uv lock --check succeeded. No lockfile changes.
+- Full pytest regression checkpoint: 248 tests passed, including 25 new tests.
+  After further rubric/calibration assertions, the targeted reviewer/tutor suite
+  passed (89 tests), followed by the final reviewer suite (29 tests, including
+  the added distinct-family policy check). These are overlapping runs, not an
+  additive claim about the full-suite test count.
+- Frontend Vitest: 18 tests passed. TypeScript and ESLint passed.
+- Playwright: 36 tests passed with desktop/mobile projects against the actual
+  backend/database; the four new reviewer journeys passed again after final
+  UI/evidence changes. An earlier temporary configuration ran a mobile-menu
+  test at desktop size; correcting the test project fixed that harness failure.
+- Ruff lint/format and Prettier checks passed. OpenAPI exported and checked;
+  frontend declarations regenerated. Final production Vite build passed.
+- Start-Test.ps1 passed PowerShell parser checks. Docker is not installed here;
+  the Compose launch and image builds have not been executed for this revision.
+- Original Git bundle verified; original source ZIP exported from c76df99.
+
+Test commands used backend/.venv/Scripts/python.exe in place of uv run after the
+frozen sync, with DATABASE_URL directed only at port 55439/quantum_test. Browser
+checks used playwright.review.config.ts, PW_CHROMIUM_PATH pointing to local Chrome,
+and E2E_SESSION_COOKIE=qll_review_session for the isolated preview. Windows esbuild
+required a process-local Q: mapping to this checkout and preserveSymlinks; source
+architecture and normal Vite package commands remain intact. Native preview:
+http://127.0.0.1:5189, API 8019; normal packaged review launcher uses 8089.
+
+No live NVIDIA call or educator calibration was performed. Authored tutor help is
+active. Explanation answers persist pending assessment; AI ratings are provisional
+and cannot award reviewed chapter evidence. The two-family server summary requires
+independent educator-reviewed outcomes and no unresolved critical misconception.
+The full automated calibrated practical/retention policy is not claimed complete.
+
+## GitHub review branch verification — 2026-09-12
+
+User authorized publishing codex/reviewer-test only; no default-branch update or merge. Final local backend regression: 252 tests passed against isolated PostgreSQL 17 using a workspace temporary directory (the first run had a Windows temp-folder permission error). Authored-content validator now checks Chapters 1–3; provenance includes the new chapters and explanation bank. Content validation, Ruff lint/format, contract export, TypeScript build check and frontend format check passed. CI now builds and starts the isolated Docker review stack; its result must be checked on GitHub before claiming container verification.
+

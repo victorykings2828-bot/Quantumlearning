@@ -1,3 +1,7 @@
+# Reviewer test copy
+
+This is a separate local test branch. See [test-copy notes](docs/TEST-COPY.md) for the new chapters, validation, remaining limitations and safe launcher. The original application and GitHub repository were not modified.
+
 # Quantum Learning Laboratory
 
 A working learning demo where beginners meet a real quantum algorithm first,

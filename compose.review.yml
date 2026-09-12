@@ -1,0 +1,10 @@
+# Only for the independent reviewer instance. Use Start-Test.ps1.
+services:
+  api:
+    environment:
+      SESSION_COOKIE_NAME: qll_review_session
+      CSRF_COOKIE_NAME: qll_review_csrf
+  web:
+    build:
+      args:
+        VITE_CSRF_COOKIE: qll_review_csrf

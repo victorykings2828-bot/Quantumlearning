@@ -1,0 +1,416 @@
+{
+  "id": "chapter-3",
+  "number": 3,
+  "version": 2,
+  "publication": "published",
+  "title": "Multiple qubits and entanglement",
+  "outcome": "Build a Bell state and explain why one correlation plot alone is not evidence of entanglement.",
+  "scope_note": "Open to everyone. Review the quick recall if an idea is unfamiliar. Practice completion and understanding evidence are separate.",
+  "notation_contract": "Operations run left to right. Qubit 0 is the least significant bit: |q1 q0⟩. Probabilities are exact model predictions; counts are samples.",
+  "estimated_minutes": [
+    90,
+    150
+  ],
+  "recap": [
+    [
+      "Amplitude",
+      "A complex coefficient; probability is its squared magnitude."
+    ],
+    [
+      "H gate",
+      "H maps 0 to plus and 1 to minus; H twice returns the input."
+    ],
+    [
+      "Measurement",
+      "A basis determines the question; shots repeat preparation."
+    ],
+    [
+      "Basis",
+      "X uses plus/minus; Y uses plus-i/minus-i."
+    ],
+    [
+      "Tensor product",
+      "Combine independent amplitudes by multiplication; this chapter teaches it step by step."
+    ]
+  ],
+  "topics": [
+    {
+      "id": "3-1",
+      "number": "3.1",
+      "slug": "bit-ordering-and-basis-labels",
+      "title": "Bit ordering and basis labels",
+      "objective": "Qubit q0 is the least significant bit and top wire.",
+      "learning_objectives": [
+        "Explain why X on q0 produces |01⟩ rather than |10⟩. Extend the rule to three qubits."
+      ],
+      "skills": [
+        "concept.3-1"
+      ],
+      "prerequisite_skills": [],
+      "estimated_minutes": 15,
+      "teach_markdown": "Qubit q0 is the least significant bit and top wire. Two-qubit strings are written |q1 q0⟩. Starting at |00⟩, flipping q0 produces |01⟩ at vector index 1; flipping q1 produces |10⟩ at index 2. For three qubits, |q2 q1 q0⟩=|101⟩ is index 5. The label convention is bookkeeping, not a physical difference between qubits.",
+      "sources": [
+        {
+          "id": "IBM",
+          "title": "IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/multiple-systems/quantum-information"
+        }
+      ],
+      "lab": {
+        "mode": "chapter_lab",
+        "qubits": 2,
+        "default_shots": 256,
+        "variants": [
+          "Flip q0",
+          "Flip q1",
+          "Flip both"
+        ]
+      },
+      "steps": [
+        {
+          "id": "3-1-read",
+          "kind": "read",
+          "title": "Read and reflect"
+        }
+      ],
+      "tasks": [],
+      "hints": [],
+      "completion": {
+        "required_step_ids": [
+          "3-1-read"
+        ],
+        "required_task_ids": []
+      },
+      "prediction": {
+        "id": "3-1-predict",
+        "prompt": "Predict what will change before running.",
+        "kind": "single_select",
+        "options": []
+      }
+    },
+    {
+      "id": "3-2",
+      "number": "3.2",
+      "slug": "tensor-products-and-product-states",
+      "title": "Tensor products and product states",
+      "objective": "For q1=(a,b) and q0=(c,d), the joint amplitude vector is (ac,ad,bc,bd).",
+      "learning_objectives": [
+        "For q1=(.6,.8), q0=|+⟩, calculate joint probabilities and the probability q1=1."
+      ],
+      "skills": [
+        "concept.3-2"
+      ],
+      "prerequisite_skills": [],
+      "estimated_minutes": 15,
+      "teach_markdown": "For q1=(a,b) and q0=(c,d), the joint amplitude vector is (ac,ad,bc,bd). Multiply amplitudes first, then square magnitudes for probabilities. For q1=|+⟩ and q0=|1⟩, only 01 and 11 occur equally. Independent product preparations have factorized probabilities for local measurements; four amplitudes do not mean four independently readable classical bits.",
+      "sources": [
+        {
+          "id": "IBM",
+          "title": "IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/multiple-systems/quantum-information"
+        }
+      ],
+      "lab": {
+        "mode": "chapter_lab",
+        "qubits": 2,
+        "default_shots": 256,
+        "variants": [
+          "q1=0, q0=+",
+          "Both +",
+          "Biased product"
+        ]
+      },
+      "steps": [
+        {
+          "id": "3-2-read",
+          "kind": "read",
+          "title": "Read and reflect"
+        }
+      ],
+      "tasks": [],
+      "hints": [],
+      "completion": {
+        "required_step_ids": [
+          "3-2-read"
+        ],
+        "required_task_ids": []
+      },
+      "prediction": {
+        "id": "3-2-predict",
+        "prompt": "Predict what will change before running.",
+        "kind": "single_select",
+        "options": []
+      }
+    },
+    {
+      "id": "3-3",
+      "number": "3.3",
+      "slug": "controlled-gates",
+      "title": "Controlled gates",
+      "objective": "CX flips its target when the control is 1, and acts linearly on a superposition.",
+      "learning_objectives": [
+        "Give a concrete input on which CX does not create entanglement and explain its output. Then give an input that does."
+      ],
+      "skills": [
+        "concept.3-3"
+      ],
+      "prerequisite_skills": [],
+      "estimated_minutes": 15,
+      "teach_markdown": "CX flips its target when the control is 1, and acts linearly on a superposition. With q0 controlling q1 it maps 01 to 11 and 11 to 01. A controlled gate does not always produce entanglement: CX leaves |00⟩ and |++⟩ as product states. To make entanglement, both the preparation and operation matter.",
+      "sources": [
+        {
+          "id": "IBM",
+          "title": "IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/multiple-systems/quantum-information"
+        }
+      ],
+      "lab": {
+        "mode": "chapter_lab",
+        "qubits": 2,
+        "default_shots": 256,
+        "variants": [
+          "00 then CX",
+          "01 then CX",
+          "++ then CX"
+        ]
+      },
+      "steps": [
+        {
+          "id": "3-3-read",
+          "kind": "read",
+          "title": "Read and reflect"
+        }
+      ],
+      "tasks": [],
+      "hints": [],
+      "completion": {
+        "required_step_ids": [
+          "3-3-read"
+        ],
+        "required_task_ids": []
+      },
+      "prediction": {
+        "id": "3-3-predict",
+        "prompt": "Predict what will change before running.",
+        "kind": "single_select",
+        "options": []
+      }
+    },
+    {
+      "id": "3-4",
+      "number": "3.4",
+      "slug": "bell-state-preparation",
+      "title": "Bell-state preparation",
+      "objective": "H(q0) on |00⟩ gives (|00⟩+|01⟩)/√2.",
+      "learning_objectives": [
+        "Why does a 50/50 chart on 00 and 11 fail to prove entanglement? Describe a different measurement for the Bell-versus-mixture comparison."
+      ],
+      "skills": [
+        "concept.3-4"
+      ],
+      "prerequisite_skills": [],
+      "estimated_minutes": 15,
+      "teach_markdown": "H(q0) on |00⟩ gives (|00⟩+|01⟩)/√2. CX(q0,q1) then gives Φ+=(|00⟩+|11⟩)/√2. Each individual qubit has the mixed reduced state I/2, although the pair is pure. Matching Z results alone is insufficient evidence: a classical mixture of 00 and 11 matches that chart. Compare X statistics to distinguish those two preparations.",
+      "sources": [
+        {
+          "id": "IBM",
+          "title": "IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/multiple-systems/quantum-information"
+        }
+      ],
+      "lab": {
+        "mode": "chapter_lab",
+        "qubits": 2,
+        "default_shots": 256,
+        "variants": [
+          "Bell Φ+",
+          "Classical mixture",
+          "Product ++"
+        ]
+      },
+      "steps": [
+        {
+          "id": "3-4-read",
+          "kind": "read",
+          "title": "Read and reflect"
+        }
+      ],
+      "tasks": [],
+      "hints": [],
+      "completion": {
+        "required_step_ids": [
+          "3-4-read"
+        ],
+        "required_task_ids": []
+      },
+      "prediction": {
+        "id": "3-4-predict",
+        "prompt": "Predict what will change before running.",
+        "kind": "single_select",
+        "options": []
+      }
+    },
+    {
+      "id": "3-5",
+      "number": "3.5",
+      "slug": "joint,-marginal,-and-conditional-statistics",
+      "title": "Joint, marginal, and conditional statistics",
+      "objective": "A joint chart retains how outcomes occur together.",
+      "learning_objectives": [
+        "Both qubits have 50/50 marginal charts. What information is missing? Compare Bell and independent plus preparations."
+      ],
+      "skills": [
+        "concept.3-5"
+      ],
+      "prerequisite_skills": [],
+      "estimated_minutes": 15,
+      "teach_markdown": "A joint chart retains how outcomes occur together. A marginal sums over the other qubit. For .6|00⟩+.8|11⟩, P00=.36 and P11=.64, so each qubit has P1=.64. Conditional on measuring q0=0, q1=0 with certainty. Identical local 50/50 charts can hide very different correlations. Conditioning on an event of zero probability is undefined.",
+      "sources": [
+        {
+          "id": "IBM",
+          "title": "IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/multiple-systems/quantum-information"
+        }
+      ],
+      "lab": {
+        "mode": "chapter_lab",
+        "qubits": 2,
+        "default_shots": 256,
+        "variants": [
+          "Bell",
+          "Biased correlated pair",
+          "Product ++"
+        ]
+      },
+      "steps": [
+        {
+          "id": "3-5-read",
+          "kind": "read",
+          "title": "Read and reflect"
+        }
+      ],
+      "tasks": [],
+      "hints": [],
+      "completion": {
+        "required_step_ids": [
+          "3-5-read"
+        ],
+        "required_task_ids": []
+      },
+      "prediction": {
+        "id": "3-5-predict",
+        "prompt": "Predict what will change before running.",
+        "kind": "single_select",
+        "options": []
+      }
+    },
+    {
+      "id": "3-6",
+      "number": "3.6",
+      "slug": "mixtures-versus-entanglement",
+      "title": "Mixtures versus entanglement",
+      "objective": "A density matrix describes both pure states and probabilistic mixtures.",
+      "learning_objectives": [
+        "Give a separable state with zero local Bloch vectors. Explain what extra assumption makes local mixedness evidence of entanglement."
+      ],
+      "skills": [
+        "concept.3-6"
+      ],
+      "prerequisite_skills": [],
+      "estimated_minutes": 15,
+      "teach_markdown": "A density matrix describes both pure states and probabilistic mixtures. The mixture ½|00⟩⟨00|+½|11⟩⟨11| has no off-diagonal coherence. Φ+ does. They agree in Z and disagree in X. A zero local Bloch vector means a maximally mixed reduced state, not no state. Local mixedness proves entanglement only when the joint state is known pure; mixed separable states can also have mixed marginals.",
+      "sources": [
+        {
+          "id": "IBM",
+          "title": "IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/multiple-systems/quantum-information"
+        }
+      ],
+      "lab": {
+        "mode": "chapter_lab",
+        "qubits": 2,
+        "default_shots": 256,
+        "variants": [
+          "Bell Φ+",
+          "Classical mixture",
+          "Product ++"
+        ]
+      },
+      "steps": [
+        {
+          "id": "3-6-read",
+          "kind": "read",
+          "title": "Read and reflect"
+        }
+      ],
+      "tasks": [],
+      "hints": [],
+      "completion": {
+        "required_step_ids": [
+          "3-6-read"
+        ],
+        "required_task_ids": []
+      },
+      "prediction": {
+        "id": "3-6-predict",
+        "prompt": "Predict what will change before running.",
+        "kind": "single_select",
+        "options": []
+      }
+    },
+    {
+      "id": "3-7",
+      "number": "3.7",
+      "slug": "teleportation-protocol",
+      "title": "Teleportation protocol",
+      "objective": "Alice has unknown input q0 and q1 of a Bell pair; Bob has q2.",
+      "learning_objectives": [
+        "Why does teleportation require classical communication? Explain correction branch 11 and why the input is not copied."
+      ],
+      "skills": [
+        "concept.3-7"
+      ],
+      "prerequisite_skills": [],
+      "estimated_minutes": 15,
+      "teach_markdown": "Alice has unknown input q0 and q1 of a Bell pair; Bob has q2. Alice applies CX(q0,q1), H(q0), then measures q0 into m0 and q1 into m1. Bob applies X if m1=1 and then Z if m0=1. All four branches restore the input state on Bob. The original is consumed, not copied. Bob needs two classical bits; before learning them his reduced state is I/2, so this does not send usable information faster than light.",
+      "sources": [
+        {
+          "id": "IBM",
+          "title": "IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/multiple-systems/quantum-information"
+        }
+      ],
+      "lab": {
+        "mode": "chapter_lab",
+        "qubits": 3,
+        "default_shots": 256,
+        "variants": [
+          "Input zero",
+          "Input plus",
+          "Complex input (.6, .8i)"
+        ]
+      },
+      "steps": [
+        {
+          "id": "3-7-read",
+          "kind": "read",
+          "title": "Read and reflect"
+        }
+      ],
+      "tasks": [],
+      "hints": [],
+      "completion": {
+        "required_step_ids": [
+          "3-7-read"
+        ],
+        "required_task_ids": []
+      },
+      "prediction": {
+        "id": "3-7-predict",
+        "prompt": "Predict what will change before running.",
+        "kind": "single_select",
+        "options": []
+      }
+    }
+  ]
+}

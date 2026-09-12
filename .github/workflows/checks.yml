@@ -141,6 +141,20 @@ jobs:
         working-directory: backend
       - name: Production container build
         run: docker build -f infra/Dockerfile.backend -t quantum-backend:ci .
+      - name: Start the isolated review stack
+        env:
+          WEB_PORT: '127.0.0.1:8089'
+          PUBLIC_ORIGIN: http://127.0.0.1:8089
+        run: |
+          docker compose --project-name review-ci -f compose.yml -f compose.review.yml config --quiet
+          docker compose --project-name review-ci -f compose.yml -f compose.review.yml up -d --build --wait --wait-timeout 180
+          curl --fail --retry 5 --retry-delay 2 http://127.0.0.1:8089/api/v1/health/ready
+          curl --fail http://127.0.0.1:8089/ | grep -q '<div id="root">'
+      - name: Review stack diagnostics and cleanup
+        if: always()
+        run: |
+          docker compose --project-name review-ci -f compose.yml -f compose.review.yml logs --no-color --tail 50
+          docker compose --project-name review-ci -f compose.yml -f compose.review.yml down
       - name: Upload failure diagnostics
         if: failure()
         uses: actions/upload-artifact@v4

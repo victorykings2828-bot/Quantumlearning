@@ -115,6 +115,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/chapter-labs/{topic_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Chapter Lab */
+        post: operations["chapter_lab_api_v1_chapter_labs__topic_id__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/content-versions": {
         parameters: {
             query?: never;
@@ -727,6 +744,24 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/understanding/{chapter_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Understanding */
+        get: operations["understanding_api_v1_understanding__chapter_id__get"];
+        put?: never;
+        /** Submit Understanding */
+        post: operations["submit_understanding_api_v1_understanding__chapter_id__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -795,6 +830,25 @@ export interface components {
              */
             re: number;
         };
+        /** EvidenceInput */
+        EvidenceInput: {
+            /**
+             * Assisted
+             * @default false
+             */
+            assisted: boolean;
+            /** Explanation */
+            explanation: string;
+            /**
+             * Idempotency Key
+             * Format: uuid
+             */
+            idempotency_key: string;
+            /** Item Id */
+            item_id: string;
+            /** Selection */
+            selection: number;
+        };
         /** GroverRunRequest */
         GroverRunRequest: {
             /**
@@ -862,18 +916,51 @@ export interface components {
             /** Named */
             named?: ("ket0" | "ket1" | "plus" | "minus" | "card_b" | "card_c") | null;
         };
+        /** LabInput */
+        LabInput: {
+            /**
+             * Angle
+             * @default 1.5707963267948966
+             */
+            angle: number;
+            /**
+             * Basis
+             * @default Z
+             * @enum {string}
+             */
+            basis: "Z" | "X" | "Y";
+            /**
+             * Correction
+             * @default true
+             */
+            correction: boolean;
+            /**
+             * Shots
+             * @default 256
+             * @enum {integer}
+             */
+            shots: 1 | 16 | 64 | 256 | 1024;
+            /**
+             * Variant
+             * @default A
+             * @enum {string}
+             */
+            variant: "A" | "B" | "C";
+        };
         /**
          * Operation
          * @description One circuit operation in chronological order.
          */
         Operation: {
+            /** Angle */
+            angle?: number | null;
             /** Controls */
             controls?: number[];
             /**
              * Op
              * @enum {string}
              */
-            op: "x" | "h" | "z" | "cx" | "cz" | "mcz" | "measure_z";
+            op: "x" | "h" | "z" | "s" | "sdg" | "p" | "ry" | "rx" | "rz" | "cx" | "cz" | "mcz" | "measure_z";
             /** Targets */
             targets?: number[];
         };
@@ -1168,6 +1255,41 @@ export interface operations {
                     "application/json": {
                         [key: string]: unknown;
                     };
+                };
+            };
+        };
+    };
+    chapter_lab_api_v1_chapter_labs__topic_id__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                topic_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LabInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -2125,6 +2247,72 @@ export interface operations {
                     "application/json": {
                         [key: string]: unknown;
                     };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    understanding_api_v1_understanding__chapter_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                chapter_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    submit_understanding_api_v1_understanding__chapter_id__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                chapter_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EvidenceInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
             /** @description Validation Error */

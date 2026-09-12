@@ -211,7 +211,7 @@ def read_course(
             publication=chapter["publication"],
             required_skills=chapter.get("prerequisite_skills", []),
             records=records,
-            assessed=bool(chapter.get("prerequisite_skills")),
+            assessed=False,
         )
         entry = dict(chapter)
         entry["access"] = decision.as_dict()
@@ -274,7 +274,7 @@ def read_chapter(
         loader.public_topic(topic, include_body=False) for topic in chapter["topics"]
     ]
     if principal is not None:
-        payload["progress"] = progress.chapter_progress(session, principal.id)
+        payload["progress"] = progress.chapter_progress(session, principal.id, chapter_id)
         session.commit()
     return payload
 
@@ -292,7 +292,7 @@ def read_topic(
             detail={"code": "topic_not_found", "message": "No such topic in this chapter."},
         )
     payload = loader.public_topic(topic)
-    chapter = loader.load_chapter("chapter-1")
+    chapter = loader.load_chapter(f"chapter-{topic_id.split('-')[0]}")
     topics = chapter["topics"]
     index = next(i for i, item in enumerate(topics) if item["id"] == topic_id)
     payload["previous_topic_id"] = topics[index - 1]["id"] if index > 0 else None
