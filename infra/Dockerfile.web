@@ -1,6 +1,8 @@
 # Web image: the built frontend served by nginx, which also reverse-proxies
 # /api to the backend so the browser only ever sees one origin.
 FROM node:24-slim AS build
+ARG VITE_CSRF_COOKIE=qll_csrf
+ENV VITE_CSRF_COOKIE=$VITE_CSRF_COOKIE
 
 WORKDIR /build
 COPY frontend/package.json frontend/package-lock.json ./frontend/

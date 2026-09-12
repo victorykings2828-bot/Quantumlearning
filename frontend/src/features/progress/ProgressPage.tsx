@@ -123,7 +123,7 @@ export function ProgressPage() {
                 <th className="numeric">Independent</th>
                 <th className="numeric">Assisted</th>
                 <th>Item families</th>
-                <th>Demonstrated</th>
+                <th>Independent practice</th>
               </tr>
             </thead>
             <tbody>
@@ -139,7 +139,7 @@ export function ProgressPage() {
                   </td>
                   <td>
                     <span className={skill.demonstrated ? 'badge badge--success' : 'badge'}>
-                      {skill.demonstrated ? 'Demonstrated' : 'Not yet'}
+                      {skill.demonstrated ? 'Practice evidence' : 'Not yet'}
                     </span>
                   </td>
                 </tr>
@@ -148,10 +148,10 @@ export function ProgressPage() {
           </table>
         </div>
         <p className="note">
-          A skill counts as demonstrated after {data.evidence_rule.required_independent}{' '}
-          unassisted successes from {data.evidence_rule.required_distinct_families} different
-          item families. An equivalent diagnostic can substitute for practice you have already
-          demonstrated.
+          This practice record counts {data.evidence_rule.required_independent} unassisted
+          successes from {data.evidence_rule.required_distinct_families} different item
+          families. It is not a complete understanding assessment: explanations and new
+          situations are checked separately.
         </p>
       </Panel>
 

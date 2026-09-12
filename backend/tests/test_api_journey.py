@@ -318,8 +318,8 @@ def test_course_marks_later_chapters_coming_soon(guest):
     body = guest.get("/api/v1/course").json()
     published = [c for c in body["chapters"] if c["publication"] == "published"]
     coming = [c for c in body["chapters"] if c["publication"] == "coming_soon"]
-    assert [c["number"] for c in published] == [1]
-    assert len(coming) == 12
+    assert [c["number"] for c in published] == [1, 2, 3]
+    assert len(coming) == 10
     for chapter in coming:
         assert chapter["access"]["readiness"] == "not_assessed"
         assert chapter["access"]["reason_code"] == "coming_soon"

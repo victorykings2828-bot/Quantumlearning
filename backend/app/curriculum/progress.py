@@ -222,13 +222,15 @@ def topic_summary(session: Session, principal_id: str, topic: dict[str, Any]) ->
     }
 
 
-def chapter_progress(session: Session, principal_id: str) -> dict[str, Any]:
-    chapter = loader.load_chapter("chapter-1")
+def chapter_progress(
+    session: Session, principal_id: str, chapter_id: str = "chapter-1"
+) -> dict[str, Any]:
+    chapter = loader.load_chapter(chapter_id)
     summaries = [topic_summary(session, principal_id, topic) for topic in chapter["topics"]]
     complete = [entry for entry in summaries if entry["status"] == "complete"]
     records = evidence_records(session, principal_id)
     demonstrated = access.demonstrated_skills(records)
-    all_skills = sorted(loader.all_skills())
+    all_skills = sorted({skill for topic in chapter["topics"] for skill in topic.get("skills", [])})
     return {
         "chapter_id": chapter["id"],
         "topics": summaries,

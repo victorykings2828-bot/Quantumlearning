@@ -114,7 +114,24 @@ def validate() -> list[str]:
 
     course = loader.load_course()
     published = [c for c in course["chapters"] if c["publication"] == "published"]
-    _check(problems, len(published) == 1, "exactly one chapter should be published")
+    _check(
+        problems,
+        {entry["id"] for entry in published} == {"chapter-1", "chapter-2", "chapter-3"},
+        "the review build must publish Chapters 1, 2 and 3",
+    )
+    for chapter_id, expected_count in (("chapter-2", 6), ("chapter-3", 7)):
+        authored = loader.load_chapter(chapter_id)
+        _check(problems, bool(authored.get("recap")), f"{chapter_id}: missing beginner recall")
+        _check(
+            problems,
+            len(authored["topics"]) == expected_count,
+            f"{chapter_id}: unexpected topic count",
+        )
+        for topic in authored["topics"]:
+            prefix = f"topic {topic['id']}"
+            _check(problems, bool(topic.get("teach_markdown")), f"{prefix}: missing teaching text")
+            _check(problems, bool(topic.get("sources")), f"{prefix}: missing sources")
+            _check(problems, bool(topic.get("lab")), f"{prefix}: missing experiment")
     for chapter_entry in course["chapters"]:
         if chapter_entry["publication"] == "coming_soon":
             _check(

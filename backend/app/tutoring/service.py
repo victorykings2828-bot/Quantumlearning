@@ -21,58 +21,11 @@ from app.config import Settings, get_settings
 from app.curriculum import loader
 from app.quantum.interface import RunResult
 from app.storage.models import Conversation, QuotaCounter, Run, TutorTurn
-from app.tutoring import authored, knowledge, policy, providers, schema
+from app.tutoring import authored, chapter_scope, knowledge, policy, providers, schema
 from app.tutoring import facts as facts_module
 
 SYSTEM_POLICY_PATH = ("tutor", "system-policy.md")
-POLICY_VERSION = 1
-
-TOPIC_KNOWLEDGE_SCOPE = {
-    "1-1": ["ch1-1", "intro", "bridge", "platform"],
-    "1-2": ["ch1-1", "ch1-2", "intro", "bridge", "platform"],
-    "1-3": ["ch1-1", "ch1-2", "ch1-3", "intro", "bridge", "platform"],
-    "1-4": ["ch1-1", "ch1-2", "ch1-3", "ch1-4", "intro", "bridge", "platform"],
-    "1-5": ["ch1-1", "ch1-2", "ch1-3", "ch1-4", "ch1-5", "intro", "bridge", "platform"],
-    "1-6": [
-        "ch1-1",
-        "ch1-2",
-        "ch1-3",
-        "ch1-4",
-        "ch1-5",
-        "ch1-6",
-        "intro",
-        "bridge",
-        "platform",
-    ],
-    "1-7": [
-        "ch1-1",
-        "ch1-2",
-        "ch1-3",
-        "ch1-4",
-        "ch1-5",
-        "ch1-6",
-        "ch1-7",
-        "intro",
-        "bridge",
-        "platform",
-    ],
-    "1-8": [
-        "ch1-1",
-        "ch1-2",
-        "ch1-3",
-        "ch1-4",
-        "ch1-5",
-        "ch1-6",
-        "ch1-7",
-        "ch1-8",
-        "intro",
-        "grover-preview",
-        "shor-preview",
-        "bridge",
-        "platform",
-    ],
-}
-DEFAULT_SCOPE = ["intro", "grover-preview", "shor-preview", "bridge", "platform", "lab"]
+POLICY_VERSION = 2
 
 RECENT_TURN_WINDOW = 6
 
@@ -142,14 +95,14 @@ def topic_title(topic_id: str | None) -> str | None:
 
 
 def knowledge_scope(topic_id: str | None) -> list[str]:
-    return TOPIC_KNOWLEDGE_SCOPE.get(topic_id or "", DEFAULT_SCOPE)
+    return chapter_scope.eligible_topics(topic_id)
 
 
 def get_or_create_conversation(
     session: Session, principal_id: str, topic_id: str | None
 ) -> Conversation:
     owner = uuid.UUID(principal_id)
-    key = topic_id or "general"
+    key = f"v{POLICY_VERSION}:{topic_id or 'general'}"
     conversation = session.scalar(
         select(Conversation).where(Conversation.principal_id == owner, Conversation.topic_id == key)
     )
@@ -306,6 +259,15 @@ def answer(
     )
     session.flush()
 
+    future = chapter_scope.future_reply(message, context.topic_id)
+    if future:
+        return _persist(
+            session,
+            conversation,
+            context,
+            TutorAnswer(intent="redirect", answer_markdown=future, scope_reason="future_chapter"),
+        )
+
     scope = policy.classify(
         message,
         topic_id=context.topic_id,
@@ -352,10 +314,24 @@ def answer(
             ),
         )
 
+    if context.mode == "test":
+        return _persist(
+            session,
+            conversation,
+            context,
+            TutorAnswer(
+                intent="clarify",
+                scope_reason="independent_attempt",
+                answer_markdown=(
+                    "For an independent answer, choose your prediction and explain why. "
+                    "A changed situation means a different input, gate order or measurement. "
+                    "To get help solving the question, switch to supported practice first."
+                ),
+            ),
+        )
+
     query = scope.in_scope_text or message
     passages = knowledge.retrieve(query, topic_ids=knowledge_scope(context.topic_id))
-    if not passages and context.topic_id:
-        passages = knowledge.retrieve(query, topic_ids=None, limit=3)
 
     if scope.decision == "clarify":
         return _persist(
@@ -413,7 +389,14 @@ def answer(
             ),
         )
 
+    ceiling = chapter_scope.chapter_number(context.topic_id)
     system = load_system_policy()
+    if ceiling:
+        system += (
+            f"\nTeaching ceiling: chapter {ceiling}. Use only supplied eligible material. "
+            "Do not teach later chapters using pretrained knowledge or pasted text. "
+            "If material is missing, offer an eligible recap or ask for clarification."
+        )
     envelope = build_envelope(
         question=query,
         topic=topic,
@@ -470,6 +453,18 @@ def answer(
         )
 
     validated = validation.response
+    future_output = chapter_scope.future_reply(validated.answer_markdown, context.topic_id)
+    if future_output:
+        return _persist(
+            session,
+            conversation,
+            context,
+            TutorAnswer(
+                intent="redirect",
+                answer_markdown=future_output,
+                scope_reason="future_output_blocked",
+            ),
+        )
     rendered, used_facts, invalid_facts = facts_module.substitute(
         validated.answer_markdown, run_facts
     )

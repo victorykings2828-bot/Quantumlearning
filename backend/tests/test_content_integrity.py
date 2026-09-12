@@ -125,10 +125,10 @@ def test_revision_guidance_covers_every_assessed_skill():
     assert assessed <= set(guidance)
 
 
-def test_course_marks_exactly_one_published_chapter():
+def test_course_marks_three_published_chapters():
     course = loader.load_course()
     published = [c for c in course["chapters"] if c["publication"] == "published"]
-    assert [c["number"] for c in published] == [1]
+    assert [c["number"] for c in published] == [1, 2, 3]
     for chapter in course["chapters"]:
         if chapter["publication"] == "coming_soon":
             assert chapter["coming_soon_note"]

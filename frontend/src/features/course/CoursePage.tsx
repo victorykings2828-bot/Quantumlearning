@@ -92,7 +92,7 @@ function ChapterRow({
           <ul className="topic-list">
             {chapter.topics.map((topic) => (
               <li key={topic.topic_id}>
-                <Link to={`/learn/chapter-1/${topic.topic_id}`}>
+                <Link to={`/learn/${chapter.id}/${topic.topic_id}`}>
                   {topic.number} {topic.title}
                 </Link>
                 <span className="cluster">
@@ -140,17 +140,17 @@ function ChapterRow({
         <p className="button-row">
           <Link
             className="button button--primary"
-            to={nextTopic ? `/learn/chapter-1/${nextTopic}` : `/course/${chapter.id}`}
+            to={nextTopic ? `/learn/${chapter.id}/${nextTopic}` : `/course/${chapter.id}`}
           >
             {started && nextTopic
               ? `Continue Topic ${nextTopic.replace('-', '.')}`
-              : 'Start Chapter 1'}
+              : `Start Chapter ${chapter.number}`}
           </Link>
           <Link className="button" to={`/course/${chapter.id}`}>
             Chapter detail
           </Link>
-          <Link className="button" to="/assessments/chapter-1">
-            Chapter assessment
+          <Link className="button" to={`/evidence/${chapter.id}`}>
+            Check understanding
           </Link>
         </p>
       ) : null}

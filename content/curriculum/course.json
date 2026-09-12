@@ -45,7 +45,7 @@
         "gate.h_predict",
         "phase.relative"
       ],
-      "publication": "coming_soon",
+      "publication": "published",
       "demonstration": "Distinguish equal-Z-probability states using another basis.",
       "coming_soon_note": "This chapter is not implemented yet. Its description is accurate; there is no hidden lesson behind it."
     },
@@ -69,7 +69,7 @@
         "measurement.conditioned_state",
         "circuit.read_order"
       ],
-      "publication": "coming_soon",
+      "publication": "published",
       "demonstration": "Build a Bell state and explain why one correlation plot alone is not evidence of entanglement.",
       "coming_soon_note": "This chapter is not implemented yet. Its description is accurate; there is no hidden lesson behind it."
     },

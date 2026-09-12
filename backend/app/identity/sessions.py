@@ -18,8 +18,8 @@ from sqlalchemy.orm import Session
 from app.config import get_settings
 from app.storage.models import GuestSession, Principal
 
-SESSION_COOKIE_NAME = "qll_session"
-CSRF_COOKIE_NAME = "qll_csrf"
+SESSION_COOKIE_NAME = get_settings().session_cookie_name
+CSRF_COOKIE_NAME = get_settings().csrf_cookie_name
 CSRF_HEADER_NAME = "x-qll-csrf"
 
 _TOKEN_BYTES = 32

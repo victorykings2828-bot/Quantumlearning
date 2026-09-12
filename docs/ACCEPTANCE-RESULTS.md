@@ -149,3 +149,8 @@ Corrections from `docs/UI-SPECIFICATION.md` that are implemented:
   The blocked attempt did confirm the failure path: honest authored help, no
   lost work, and no credential in any response or log.
 - **Deployed**: nothing.
+
+
+## Isolated reviewer test revision
+
+See BUILD-STATUS.md (12 September 2026) and TEST-COPY.md. The local implementation passes its recorded software checks, but live AI, educator calibration, container execution and production deployment are not acceptance claims for this revision.

@@ -144,6 +144,8 @@ class NvidiaAdapter:
                 "malformed_response", "The provider response could not be read."
             ) from error
 
+        if payload["choices"][0].get("finish_reason") == "length":
+            raise ProviderError("truncated_response", "The model response reached its token limit.")
         if not text.strip():
             raise ProviderError("empty_response", "The provider returned no visible answer.")
 

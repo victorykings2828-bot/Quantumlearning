@@ -1,0 +1,362 @@
+{
+  "id": "chapter-2",
+  "number": 2,
+  "version": 2,
+  "publication": "published",
+  "title": "Geometry and measurement bases",
+  "outcome": "Distinguish equal-Z-probability states using another basis.",
+  "scope_note": "Open to everyone. Review the quick recall if an idea is unfamiliar. Practice completion and understanding evidence are separate.",
+  "notation_contract": "Operations run left to right. Qubit 0 is the least significant bit: |q1 q0⟩. Probabilities are exact model predictions; counts are samples.",
+  "estimated_minutes": [
+    90,
+    150
+  ],
+  "recap": [
+    [
+      "Amplitude",
+      "A complex coefficient; probability is its squared magnitude."
+    ],
+    [
+      "H gate",
+      "H maps 0 to plus and 1 to minus; H twice returns the input."
+    ],
+    [
+      "Measurement",
+      "A basis determines the question; shots repeat preparation."
+    ],
+    [
+      "Relative phase",
+      "A phase difference can affect a later interference experiment."
+    ],
+    [
+      "Global phase",
+      "A common phase leaves all physical predictions unchanged."
+    ]
+  ],
+  "topics": [
+    {
+      "id": "2-1",
+      "number": "2.1",
+      "slug": "complex-numbers-and-phase-angles",
+      "title": "Complex numbers and phase angles",
+      "objective": "An amplitude a+ib has squared magnitude a²+b².",
+      "learning_objectives": [
+        "Explain why an imaginary amplitude still gives a real, nonnegative probability. Then multiply both amplitudes by i: what changes physically?"
+      ],
+      "skills": [
+        "concept.2-1"
+      ],
+      "prerequisite_skills": [],
+      "estimated_minutes": 15,
+      "teach_markdown": "An amplitude a+ib has squared magnitude a²+b². The imaginary unit satisfies i²=−1, but a probability uses the squared magnitude, never the square of i alone. A phase rotates the amplitude arrow without changing its length. A common phase rotates the whole state without changing any measurement statistics; relative phase can change interference.",
+      "sources": [
+        {
+          "id": "IBM",
+          "title": "IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/single-systems/quantum-information"
+        }
+      ],
+      "lab": {
+        "mode": "chapter_lab",
+        "qubits": 1,
+        "default_shots": 256,
+        "variants": [
+          "No final gate",
+          "Reveal with H",
+          "Multiply both amplitudes by i"
+        ]
+      },
+      "steps": [
+        {
+          "id": "2-1-read",
+          "kind": "read",
+          "title": "Read and reflect"
+        }
+      ],
+      "tasks": [],
+      "hints": [],
+      "completion": {
+        "required_step_ids": [
+          "2-1-read"
+        ],
+        "required_task_ids": []
+      },
+      "prediction": {
+        "id": "2-1-predict",
+        "prompt": "Predict what will change before running.",
+        "kind": "single_select",
+        "options": []
+      }
+    },
+    {
+      "id": "2-2",
+      "number": "2.2",
+      "slug": "vectors,-matrices,-and-operation-order",
+      "title": "Vectors, matrices, and operation order",
+      "objective": "A state is a column vector.",
+      "learning_objectives": [
+        "Explain why identical Z probabilities do not make X→H and H→X equivalent. Name a measurement that distinguishes their outputs."
+      ],
+      "skills": [
+        "concept.2-2"
+      ],
+      "prerequisite_skills": [],
+      "estimated_minutes": 15,
+      "teach_markdown": "A state is a column vector. X swaps its entries; Z changes the sign of the second entry; H maps (a,b) to ((a+b)/√2,(a−b)/√2). Applying X then H means HX|ψ⟩ because the rightmost matrix acts first. Gates need not commute. Starting at |0⟩, X then H gives |−⟩ while H then X gives |+⟩. Both have equal Z probabilities, so inspect phase or measure in X.",
+      "sources": [
+        {
+          "id": "IBM",
+          "title": "IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/single-systems/quantum-information"
+        }
+      ],
+      "lab": {
+        "mode": "chapter_lab",
+        "qubits": 1,
+        "default_shots": 256,
+        "variants": [
+          "X then H",
+          "H then X",
+          "H then H"
+        ]
+      },
+      "steps": [
+        {
+          "id": "2-2-read",
+          "kind": "read",
+          "title": "Read and reflect"
+        }
+      ],
+      "tasks": [],
+      "hints": [],
+      "completion": {
+        "required_step_ids": [
+          "2-2-read"
+        ],
+        "required_task_ids": []
+      },
+      "prediction": {
+        "id": "2-2-predict",
+        "prompt": "Predict what will change before running.",
+        "kind": "single_select",
+        "options": []
+      }
+    },
+    {
+      "id": "2-3",
+      "number": "2.3",
+      "slug": "the-bloch-sphere",
+      "title": "The Bloch sphere",
+      "objective": "A pure qubit can be written cos(θ/2)|0⟩ + e^(iφ)sin(θ/2)|1⟩.",
+      "learning_objectives": [
+        "A qubit lies on the equator. Predict its Z probabilities and explain why its longitude still matters."
+      ],
+      "skills": [
+        "concept.2-3"
+      ],
+      "prerequisite_skills": [],
+      "estimated_minutes": 15,
+      "teach_markdown": "A pure qubit can be written cos(θ/2)|0⟩ + e^(iφ)sin(θ/2)|1⟩. Its Bloch coordinates are (sinθ cosφ, sinθ sinφ, cosθ). |0⟩ is north, |1⟩ south; |+⟩ lies on +x and |+i⟩ on +y. This sphere represents a state mathematically, not an electron orbit. Global phase has no separate point. Mixed states lie inside the sphere.",
+      "sources": [
+        {
+          "id": "IBM",
+          "title": "IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/single-systems/quantum-information"
+        }
+      ],
+      "lab": {
+        "mode": "chapter_lab",
+        "qubits": 1,
+        "default_shots": 256,
+        "variants": [
+          "North pole",
+          "Equator",
+          "South pole"
+        ]
+      },
+      "steps": [
+        {
+          "id": "2-3-read",
+          "kind": "read",
+          "title": "Read and reflect"
+        }
+      ],
+      "tasks": [],
+      "hints": [],
+      "completion": {
+        "required_step_ids": [
+          "2-3-read"
+        ],
+        "required_task_ids": []
+      },
+      "prediction": {
+        "id": "2-3-predict",
+        "prompt": "Predict what will change before running.",
+        "kind": "single_select",
+        "options": []
+      }
+    },
+    {
+      "id": "2-4",
+      "number": "2.4",
+      "slug": "rotations-and-phase-gates",
+      "title": "Rotations and phase gates",
+      "objective": "P(φ)=diag(1,e^(iφ)) changes relative phase.",
+      "learning_objectives": [
+        "At which step can the Z chart first change with φ, and why? Predict the final result for φ=π."
+      ],
+      "skills": [
+        "concept.2-4"
+      ],
+      "prerequisite_skills": [],
+      "estimated_minutes": 15,
+      "teach_markdown": "P(φ)=diag(1,e^(iφ)) changes relative phase. Rz(φ)=diag(e^(−iφ/2),e^(iφ/2)) differs from P only by a global phase for this single-qubit comparison. H→P(φ)→H converts phase into a Z distribution: P0=cos²(φ/2), P1=sin²(φ/2). Ry rotates through real superpositions. A diagram transition is not a measured trajectory.",
+      "sources": [
+        {
+          "id": "IBM",
+          "title": "IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/single-systems/quantum-information"
+        }
+      ],
+      "lab": {
+        "mode": "chapter_lab",
+        "qubits": 1,
+        "default_shots": 256,
+        "variants": [
+          "Interference",
+          "Interference",
+          "Interference"
+        ]
+      },
+      "steps": [
+        {
+          "id": "2-4-read",
+          "kind": "read",
+          "title": "Read and reflect"
+        }
+      ],
+      "tasks": [],
+      "hints": [],
+      "completion": {
+        "required_step_ids": [
+          "2-4-read"
+        ],
+        "required_task_ids": []
+      },
+      "prediction": {
+        "id": "2-4-predict",
+        "prompt": "Predict what will change before running.",
+        "kind": "single_select",
+        "options": []
+      }
+    },
+    {
+      "id": "2-5",
+      "number": "2.5",
+      "slug": "x,-y,-and-z-measurement-bases",
+      "title": "X, Y, and Z measurement bases",
+      "objective": "Measurement asks a question in a chosen basis.",
+      "learning_objectives": [
+        "Predict Y outcomes for |+i⟩, then explain how to read Y using a Z measurement device."
+      ],
+      "skills": [
+        "concept.2-5"
+      ],
+      "prerequisite_skills": [],
+      "estimated_minutes": 15,
+      "teach_markdown": "Measurement asks a question in a chosen basis. X has eigenstates |+⟩ and |−⟩; Y has (|0⟩±i|1⟩)/√2. To implement X readout using Z measurement, apply H first. For Y, execute S† then H. The returned 0/1 labels mean the +1/−1 eigenvalues of the chosen observable. Readout rotates the state; distinguish its final physical state from the original-basis projected state.",
+      "sources": [
+        {
+          "id": "IBM",
+          "title": "IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/single-systems/quantum-information"
+        }
+      ],
+      "lab": {
+        "mode": "chapter_lab",
+        "qubits": 1,
+        "default_shots": 256,
+        "variants": [
+          "Plus",
+          "Minus",
+          "Plus i"
+        ]
+      },
+      "steps": [
+        {
+          "id": "2-5-read",
+          "kind": "read",
+          "title": "Read and reflect"
+        }
+      ],
+      "tasks": [],
+      "hints": [],
+      "completion": {
+        "required_step_ids": [
+          "2-5-read"
+        ],
+        "required_task_ids": []
+      },
+      "prediction": {
+        "id": "2-5-predict",
+        "prompt": "Predict what will change before running.",
+        "kind": "single_select",
+        "options": []
+      }
+    },
+    {
+      "id": "2-6",
+      "number": "2.6",
+      "slug": "state-versus-distribution-challenge",
+      "title": "State versus distribution challenge",
+      "objective": "A single histogram does not identify a quantum state.",
+      "learning_objectives": [
+        "Give two states with the same Z chart and design a new measurement to distinguish them. Predict that measurement for both."
+      ],
+      "skills": [
+        "concept.2-6"
+      ],
+      "prerequisite_skills": [],
+      "estimated_minutes": 15,
+      "teach_markdown": "A single histogram does not identify a quantum state. |+⟩, |−⟩ and |+i⟩ have the same Z probabilities. X distinguishes plus and minus; Y reveals the imaginary relative phase. Repeated preparations let us estimate x=P_X(+)-P_X(−), and similarly y and z. Finite samples have uncertainty; a single shot cannot determine an arbitrary unknown state.",
+      "sources": [
+        {
+          "id": "IBM",
+          "title": "IBM Quantum Learning",
+          "url": "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/single-systems/quantum-information"
+        }
+      ],
+      "lab": {
+        "mode": "chapter_lab",
+        "qubits": 1,
+        "default_shots": 256,
+        "variants": [
+          "State A",
+          "State B",
+          "State C"
+        ]
+      },
+      "steps": [
+        {
+          "id": "2-6-read",
+          "kind": "read",
+          "title": "Read and reflect"
+        }
+      ],
+      "tasks": [],
+      "hints": [],
+      "completion": {
+        "required_step_ids": [
+          "2-6-read"
+        ],
+        "required_task_ids": []
+      },
+      "prediction": {
+        "id": "2-6-predict",
+        "prompt": "Predict what will change before running.",
+        "kind": "single_select",
+        "options": []
+      }
+    }
+  ]
+}

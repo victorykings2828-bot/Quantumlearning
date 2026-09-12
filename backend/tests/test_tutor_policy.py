@@ -83,9 +83,10 @@ def test_retrieval_returns_only_allowlisted_files():
 
 
 def test_retrieval_respects_topic_scope():
-    """Topic 1.1 must not retrieve the interference passage from Topic 1.7."""
+    """The entire current chapter is eligible; later chapters are excluded."""
     early = knowledge.retrieve("interference", topic_ids=tutor_service.knowledge_scope("1-1"))
-    assert all(passage.id != "chapter-1.interference" for passage in early)
+    assert any(passage.id == "chapter-1.interference" for passage in early)
+    assert all(passage.file_id not in {"chapter-2", "chapter-3"} for passage in early)
     late = knowledge.retrieve("interference", topic_ids=tutor_service.knowledge_scope("1-7"))
     assert any(passage.id == "chapter-1.interference" for passage in late)
 
