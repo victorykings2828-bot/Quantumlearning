@@ -147,6 +147,13 @@ NVIDIA_API_KEY=your-key
 `backend/.env` is ignored by Git, so your key cannot be committed by accident,
 and it never reaches the browser or any page you can view.
 
+If you edited `backend/.env` by hand instead, restart properly so the running
+container picks up the change — a plain restart can keep the old values:
+
+```bash
+./start.sh --stop && ./start.sh     # Windows: .\start.ps1 -Stop; .\start.ps1
+```
+
 ### Step 7 — check whether the key actually works
 
 This is the one step that tells you for certain. Step 6 runs it automatically,

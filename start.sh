@@ -79,8 +79,10 @@ case "${1:-start}" in
     bold "Saved to backend/.env and switched the tutor to the live provider."
 
     if docker info >/dev/null 2>&1 && [ -n "$(compose ps -q api 2>/dev/null)" ]; then
+      # --force-recreate matters: a container already built from the old
+      # backend/.env keeps those values until it is replaced.
       echo "Restarting so it picks up the key…"
-      compose up -d >/dev/null
+      compose up -d --force-recreate api >/dev/null
       echo
       exec "$0" --check-ai
     fi

@@ -81,8 +81,10 @@ if ($SetKey) {
 
     & docker info *> $null
     if ($LASTEXITCODE -eq 0 -and (Compose ps -q api)) {
+        # --force-recreate matters: a container already built from the old
+        # backend/.env keeps those values until it is replaced.
         Write-Host 'Restarting so it picks up the key...'
-        Compose up -d | Out-Null
+        Compose up -d --force-recreate api | Out-Null
         Write-Host ''
         & $PSCommandPath -CheckAi
         exit $LASTEXITCODE
