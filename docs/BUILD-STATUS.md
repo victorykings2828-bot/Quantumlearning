@@ -40,7 +40,7 @@ Backend (`cd backend`):
 | `uv run --frozen pytest` | **223 passed**, under both the default settings and CI's `TUTOR_PROVIDER=fake` |
 | `uv run --frozen python -m app.tools.validate_content` | pass |
 | `uv run --frozen python export_contracts.py --check` | pass |
-| `uv run --frozen python -m app.tools.tutor_smoke` | **ran with a real key supplied by the user**; the request could not leave this sandbox. The build environment's proxy denies outbound CONNECT to `integrate.api.nvidia.com` with 403, as it does for any host outside its allowlist. The smoke test reports `proxy_blocked` and states that this is a network failure, not a rejected credential |
+| `uv run --frozen python -m app.tools.tutor_smoke` | **HTTP 200 on the user's machine** (see Known limitations); from this sandbox the request could not leave. The build environment's proxy denies outbound CONNECT to `integrate.api.nvidia.com` with 403, as it does for any host outside its allowlist. The smoke test reports `proxy_blocked` and states that this is a network failure, not a rejected credential |
 
 Frontend (`cd frontend`):
 
@@ -188,18 +188,40 @@ been observed running. The launchers are written against that unverified path.
 
 ## Known limitations
 
-- **Live NVIDIA verification is still pending, and cannot be completed from
-  this build environment.** A real key was supplied and configured correctly:
+- **Live NVIDIA verification: DONE, by the user, on their own machine.**
+  On 2026-09-12 the user ran `.\start.ps1 -SetKey` on Windows with their own
+  key and reported the smoke test's output:
+
+  ```
+  status           : HTTP 200
+  latency          : 10372 ms
+  served model     : nvidia/nemotron-3-super-120b-a12b
+  schema validation: passed
+  intent           : answer
+  cited passages   : chapter-1.z-gate
+  ```
+
+  The returned answer ("the Z gate multiplies the amplitude of |1> by -1 …
+  |-b|^2 = |b|^2, therefore the Z-basis outcome probabilities remain the same")
+  is scientifically correct, cites a real passage, and passed schema
+  validation. This confirms the hosted endpoint accepts the adapter's request
+  shape, the model honours the required response object, and citation
+  validation admits a genuine passage rather than only rejecting forged ones.
+
+  Recorded honestly: **this was observed in the user's terminal output, not
+  executed by this build.** The live half of `docs/ACCEPTANCE.md` section D —
+  the full prompt set against the real model — has still not been run; one
+  live question has.
+
+- **The sandbox this was built in cannot reach the provider.** A real key was supplied and configured correctly:
   the application read it, reported `provider: nvidia` and
   `live_answers_available: true`, and attempted the call. The request never
   left the sandbox, because this environment's network policy denies outbound
   CONNECT to `integrate.api.nvidia.com` with HTTP 403 (`pypi.org` and
   `api.github.com` are reachable; `integrate.api.nvidia.com` and
-  `www.google.com` are not). So the credential has **not** been exercised
-  against the provider, and the live tutor question set in
-  `docs/ACCEPTANCE.md` section D has **not** been run against the real model.
-  Run `uv run --frozen python -m app.tools.tutor_smoke` from a machine with
-  direct internet access to complete it.
+  `www.google.com` are not). So nothing in this repository's own verification
+  record exercises the credential against the provider; that step was completed
+  by the user instead, as recorded above.
 
   What this attempt did verify, against a genuine network failure rather than a
   simulated one: the adapter surfaces the refusal as `proxy_blocked`, the
