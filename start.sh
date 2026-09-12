@@ -2,9 +2,11 @@
 #
 # Start the Quantum Learning Laboratory on this computer.
 #
-#   ./start.sh          start it (builds the first time, which is slow)
-#   ./start.sh --stop   stop it
-#   ./start.sh --logs   watch what it is doing
+#   ./start.sh             start it (builds the first time, which is slow)
+#   ./start.sh --stop      stop it
+#   ./start.sh --logs      watch what it is doing
+#   ./start.sh --set-key   turn on live AI answers with your provider key
+#   ./start.sh --check-ai  ask the provider whether your key actually works
 #
 # Everything runs locally in containers. Nothing is deployed and nothing is
 # sent anywhere, unless you add an AI key yourself in step 6 of the README.
@@ -28,6 +30,20 @@ open_browser() {
   fi
 }
 
+# Rewrite one KEY=value line in backend/.env, adding it if it is not there.
+# awk keeps this portable: GNU and BSD sed disagree about in-place editing.
+set_env_var() {
+  local name="$1" value="$2" file="backend/.env" tmp
+  tmp="$(mktemp)"
+  awk -v n="$name" -v v="$value" '
+    $0 ~ "^" n "=" { print n "=" v; found = 1; next }
+    { print }
+    END { if (!found) print n "=" v }
+  ' "$file" >"$tmp"
+  mv "$tmp" "$file"
+  chmod 600 "$file"
+}
+
 # `docker compose` is current; `docker-compose` is the older standalone binary.
 compose() {
   if docker compose version >/dev/null 2>&1; then docker compose "$@"
@@ -45,8 +61,43 @@ case "${1:-start}" in
   --logs|logs)
     exec compose logs -f
     ;;
+  --set-key|set-key)
+    # The key is written only to backend/.env, which git ignores. It is never
+    # printed, never committed, and never reaches the browser.
+    if [ ! -f backend/.env ]; then cp backend/.env.example backend/.env; fi
+    key="${2:-}"
+    if [ -z "$key" ]; then
+      printf 'Paste your NVIDIA API key (it will not be shown): '
+      read -rs key
+      echo
+    fi
+    if [ -z "$key" ]; then fail "No key given. Nothing changed."; exit 1; fi
+
+    # Both of these matter. A key alone leaves the tutor in authored mode.
+    set_env_var NVIDIA_API_KEY "$key"
+    set_env_var TUTOR_PROVIDER nvidia
+    bold "Saved to backend/.env and switched the tutor to the live provider."
+
+    if docker info >/dev/null 2>&1 && [ -n "$(compose ps -q api 2>/dev/null)" ]; then
+      echo "Restarting so it picks up the key…"
+      compose up -d >/dev/null
+      echo
+      exec "$0" --check-ai
+    fi
+    echo "Start it with ./start.sh, then check the key with ./start.sh --check-ai"
+    exit 0
+    ;;
+  --check-ai|check-ai)
+    if [ -z "$(compose ps -q api 2>/dev/null)" ]; then
+      fail "It is not running. Start it with ./start.sh first."
+      exit 1
+    fi
+    bold "Asking the provider a real question…"
+    compose exec -T api python -m app.tools.tutor_smoke
+    exit $?
+    ;;
   --help|-h)
-    sed -n '2,10p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+    sed -n '2,12p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
     exit 0
     ;;
 esac
@@ -83,6 +134,21 @@ if [ ! -f backend/.env ]; then
   echo "The tutor will answer from the authored course material."
   echo "To use live AI instead, see step 6 of README.md."
   echo
+fi
+
+# A key with the provider still set to "authored" is the one misconfiguration
+# that looks like it worked. Say so rather than starting quietly in the wrong mode.
+if grep -qE '^NVIDIA_API_KEY=.+' backend/.env 2>/dev/null \
+   && ! grep -qE '^TUTOR_PROVIDER=nvidia' backend/.env 2>/dev/null; then
+  fail "You have an API key set, but the tutor is still in authored mode."
+  cat <<'MSG'
+Your key will be ignored until the provider is switched. Fix it with:
+
+    ./start.sh --set-key
+
+Continuing in authored mode for now.
+
+MSG
 fi
 
 # ------------------------------------------------------------------------ start

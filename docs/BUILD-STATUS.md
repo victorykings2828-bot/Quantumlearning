@@ -168,6 +168,13 @@ could not be used:
 | `--stop` | stub `docker` | runs `compose down`, exits 0 |
 | `--help` | direct | prints usage only |
 
+`--set-key` writes the key and switches the provider **together**, and the
+launcher warns at startup when a key is present while `TUTOR_PROVIDER` is still
+`authored`. That half-configured state was reachable before, and it is the one
+misconfiguration that looks like it worked: the key is read, ignored, and the
+tutor silently stays in authored mode. `--check-ai` runs the smoke test inside
+the running container.
+
 **`start.ps1` has not been executed.** No PowerShell exists in this build
 environment. It is a line-by-line translation of the shell script whose logic
 was tested, but it is unrun, and that is the one part of the quickstart a
@@ -198,6 +205,13 @@ been observed running. The launchers are written against that unverified path.
   simulated one: the adapter surfaces the refusal as `proxy_blocked`, the
   learner sees clearly labelled authored help rather than an error, work is not
   lost, and the credential appears in no response, log or diagnostic.
+
+  Re-checked after the launchers were added, with the supplied key written to
+  `backend/.env` by `./start.sh --set-key`: the application loads it and reports
+  `provider: nvidia`, `key_configured: True`, `live_answers_available: True`,
+  and the smoke test reaches the network and returns `proxy_blocked` rather than
+  `unauthorized`. Every step up to the outbound request is therefore exercised;
+  only the request itself is untested, and only because this sandbox forbids it.
 - **PostgreSQL 16 locally, 17 declared.** See the environment table above.
 - **The production container build has not been executed here.** Docker Hub
   base-image layers return 403 through this environment's network policy

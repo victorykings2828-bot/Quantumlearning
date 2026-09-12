@@ -1,8 +1,10 @@
 # Start the Quantum Learning Laboratory on this computer.
 #
-#   .\start.ps1          start it (builds the first time, which is slow)
-#   .\start.ps1 -Stop    stop it
-#   .\start.ps1 -Logs    watch what it is doing
+#   .\start.ps1             start it (builds the first time, which is slow)
+#   .\start.ps1 -Stop        stop it
+#   .\start.ps1 -Logs        watch what it is doing
+#   .\start.ps1 -SetKey      turn on live AI answers with your provider key
+#   .\start.ps1 -CheckAi     ask the provider whether your key actually works
 #
 # Everything runs locally in containers. Nothing is deployed and nothing is
 # sent anywhere, unless you add an AI key yourself in step 6 of the README.
@@ -10,7 +12,10 @@
 [CmdletBinding()]
 param(
     [switch]$Stop,
-    [switch]$Logs
+    [switch]$Logs,
+    [switch]$SetKey,
+    [switch]$CheckAi,
+    [string]$Key
 )
 
 $ErrorActionPreference = 'Stop'
@@ -25,6 +30,18 @@ function Write-Bold($text) { Write-Host $text -ForegroundColor White }
 function Write-Fail($text) { Write-Host "`n$text" -ForegroundColor Red }
 
 # `docker compose` is current; `docker-compose` is the older standalone binary.
+# Rewrite one KEY=value line in backend/.env, adding it if it is not there.
+function Set-EnvVar($name, $value) {
+    $file = 'backend/.env'
+    $lines = Get-Content $file
+    $found = $false
+    $out = foreach ($line in $lines) {
+        if ($line -match "^$name=") { "$name=$value"; $found = $true } else { $line }
+    }
+    if (-not $found) { $out += "$name=$value" }
+    Set-Content -Path $file -Value $out
+}
+
 function Test-Compose {
     & docker compose version *> $null
     return ($LASTEXITCODE -eq 0)
@@ -43,6 +60,44 @@ if ($Stop) {
 
 if ($Logs) {
     Compose logs -f
+    exit $LASTEXITCODE
+}
+
+if ($SetKey) {
+    # The key is written only to backend/.env, which git ignores. It is never
+    # printed, never committed, and never reaches the browser.
+    if (-not (Test-Path 'backend/.env')) { Copy-Item 'backend/.env.example' 'backend/.env' }
+    if (-not $Key) {
+        $secure = Read-Host -Prompt 'Paste your NVIDIA API key (it will not be shown)' -AsSecureString
+        $Key = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
+            [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure))
+    }
+    if (-not $Key) { Write-Fail 'No key given. Nothing changed.'; exit 1 }
+
+    # Both of these matter. A key alone leaves the tutor in authored mode.
+    Set-EnvVar 'NVIDIA_API_KEY' $Key
+    Set-EnvVar 'TUTOR_PROVIDER' 'nvidia'
+    Write-Bold 'Saved to backend/.env and switched the tutor to the live provider.'
+
+    & docker info *> $null
+    if ($LASTEXITCODE -eq 0 -and (Compose ps -q api)) {
+        Write-Host 'Restarting so it picks up the key...'
+        Compose up -d | Out-Null
+        Write-Host ''
+        & $PSCommandPath -CheckAi
+        exit $LASTEXITCODE
+    }
+    Write-Host 'Start it with .\start.ps1, then check the key with .\start.ps1 -CheckAi'
+    exit 0
+}
+
+if ($CheckAi) {
+    if (-not (Compose ps -q api)) {
+        Write-Fail 'It is not running. Start it with .\start.ps1 first.'
+        exit 1
+    }
+    Write-Bold 'Asking the provider a real question...'
+    Compose exec -T api python -m app.tools.tutor_smoke
     exit $LASTEXITCODE
 }
 
@@ -79,6 +134,25 @@ if (-not (Test-Path 'backend/.env')) {
     Write-Host 'The tutor will answer from the authored course material.'
     Write-Host 'To use live AI instead, see step 6 of README.md.'
     Write-Host ''
+}
+
+# A key with the provider still set to "authored" is the one misconfiguration
+# that looks like it worked. Say so rather than starting quietly in the wrong mode.
+if (Test-Path 'backend/.env') {
+    $envText = Get-Content 'backend/.env'
+    $hasKey = $envText | Where-Object { $_ -match '^NVIDIA_API_KEY=.+' }
+    $isLive = $envText | Where-Object { $_ -match '^TUTOR_PROVIDER=nvidia' }
+    if ($hasKey -and -not $isLive) {
+        Write-Fail 'You have an API key set, but the tutor is still in authored mode.'
+        Write-Host @'
+Your key will be ignored until the provider is switched. Fix it with:
+
+    .\start.ps1 -SetKey
+
+Continuing in authored mode for now.
+
+'@
+    }
 }
 
 # ------------------------------------------------------------------------ start

@@ -116,40 +116,44 @@ because nothing needs building the second time.
 
 **Everything above works without an API key.** The tutor still answers, using
 the written course material, and labels those answers "Authored course help".
+That is a supported way to run the demo, not a broken state.
 
-To get live AI answers instead, put your key in a file called `backend/.env`.
-
-In the same terminal, from the `Quantumlearning` folder:
+To get live AI answers instead, one command. On **Windows**:
 
 ```powershell
-copy backend\.env.example backend\.env
-notepad backend\.env
+.\start.ps1 -SetKey
 ```
 
-On macOS: `cp backend/.env.example backend/.env` then `open -e backend/.env`.
+On **macOS**:
 
-Notepad opens. Change these two lines, save, and close it:
+```bash
+./start.sh --set-key
+```
+
+It asks you to paste your key, and the key is not shown as you type. It then
+writes `backend/.env`, switches the tutor to the live provider, restarts, and
+runs the check in Step 7 for you.
+
+Two settings have to change together — the key **and** the provider. Setting
+only the key leaves the tutor in authored mode, which looks like the key was
+ignored. That is why this is one command rather than a file to hand-edit. If
+you do edit the file yourself, both of these must be set:
 
 ```
 TUTOR_PROVIDER=nvidia
-NVIDIA_API_KEY=paste-your-key-here
+NVIDIA_API_KEY=your-key
 ```
 
-Then restart the app:
-
-```powershell
-docker compose up --build
-```
-
-`backend/.env` is ignored by Git, so your key cannot be committed by accident.
+`backend/.env` is ignored by Git, so your key cannot be committed by accident,
+and it never reaches the browser or any page you can view.
 
 ### Step 7 — check whether the key actually works
 
-This is the one step that tells you for certain. In a **second** terminal
-window, from the same folder:
+This is the one step that tells you for certain. Step 6 runs it automatically,
+but you can run it any time:
 
-```powershell
-docker compose exec api python -m app.tools.tutor_smoke
+```bash
+./start.sh --check-ai          # Windows: .\start.ps1 -CheckAi
 ```
 
 Read the `status` line:
@@ -163,6 +167,10 @@ Read the `status` line:
 
 This command prints the model, the status and a short sample answer. It never
 prints your key.
+
+When it is working, the orange "No AI provider is configured" notice in the
+tutor panel disappears, and answers are labelled with the model rather than
+"Authored course help".
 
 ### If something goes wrong
 
