@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { api } from '@/api/client';
 import { useApiQuery } from '@/app/useApi';
 import { BlochSummary, ProbabilityChart, CountsChart } from '@/components/charts';
+import { AnimatedVector } from '@/components/AnimatedVector';
 import { Loading, Markdown, PageHeader, Panel, ErrorBanner } from '@/components/primitives';
 import type { RunRecord, Topic } from '@/api/types';
 import { useTutor } from '@/features/tutor/useTutor';
@@ -85,7 +86,7 @@ function ChapterExperiment({ topic, chapterId }: { topic: LessonTopic; chapterId
           }
           return current + 1;
         }),
-      1100 / speed,
+      1500 / speed,
     );
     return () => window.clearInterval(timer);
   }, [playing, run, speed]);
@@ -288,7 +289,7 @@ function ChapterExperiment({ topic, chapterId }: { topic: LessonTopic; chapterId
                 className="button"
                 onClick={() => {
                   setStep(0);
-                  setPlaying(false);
+                  setPlaying(motion);
                 }}
               >
                 Replay from start
@@ -324,9 +325,10 @@ function ChapterExperiment({ topic, chapterId }: { topic: LessonTopic; chapterId
               </label>
             </div>
             <p className="note">
-              Steps replay saved computed states. Movement between steps illustrates the
-              mathematics; it is not a measured particle trajectory. Teleportation frames show
-              labelled alternative branches, not a single sequential history.
+              Steps replay saved computed states. Moving arrows connect the saved states as a
+              visual guide. In-between positions are diagram transitions, not additional
+              simulated states or particle trajectories. Teleportation frames show labelled
+              alternative branches, not a single sequential history.
             </p>
             {animation && frame.amplitudes.length > 0 && (
               <svg
@@ -339,16 +341,12 @@ function ChapterExperiment({ topic, chapterId }: { topic: LessonTopic; chapterId
                   <g key={a.index} transform={`translate(${75 + i * 140},85)`}>
                     <circle r="55" fill="none" stroke="#c8c0ae" />
                     <path d="M-60 0 H60 M0 -60 V60" stroke="#c8c0ae" />
-                    <line
-                      x1="0"
-                      y1="0"
-                      x2={a.re * 55}
-                      y2={-a.im * 55}
-                      stroke="#b34832"
-                      strokeWidth="4"
-                      style={{ transition: motion ? 'all 450ms ease' : 'none' }}
+                    <AnimatedVector
+                      x={a.re * 55}
+                      y={-a.im * 55}
+                      motion={motion}
+                      duration={750 / speed}
                     />
-                    <circle cx={a.re * 55} cy={-a.im * 55} r="4" fill="#1d3548" />
                     <text y="80" textAnchor="middle">
                       {a.label}
                     </text>
@@ -411,16 +409,7 @@ function ChapterExperiment({ topic, chapterId }: { topic: LessonTopic; chapterId
                         y
                       </text>
                       <text y="-56">z</text>
-                      <line
-                        x1="0"
-                        y1="0"
-                        x2={sx}
-                        y2={sy}
-                        stroke="#b34832"
-                        strokeWidth="3"
-                        style={{ transition: motion && animation ? 'all 450ms ease' : 'none' }}
-                      />
-                      <circle cx={sx} cy={sy} r="4" fill="#1d3548" />
+                      <AnimatedVector x={sx} y={sy} motion={motion} duration={750 / speed} />
                       <text y="94" textAnchor="middle">
                         Qubit {qubit}: projected Bloch vector
                       </text>

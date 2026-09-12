@@ -308,3 +308,8 @@ The full automated calibrated practical/retention policy is not claimed complete
 
 User authorized publishing codex/reviewer-test only; no default-branch update or merge. Final local backend regression: 252 tests passed against isolated PostgreSQL 17 using a workspace temporary directory (the first run had a Windows temp-folder permission error). Authored-content validator now checks Chapters 1–3; provenance includes the new chapters and explanation bank. Content validation, Ruff lint/format, contract export, TypeScript build check and frontend format check passed. CI now builds and starts the isolated Docker review stack; its result must be checked on GitHub before claiming container verification.
 
+
+## Smooth motion correction — 2026-09-12
+
+Replaced unsupported SVG endpoint CSS transitions with requestAnimationFrame interpolation. Line and tip use the same coordinates; Bloch vectors now animate in every Chapter 2/3 lab, with motion-off displaying exact endpoints immediately. Slower playback gives transitions time to finish, and Replay starts playback when motion is enabled. Intermediate diagram positions are explicitly labelled as visual transitions, not additional simulated quantum states. TypeScript and ESLint passed. All five reviewer browser tests passed, including a new real-browser regression that samples intermediate arrow positions and confirms the tip stays attached.
+

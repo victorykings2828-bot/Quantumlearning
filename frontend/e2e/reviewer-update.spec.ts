@@ -63,3 +63,46 @@ test('tutor defers future chapters and clears later conversation on return', asy
   await page.getByRole('button', { name: 'Ask the course tutor' }).click();
   await expect(page.getByText(/This topic is discussed in Chapter 3/)).toHaveCount(0);
 });
+
+test('phase arrows visibly move between computed steps and tips stay attached', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/learn/chapter-2/2-4');
+  await ensureSession(page);
+  await page.getByRole('button', { name: 'π', exact: true }).click();
+  await page
+    .getByLabel('Your prediction')
+    .fill('The relative phase will reverse the second amplitude.');
+  await page.getByRole('button', { name: 'Save prediction and run' }).click();
+  await page.getByRole('button', { name: 'Next step' }).click();
+  const vector = page.locator('.phase-diagram [data-testid="animated-vector"]').nth(1);
+  await expect
+    .poll(async () => Number(await vector.locator('line').getAttribute('x2')))
+    .toBeCloseTo(55 / Math.sqrt(2), 3);
+  await page.getByRole('button', { name: 'Next step' }).click();
+  const samples = await vector.evaluate(async (element) => {
+    const readings: { x: number; tip: number }[] = [];
+    const started = performance.now();
+    await new Promise<void>((resolve) => {
+      function sample() {
+        readings.push({
+          x: Number(element.querySelector('line')!.getAttribute('x2')),
+          tip: Number(element.querySelector('circle')!.getAttribute('cx')),
+        });
+        if (performance.now() - started < 850) requestAnimationFrame(sample);
+        else resolve();
+      }
+      requestAnimationFrame(sample);
+    });
+    return readings;
+  });
+  expect(samples.filter(({ x }) => x > -35 && x < 35).length).toBeGreaterThan(3);
+  expect(samples.every(({ x, tip }) => Math.abs(x - tip) < 0.000001)).toBe(true);
+  expect(samples.at(-1)!.x).toBeCloseTo(-55 / Math.sqrt(2), 3);
+  await page.getByLabel('Motion', { exact: true }).uncheck();
+  await page.getByRole('button', { name: 'Previous', exact: true }).click();
+  await expect
+    .poll(async () => Number(await vector.locator('line').getAttribute('x2')))
+    .toBeCloseTo(55 / Math.sqrt(2), 3);
+});
